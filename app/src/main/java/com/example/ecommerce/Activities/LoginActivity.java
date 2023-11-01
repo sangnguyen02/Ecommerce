@@ -2,6 +2,7 @@ package com.example.ecommerce.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.example.ecommerce.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText phoneInput, otpInput;
     MaterialButton sendOTPBtn, loginBtn;
     TextView resendOtpTextView;
+    View showSnackBarView;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.login_btn);
         resendOtpTextView = findViewById(R.id.resend_otp_textview);
         countryCodePicker.registerCarrierNumberEditText(phoneInput);
+
+        showSnackBarView = findViewById(android.R.id.content);
         sendOTPBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +75,8 @@ public class LoginActivity extends AppCompatActivity {
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationCode, enteredOtp);
                     signIn(credential);
                 } else {
+                    Snackbar snackbar = Snackbar.make(showSnackBarView, "OTP verification failed", Snackbar.LENGTH_LONG);
+                    snackbar.show();
                     Toast.makeText(LoginActivity.this, "Verification code is invalid", Toast.LENGTH_LONG).show();
                 }
             }
@@ -92,7 +99,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             @Override
                             public void onVerificationFailed(@NonNull FirebaseException e) {
-                                Toast.makeText(LoginActivity.this,"OTP verification failed",Toast.LENGTH_LONG);
+                                Snackbar snackbar = Snackbar.make(showSnackBarView, "OTP verification failed", Snackbar.LENGTH_LONG);
+                                snackbar.show();
                                 //AndroidUtil.showToast(getApplicationContext(),"OTP verification failed");
                             }
 
@@ -101,7 +109,9 @@ public class LoginActivity extends AppCompatActivity {
                                 super.onCodeSent(s, forceResendingToken);
                                 verificationCode = s;
                                 resendingToken = forceResendingToken;
-                                Toast.makeText(LoginActivity.this,"OTP sent successfully",Toast.LENGTH_LONG);
+
+                                Snackbar snackbar = Snackbar.make(showSnackBarView, "OTP sent successfully", Snackbar.LENGTH_LONG);
+                                snackbar.show();
                                 //AndroidUtil.showToast(getApplicationContext(),"OTP sent successfully");
                             }
                         });
@@ -122,8 +132,9 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else {
-                    Toast.makeText(LoginActivity.this,"OTP verification failed",Toast.LENGTH_LONG);
                     //AndroidUtil.showToast(getApplicationContext(),"OTP verification failed");
+                    Snackbar snackbar = Snackbar.make(showSnackBarView, "OTP verification failed", Snackbar.LENGTH_LONG);
+                    snackbar.show();
                 }
             }
         });
