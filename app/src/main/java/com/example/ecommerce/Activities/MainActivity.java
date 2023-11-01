@@ -11,6 +11,7 @@ import com.example.ecommerce.Fragments.HistoryFragment;
 import com.example.ecommerce.Fragments.HomeFragment;
 import com.example.ecommerce.Fragments.PaymentFragment;
 import com.example.ecommerce.Fragments.ProfileFragment;
+
 import com.example.ecommerce.R;
 import com.example.ecommerce.databinding.ActivityMainBinding;
 

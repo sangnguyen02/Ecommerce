@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     String verificationCode;
     PhoneAuthProvider.ForceResendingToken  resendingToken;
     EditText phoneInput, otpInput;
-    MaterialButton sendOTPBtn, loginBtn;
+    MaterialButton sendOTPBtn, loginBtn,registerBtn;
     TextView resendOtpTextView;
     View showSnackBarView;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         otpInput = findViewById(R.id.otpInput);
         sendOTPBtn = findViewById(R.id.sendOTP);
         loginBtn = findViewById(R.id.login_btn);
+        registerBtn = findViewById(R.id.register_btn);
         resendOtpTextView = findViewById(R.id.resend_otp_textview);
         countryCodePicker.registerCarrierNumberEditText(phoneInput);
 
@@ -79,6 +80,13 @@ public class LoginActivity extends AppCompatActivity {
                     snackbar.show();
                     Toast.makeText(LoginActivity.this, "Verification code is invalid", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
 
