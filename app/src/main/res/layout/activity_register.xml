@@ -1,0 +1,194 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.MainActivity">
+    <ScrollView
+        android:id="@+id/android_small___1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/content_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <RelativeLayout
+                android:id="@+id/page_android_small___1_ek1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/_bg__android_small___1_ek2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/_bg__android_small___1_ek2_shape" />
+
+                <EditText
+                    android:id="@+id/name_input"
+                    android:layout_width="181dp"
+                    android:layout_height="39dp"
+                    android:layout_marginStart="155dp"
+                    android:layout_marginTop="86dp"
+                    android:background="@drawable/rectangle_1_shape"
+                    android:gravity="center"
+                    android:hint="Nguyen Van Teo"
+                    android:inputType="textPersonName"
+                    android:textSize="12sp" />
+
+                <Spinner
+                    android:id="@+id/vehicle_type_input"
+                    android:layout_width="181dp"
+                    android:layout_height="39dp"
+                    android:layout_marginStart="155dp"
+                    android:layout_marginTop="218dp"
+                    android:background="@drawable/rectangle_3_shape"
+                    android:entries="@array/vehicle_types"
+                    android:gravity="center"
+                    android:inputType="textPersonName"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/vehicle_name_input"
+                    android:layout_width="181dp"
+                    android:layout_height="39dp"
+                    android:layout_marginStart="155dp"
+                    android:layout_marginTop="284dp"
+                    android:background="@drawable/rectangle_6_shape"
+                    android:gravity="center"
+                    android:hint="Toyota 6AE"
+                    android:inputType="textPersonName"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/phone_number_input"
+                    android:layout_width="181dp"
+                    android:layout_height="39dp"
+                    android:layout_marginStart="155dp"
+                    android:layout_marginTop="350dp"
+                    android:background="@drawable/rectangle_4_shape"
+                    android:gravity="center"
+                    android:hint="031346621"
+                    android:inputType="textPersonName"
+                    android:textSize="12sp" />
+
+                <View
+                    android:id="@+id/rectangle_5"
+                    android:layout_width="181dp"
+                    android:layout_height="177dp"
+                    android:layout_marginStart="155dp"
+                    android:layout_marginTop="416dp"
+                    android:background="@drawable/rectangle_5_shape" />
+
+                <EditText
+                    android:id="@+id/age_input"
+                    android:layout_width="181dp"
+                    android:layout_height="39dp"
+                    android:layout_marginStart="155dp"
+                    android:layout_marginTop="152dp"
+                    android:background="@drawable/rectangle_2_shape"
+                    android:gravity="center"
+                    android:hint="18"
+                    android:inputType="textPersonName"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="136.2dp"
+                    android:layout_height="34.2dp"
+                    android:layout_gravity="center_horizontal|center"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="95dp"
+                    android:gravity="center"
+                    android:text="@string/name_string"
+                    android:textColor="@color/name_color"
+                    android:textSize="12sp"
+                    android:textStyle="bold|italic" />
+
+                <Button
+                    android:id="@+id/register_button"
+                    android:layout_width="259.2dp"
+                    android:layout_height="60.2dp"
+                    android:layout_gravity="center_horizontal|center"
+                    android:layout_marginLeft="58dp"
+                    android:layout_marginTop="11dp"
+                    android:gravity="center"
+                    android:text="@string/register_string"
+                    android:textColor="@color/name_color"
+                    android:textSize="32sp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:id="@+id/age"
+                    android:layout_width="136.2dp"
+                    android:layout_height="34.2dp"
+                    android:layout_gravity="center_horizontal|center"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="157dp"
+                    android:gravity="center"
+                    android:text="@string/age_string"
+                    android:textColor="@color/name_color"
+                    android:textSize="12sp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:id="@+id/vehicle_type"
+                    android:layout_width="136.2dp"
+                    android:layout_height="34.2dp"
+                    android:layout_gravity="center_horizontal|center"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="219dp"
+                    android:gravity="center"
+                    android:text="@string/vehicle_type_string"
+                    android:textColor="@color/name_color"
+                    android:textSize="12sp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:id="@+id/vehicle_name"
+                    android:layout_width="136.2dp"
+                    android:layout_height="34.2dp"
+                    android:layout_gravity="center_horizontal|center"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="289dp"
+                    android:gravity="center"
+                    android:text="@string/vehicle_name_string"
+                    android:textColor="@color/name_color"
+                    android:textSize="12sp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:id="@+id/phone_number"
+                    android:layout_width="136.2dp"
+                    android:layout_height="34.2dp"
+                    android:layout_gravity="center_horizontal|center"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="355dp"
+                    android:gravity="center"
+                    android:text="@string/phone_number_string"
+                    android:textColor="@color/name_color"
+                    android:textSize="12sp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:id="@+id/image"
+                    android:layout_width="136.2dp"
+                    android:layout_height="34.2dp"
+                    android:layout_gravity="center_horizontal|center"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="425dp"
+                    android:gravity="center"
+                    android:text="@string/image_string"
+                    android:textColor="@color/name_color"
+                    android:textSize="12sp"
+                    android:textStyle="bold|italic" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
