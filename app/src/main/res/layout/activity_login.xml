@@ -65,7 +65,7 @@
         app:layout_constraintVertical_bias="0.107">
 
         <com.hbb20.CountryCodePicker
-            android:id="@+id/login_countrycode"
+            android:id="@+id/login_country_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -150,9 +150,11 @@
         android:layout_height="wrap_content"
         android:layout_weight="10"
         android:gravity="center"
-        android:text="Resend OTP in 30 sec"
+        android:text="Resend the OTP here"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:textColor="@color/black"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
