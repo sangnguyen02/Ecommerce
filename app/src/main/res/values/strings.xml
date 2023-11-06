@@ -6,5 +6,27 @@
     <string name="fragment_title_home">Home</string>
     <string name="fragment_title_history">History</string>
     <string name="fragment_title_payment">Payment</string>
+    <string name="fragment_title_wallet">Wallet</string>
     <string name="fragment_title_profile">Profile</string>
+    <string name="fragment_title_manageDriver">Manage Driver</string>
+    <string name="fragment_title_statistic">Statistic Revenue</string>
+
+    <string name="user_faq_question1"> </string>
+    <string name="user_faq_answer1"> </string>
+
+    <string name="user_faq_question2"> </string>
+    <string name="user_faq_answer2"> </string>
+
+    <string name="user_faq_question3"> </string>
+    <string name="user_faq_answer3"> </string>
+
+    <string name="user_faq_question4"> </string>
+    <string name="user_faq_answer4"> </string>
+
+    <string name="user_faq_question5"> </string>
+    <string name="user_faq_answer5"> </string>
+
+
+
+
 </resources>

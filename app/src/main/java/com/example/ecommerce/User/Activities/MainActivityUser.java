@@ -1,4 +1,4 @@
-package com.example.ecommerce.Activities;
+package com.example.ecommerce.User.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -7,14 +7,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
-import com.example.ecommerce.Fragments.HistoryFragment;
-import com.example.ecommerce.Fragments.HomeFragment;
-import com.example.ecommerce.Fragments.PaymentFragment;
-import com.example.ecommerce.Fragments.ProfileFragment;
+import com.example.ecommerce.User.Fragments.HistoryFragmentUser;
+import com.example.ecommerce.User.Fragments.HomeFragmentUser;
+import com.example.ecommerce.User.Fragments.PaymentFragmentUser;
+import com.example.ecommerce.User.Fragments.ProfileFragmentUser;
 import com.example.ecommerce.R;
 import com.example.ecommerce.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivityUser extends AppCompatActivity {
 
     ActivityMainBinding binding;
 
@@ -23,28 +23,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
+        replaceFragment(new HomeFragmentUser());
 
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new HomeFragmentUser());
                     break;
 
 
                 case R.id.history:
-                    replaceFragment(new HistoryFragment());
+                    replaceFragment(new HistoryFragmentUser());
                     break;
 
 
                 case R.id.payment:
-                    replaceFragment(new PaymentFragment());
+                    replaceFragment(new PaymentFragmentUser());
                     break;
 
 
                 case R.id.profile:
-                    replaceFragment(new ProfileFragment());
+                    replaceFragment(new ProfileFragmentUser());
                     break;
 
 

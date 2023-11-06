@@ -1,4 +1,4 @@
-package com.example.ecommerce.Activities;
+package com.example.ecommerce;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.ecommerce.R;
+import com.example.ecommerce.User.Activities.LoginActivityUser;
 import com.google.android.material.button.MaterialButton;
 
 public class SplashActivity extends AppCompatActivity {
@@ -23,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         lets_goBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                Intent intent = new Intent(SplashActivity.this, LoginActivityUser.class);
                 startActivity(intent);
             }
         });

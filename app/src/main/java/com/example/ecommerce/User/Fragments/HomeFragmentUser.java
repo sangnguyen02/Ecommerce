@@ -1,4 +1,4 @@
-package com.example.ecommerce.Fragments;
+package com.example.ecommerce.User.Fragments;
 
 import android.os.Bundle;
 
@@ -21,7 +21,7 @@ import java.util.List;
 import me.relex.circleindicator.CircleIndicator3;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragmentUser extends Fragment {
 
     private ViewPager2 mViewPager2;
     private CircleIndicator3 mCircleIndicator3;
