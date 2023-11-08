@@ -1,4 +1,4 @@
-package com.example.ecommerce.Activities;
+package com.example.ecommerce.User.Activities;
 
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import com.example.ecommerce.R;
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivityUser extends AppCompatActivity {
 
     private EditText etName, etAge, etPhoneNumber, etVehicleName;
     private Spinner spinnerVehicleType;
@@ -25,18 +25,18 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_register_driver_user);
 
         // Initialize Realtime Database
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Initialize views
-        etName = findViewById(R.id.name_input);
-        etAge = findViewById(R.id.age_input);
-        etPhoneNumber = findViewById(R.id.phone_number_input);
-        etVehicleName = findViewById(R.id.vehicle_name_input);
-        spinnerVehicleType = findViewById(R.id.vehicle_type_input);
-        btnRegister = findViewById(R.id.register_button);
+//        etName = findViewById(R.id.editText_fullname);
+//        //etAge = findViewById(R.id.age_input);
+//        etPhoneNumber = findViewById(R.id.editText_phoneNo);
+//        et
+//        spinnerVehicleType = findViewById(R.id.vehicle_type_input);
+//        btnRegister = findViewById(R.id.register_button);
 
         // Set click listener for register button
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
         User user = new User(userId, name, age, phoneNumber, vehicleName, vehicleType);
         mDatabase.child("users").child(userId).setValue(user);
 
-        Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegisterActivityUser.this, "Registration successful", Toast.LENGTH_SHORT).show();
         finish();
     }
 }
