@@ -30,4 +30,13 @@
 
 
     <string name="map_api_key">AIzaSyAgiRVzm2vQ9kGUQQxp7trXj5AIbwV5NU0</string>
+    <string name="name_string">Name</string>
+    <string name="register_string">Register</string>
+    <string name="edit_profile_string">Edit Profile</string>
+    <string name="age_string">Age</string>
+    <string name="vehicle_type_string">Vehicle Type</string>
+    <string name="vehicle_name_string">Vehicle Name</string>
+    <string name="phone_number_string">Phone Number</string>
+    <string name="image_string">Image</string>
+
 </resources>

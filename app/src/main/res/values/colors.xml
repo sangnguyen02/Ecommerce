@@ -6,6 +6,18 @@
     <color name="background_slogan">#4C700E</color>
     <color name="input_design_stroke">#AC3043</color>
     <color name="background_snack_bar">#FB2C3B</color>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+
+    <color name="_bg__android_small___1_ek2_color">#3C9ED4</color>
+    <color name="rectangle_1_color">#D9D9D9</color>
+    <color name="name_color">#000000</color>
 
 
 </resources>
