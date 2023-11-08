@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -135,8 +136,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    Log.d("PhoneString",phoneInput.getText().toString().trim());
+                    String phoneString = phoneInput.getText().toString().trim();
                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                    intent.putExtra("phone",phoneNumber);
+                    intent.putExtra("phoneString",phoneString);
                     startActivity(intent);
                 }
                 else {
