@@ -1,14 +1,14 @@
 {
   "project_info": {
-    "project_number": "107930907467",
-    "firebase_url": "https://e-commerce-956bb-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "e-commerce-956bb",
-    "storage_bucket": "e-commerce-956bb.appspot.com"
+    "project_number": "675998162292",
+    "firebase_url": "https://ecommerce-c5b41-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ecommerce-c5b41",
+    "storage_bucket": "ecommerce-c5b41.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:107930907467:android:5f971d30900ee25740eece",
+        "mobilesdk_app_id": "1:675998162292:android:fbcbed5bf178ee6dcee021",
         "android_client_info": {
           "package_name": "com.example.ecommerce"
         }
@@ -16,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCDs3wpQLEe9M50GFAj8agjT_NFkwWZFbE"
+          "current_key": "AIzaSyC5RdrBdxO_89rAF66ufv7cdD33ua58uws"
         }
       ],
       "services": {

@@ -19,7 +19,8 @@
         android:layout_marginLeft="10dp"
         android:text="Edit Profile"
         android:textSize="26dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageUser"

@@ -25,8 +25,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hbb20.CountryCodePicker;
 
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -147,10 +153,11 @@ public class LoginActivityUser extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = task.getResult().getUser();
                             // Update UI
-                            goToMainActivity(user.getPhoneNumber());
+                            createCredentialToFirebase(user.getPhoneNumber(), user.getUid());
                         } else {
 
                             // Sign in failed, display a message and update the UI
@@ -166,7 +173,9 @@ public class LoginActivityUser extends AppCompatActivity {
 
     private void goToMainActivity(String phoneNumber) {
         Intent intent = new Intent(LoginActivityUser.this, MainActivityUser.class);
-        intent.putExtra("phone_number",phoneNumber);
+        Bundle bundle = new Bundle();
+        bundle.putString("phone_number", phoneNumber);
+        intent.putExtras(bundle);
         startActivity(intent);
 
     }
@@ -190,5 +199,37 @@ public class LoginActivityUser extends AppCompatActivity {
         },0,1000);
     }
 
+    private void createCredentialToFirebase(final String phone, final String idUser) {
+        final DatabaseReference RootRef;
+        RootRef = FirebaseDatabase.getInstance().getReference();
 
+        RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.child("Users").child(phone).exists()) {
+
+                    HashMap<String, Object> userdataMap = new HashMap<>();
+                    userdataMap.put("phoneNum", phone);
+                    userdataMap.put("nameUser", "empty");
+                    userdataMap.put("idUser", idUser);
+
+                    RootRef.child("Users").child(phone).updateChildren(userdataMap)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    goToMainActivity(phone);
+                                }
+
+                            });
+                }
+                else {
+                    goToMainActivity(phone);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }
