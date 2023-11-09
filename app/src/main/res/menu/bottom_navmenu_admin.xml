@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="@string/fragment_title_manageDriver"
+        android:icon="@drawable/driverManage"
+        android:id="@+id/manageDriver"/>
+
+    <item android:title="@string/fragment_title_statistic"
+        android:icon="@drawable/bar"
+        android:id="@+id/statistic"/>
+
+
+</menu>
