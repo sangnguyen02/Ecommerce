@@ -22,9 +22,6 @@
         android:textSize="26dp"
         android:textStyle="bold" />
 
-
-
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageUser"
         android:layout_width="90dp"
