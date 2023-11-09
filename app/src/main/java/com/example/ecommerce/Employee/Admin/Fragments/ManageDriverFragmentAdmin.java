@@ -13,10 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ecommerce.Employee.Admin.Activities.ManageDriverDetailActivityAdmin;
+import com.example.ecommerce.Employee.Admin.Activities.ManageRegisterDriverActivityAdmin;
 import com.example.ecommerce.Interface.ItemClickListener;
 import com.example.ecommerce.Models.Driver;
 import com.example.ecommerce.R;
 import com.example.ecommerce.ViewHolder.ManageDriverViewHolder;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DatabaseReference;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -28,20 +30,32 @@ import java.util.List;
 
 public class ManageDriverFragmentAdmin extends Fragment {
 
-    private DatabaseReference DriverRef;
-    private RecyclerView rcvManageDriver;
+    DatabaseReference DriverRef;
+    RecyclerView rcvManageDriver;
+
+    MaterialButton manageRegisterButton;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_manage_driver_admin, container, false);
         DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo");
         rcvManageDriver = rootView.findViewById(R.id.rcv_manageDriver);
+        manageRegisterButton = rootView.findViewById(R.id.manageRegister_btn);
 
 
         rcvManageDriver.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(rootView.getContext(),RecyclerView.VERTICAL,false);
         rcvManageDriver.setLayoutManager(linearLayoutManager);
+
+        manageRegisterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(rootView.getContext(), ManageRegisterDriverActivityAdmin.class);
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 
@@ -70,10 +84,7 @@ public class ManageDriverFragmentAdmin extends Fragment {
                                 startActivity(intent);
                             }
                         });
-
-
                     }
-
                     @NonNull
                     @Override
                     public ManageDriverViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
