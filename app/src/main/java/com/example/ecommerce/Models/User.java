@@ -1,7 +1,6 @@
 package com.example.ecommerce.Models;
 
 public class User {
-
     private String userId;
     private String name;
     private int age;
@@ -23,6 +22,8 @@ public class User {
         this.vehicleType = vehicleType;
         this.image = image;
     }
+
+
 
 
 

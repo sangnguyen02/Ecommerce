@@ -18,6 +18,7 @@
         android:layout_marginLeft="10dp"
         android:text="Payment"
         android:textSize="26dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
 
 </FrameLayout>

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.ecommerce.User.Fragments.HistoryFragmentUser;
 import com.example.ecommerce.User.Fragments.HomeFragmentUser;
@@ -17,12 +18,17 @@ import com.example.ecommerce.databinding.ActivityMainBinding;
 public class MainActivityUser extends AppCompatActivity {
 
     ActivityMainBinding binding;
+    String phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            phone = extras.getString("phone_number");
+        }
         replaceFragment(new HomeFragmentUser());
 
 
@@ -44,7 +50,11 @@ public class MainActivityUser extends AppCompatActivity {
 
 
                 case R.id.profile:
-                    replaceFragment(new ProfileFragmentUser());
+                    ProfileFragmentUser profileFragmentUser = new ProfileFragmentUser();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("phone_number", phone);
+                    profileFragmentUser.setArguments(bundle);
+                    replaceFragment(profileFragmentUser);
                     break;
 
 
