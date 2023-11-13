@@ -4,7 +4,9 @@ public class Driver {
     private String name, phoneNum, license, idDriver, bankAccount, id, image, status;
     private int rating, balance;
 
+    public Driver() {
 
+    }
 
     public Driver(String name, String status) {
         this.name = name;

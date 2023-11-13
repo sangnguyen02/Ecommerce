@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ecommerce.Employee.Admin.Activities.MainActivityAdmin;
 import com.example.ecommerce.Employee.Driver.Activities.MainActivityDriver;
 import com.example.ecommerce.R;
 import com.example.ecommerce.User.Activities.LoginActivityUser;
@@ -65,46 +66,91 @@ public class LoginActivityEmployee extends AppCompatActivity {
                     return;
                 }
 
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("DriversAccount");
-                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        //Find account
-                        boolean isAuthenticated = false;
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            String dbUsername = snapshot.child("email").getValue(String.class);
-                            String dbPassword = snapshot.child("password").getValue(String.class);
-                            Log.e("Mail From Firebase!!!!!!!!!: " , dbUsername);
-                            Log.e("Password From Firebase!!!!!!!!!: " , dbPassword);
-                            if (dbUsername.equals(email) && dbPassword.equals(password)) {
-                                // Authentication successful
-                                isAuthenticated = true;
-                                Toast.makeText(LoginActivityEmployee.this, "Authentication Successfully.",
-                                        Toast.LENGTH_SHORT).show();
-                                break;
-                            }
-                        }
-                        //Authenticating
-                        if (isAuthenticated) {
-                            // Proceed to the next activity or show a success message
-                            Intent intent = new Intent(LoginActivityEmployee.this, MainActivityDriver.class);
-                            startActivity(intent);
-                            finish(); // Optional: Finish the current activity to prevent going back on pressing back button
-                        } else {
-                            Toast.makeText(LoginActivityEmployee.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                //Validating Sign In Method
+                if (email.contains("admin")){
+                    SignInAsAdmin(email, password);
+                }else{
+                    SignInAsDriver(email, password);
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(LoginActivityEmployee.this, "Database error occurred", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
             }
         });
 
+    }
 
+    private void SignInAsDriver(String email, String password)
+    {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("DriversAccount");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Find account
+                boolean isAuthenticated = false;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String dbUsername = snapshot.child("email").getValue(String.class);
+                    String dbPassword = snapshot.child("password").getValue(String.class);
 
+                    if (dbUsername.equals(email) && dbPassword.equals(password)) {
+                        // Authentication successful
+                        isAuthenticated = true;
+                        Toast.makeText(LoginActivityEmployee.this, "Authentication Successfully.",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+                //Authenticating
+                if (isAuthenticated) {
+                    // Proceed to the next activity or show a success message
+                    Intent intent = new Intent(LoginActivityEmployee.this, MainActivityDriver.class);
+                    startActivity(intent);
+                    finish(); // Optional: Finish the current activity to prevent going back on pressing back button
+                } else {
+                    Toast.makeText(LoginActivityEmployee.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(LoginActivityEmployee.this, "Database error occurred", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void SignInAsAdmin(String email, String password)
+    {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Admin");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Find account
+                boolean isAuthenticated = false;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String dbUsername = snapshot.child("email").getValue(String.class);
+                    String dbPassword = snapshot.child("password").getValue(String.class);
+
+                    if (dbUsername.equals(email) && dbPassword.equals(password)) {
+                        // Authentication successful
+                        isAuthenticated = true;
+                        Toast.makeText(LoginActivityEmployee.this, "Welcome Admin!",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+                //Authenticating
+                if (isAuthenticated) {
+                    Intent intent = new Intent(LoginActivityEmployee.this, MainActivityAdmin.class);
+                    startActivity(intent);
+                    finish(); // Optional: Finish the current activity to prevent going back on pressing back button
+                } else {
+                    Toast.makeText(LoginActivityEmployee.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(LoginActivityEmployee.this, "Database error occurred", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

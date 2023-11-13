@@ -38,6 +38,9 @@ public class MainActivityAdmin extends AppCompatActivity {
                     replaceFragment(new StatisticRevenueFragmentAdmin());
                     break;
 
+                default:
+                    replaceFragment(new ManageDriverFragmentAdmin());
+                    break;
             }
             return true;
         });
