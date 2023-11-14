@@ -12,7 +12,7 @@ import com.google.android.material.button.MaterialButton;
 public class RegisterDriverActivityUser extends AppCompatActivity {
 
     EditText fullname, phoneNo, mail, id, license, bankNo;
-    MaterialButton saveButton;
+    MaterialButton register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +25,9 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
         id = findViewById(R.id.editText_ID);
         license = findViewById(R.id.editText_license);
         bankNo = findViewById(R.id.editText_bankNo);
-        saveButton = findViewById(R.id.save_btn);
+        register = findViewById(R.id.register_driver_btn);
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
