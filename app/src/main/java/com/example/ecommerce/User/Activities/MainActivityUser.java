@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
 import com.example.ecommerce.User.Fragments.HistoryFragmentUser;
 import com.example.ecommerce.User.Fragments.HomeFragmentUser;
@@ -30,25 +31,26 @@ public class MainActivityUser extends AppCompatActivity {
             name = extras.getString("user_name");
         }
         replaceFragment(new HomeFragmentUser());
+        Order order=new Order();
+        order.setClientNo(phone);
+
 
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
+                    Bundle bundleOrder = new Bundle();
+                    bundleOrder.putSerializable("Order",order);
+
                     replaceFragment(new HomeFragmentUser());
+
                     break;
-
-
                 case R.id.history:
                     replaceFragment(new HistoryFragmentUser());
                     break;
-
-
                 case R.id.payment:
                     replaceFragment(new PaymentFragmentUser());
                     break;
-
-
                 case R.id.profile:
                     ProfileFragmentUser profileFragmentUser = new ProfileFragmentUser();
                     Bundle bundle = new Bundle();
@@ -57,8 +59,6 @@ public class MainActivityUser extends AppCompatActivity {
                     profileFragmentUser.setArguments(bundle);
                     replaceFragment(profileFragmentUser);
                     break;
-
-
             }
             return true;
         });

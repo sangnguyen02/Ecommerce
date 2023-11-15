@@ -23,10 +23,6 @@ public class User {
         this.image = image;
     }
 
-
-
-
-
     public String getuserId() {
         return userId;
     }
@@ -54,4 +50,5 @@ public class User {
     public String getImage() {
         return image;
     }
+
 }

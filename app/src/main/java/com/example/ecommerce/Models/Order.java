@@ -1,12 +1,16 @@
 package com.example.ecommerce.Models;
 
 
+import android.location.Location;
+
 import com.example.ecommerce.Enum.MyEnum;
 
-public class Order {
+import java.io.Serializable;
+
+public class  Order implements Serializable {
     private int id;
-    private String pickupLocation;
-    private String desination;
+    private Location pickupLocation;
+    private Location destination;
     private int price;
     private String clientName;
     private String clientNo;
@@ -16,16 +20,19 @@ public class Order {
     private DriverInfos driverInfos;
 
     //OrderNoDriverConstructor
-    public Order(int id, String pickupLocation, String desination, int price, String clientName, String clientNo, MyEnum.PaymentMethod paymentMethod, MyEnum.VehicleType vehicleType, MyEnum.OrderStatus orderStatus) {
+    public Order(int id, Location pickupLocation, Location desination, int price, String clientName, String clientNo, MyEnum.PaymentMethod paymentMethod, MyEnum.VehicleType vehicleType, MyEnum.OrderStatus orderStatus) {
         this.id = id;
         this.pickupLocation = pickupLocation;
-        this.desination = desination;
+        this.destination = desination;
         this.price = price;
         this.clientName = clientName;
         this.clientNo = clientNo;
         this.paymentMethod = paymentMethod;
         this.vehicleType = vehicleType;
         this.orderStatus = orderStatus;
+    }
+    public Order() {
+
     }
 
     public int getId() {
@@ -36,20 +43,17 @@ public class Order {
         this.id = id;
     }
 
-    public String getPickupLocation() {
+    public Location getPickupLocation() {
         return pickupLocation;
     }
 
-    public void setPickupLocation(String pickupLocation) {
-        this.pickupLocation = pickupLocation;
+
+    public Location getDesination() {
+        return destination;
     }
 
-    public String getDesination() {
-        return desination;
-    }
-
-    public void setDesination(String desination) {
-        this.desination = desination;
+    public void setDesination(Location desination) {
+        this.destination = desination;
     }
 
     public int getPrice() {
@@ -107,4 +111,14 @@ public class Order {
     public void setDriverInfos(DriverInfos driverInfos) {
         this.driverInfos = driverInfos;
     }
+
+    public void setPickupLocation(Location pickupLocation) {
+        if (pickupLocation != null) {
+            this.pickupLocation = pickupLocation;
+        } else {
+            // Handle null input, throw exception, or log a warning.
+        }
+    }
+
+
 }
