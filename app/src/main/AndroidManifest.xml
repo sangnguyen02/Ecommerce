@@ -44,6 +44,9 @@
             android:name=".Employee.Admin.Activities.MainActivityAdmin"
             android:exported="false" />
         <activity
+            android:name=".User.PayPalAPI"
+            android:exported="false" />
+        <activity
             android:name=".User.Activities.RegisterDriverActivityUser"
             android:exported="false" />
         <activity
@@ -65,7 +68,7 @@
             android:name=".User.Activities.MapActivityUser"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".User.Activities.MainActivityUser"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -87,12 +90,16 @@
             android:name=".User.Activities.LoginActivityUser"
             android:exported="false" />
         <activity
-            android:name=".User.Activities.MainActivityUser"
+            android:name=".SplashActivity"
             android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_api_key" />
+
+        <activity
+            android:name=".User.Activities.RegisterActivityUser"
+            android:exported="false"></activity>
     </application>
 
 </manifest>
