@@ -62,6 +62,7 @@
             android:background="@drawable/input_design"
             android:hint="User's phone number"
             android:inputType="number"
+            android:editable="false"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textStyle="bold"
