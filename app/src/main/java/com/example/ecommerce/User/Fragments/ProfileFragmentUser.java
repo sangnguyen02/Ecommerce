@@ -112,27 +112,6 @@ public class ProfileFragmentUser extends Fragment {
         }
     }
 
-    private void userInfoDisplay(final TextView fullName)
-    {
-        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(phone);
-
-        UsersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                if (dataSnapshot.exists())
-                {
-                    String nameUser = dataSnapshot.child("nameUser").getValue().toString();
-                    tv_fullname.setText(nameUser);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
 
     private void userInfoDisplay(final TextView fullName)
     {

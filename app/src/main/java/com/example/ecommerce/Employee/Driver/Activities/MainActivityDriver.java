@@ -1,24 +1,18 @@
 package com.example.ecommerce.Employee.Driver.Activities;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Bundle;
 
 import com.example.ecommerce.Employee.Driver.Fragments.HistoryFragmentDriver;
 import com.example.ecommerce.Employee.Driver.Fragments.HomeFragmentDriver;
 import com.example.ecommerce.Employee.Driver.Fragments.ProfileFragmentDriver;
 import com.example.ecommerce.Employee.Driver.Fragments.WalletFragmentDriver;
 import com.example.ecommerce.R;
-import com.example.ecommerce.User.Fragments.HistoryFragmentUser;
-import com.example.ecommerce.User.Fragments.HomeFragmentUser;
-import com.example.ecommerce.User.Fragments.PaymentFragmentUser;
-import com.example.ecommerce.User.Fragments.ProfileFragmentUser;
-import com.example.ecommerce.databinding.ActivityMainAdminBinding;
 import com.example.ecommerce.databinding.ActivityMainDriverBinding;
-import com.example.ecommerce.databinding.ActivityMainBinding;
 
 public class MainActivityDriver extends AppCompatActivity {
 

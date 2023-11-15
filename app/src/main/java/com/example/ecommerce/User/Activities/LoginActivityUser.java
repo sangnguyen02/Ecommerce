@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.ecommerce.Employee.LoginActivityEmployee;
 import com.example.ecommerce.R;
-//import com.example.ecommerce.utils.AndroidUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;

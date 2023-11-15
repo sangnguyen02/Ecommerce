@@ -1,18 +1,17 @@
 package com.example.ecommerce.User.Activities;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-import android.util.Log;
-
+import com.example.ecommerce.R;
 import com.example.ecommerce.User.Fragments.HistoryFragmentUser;
 import com.example.ecommerce.User.Fragments.HomeFragmentUser;
 import com.example.ecommerce.User.Fragments.PaymentFragmentUser;
 import com.example.ecommerce.User.Fragments.ProfileFragmentUser;
-import com.example.ecommerce.R;
 import com.example.ecommerce.databinding.ActivityMainBinding;
 
 public class MainActivityUser extends AppCompatActivity {

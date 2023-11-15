@@ -2,17 +2,16 @@ package com.example.ecommerce.User.Activities;
 
 import static com.example.ecommerce.User.Fragments.ProfileFragmentUser.FAILED_SIGN_UP_REQUEST;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ecommerce.Enum.MyEnum;
 import com.example.ecommerce.Models.DriverInfos;

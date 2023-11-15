@@ -14,6 +14,7 @@ public class DriverInfos {
     private int balance;
     private String picture;
     private String bankAccount;
+    private String bankName;
     private List<Bill> bills;
     private MyEnum.DriverStatus driverStatus;
 
