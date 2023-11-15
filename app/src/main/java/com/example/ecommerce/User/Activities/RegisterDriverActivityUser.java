@@ -68,7 +68,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
         String licenseValue = license.getText().toString().trim();
         String bankNoValue = bankNo.getText().toString().trim();
 
-        DriverInfos driverInfos = new DriverInfos(phoneNoValue,fullNameValue,idValue,licenseValue,5f,0,"notyet",bankNoValue, MyEnum.DriverStatus.PENDING);
+        DriverInfos driverInfos = new DriverInfos(phoneNoValue,fullNameValue,mailValue,idValue,licenseValue,5f,0,"notyet",bankNoValue, MyEnum.DriverStatus.PENDING);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("DriversInfo").child(driverInfos.getId());
         databaseReference.setValue(driverInfos)

@@ -7,6 +7,7 @@ import java.util.List;
 public class DriverInfos {
     private String phoneNo;
     private String name;
+    private String mail;
     private String id;
     private String license;
     private float avgRating;
@@ -17,9 +18,10 @@ public class DriverInfos {
     private MyEnum.DriverStatus driverStatus;
 
     //Driver Information Without Bill
-    public DriverInfos(String phoneNo, String name, String id, String license, float avgRating, int balance, String picture, String bankAccount, MyEnum.DriverStatus driverStatus) {
+    public DriverInfos(String phoneNo, String name, String mail, String id, String license, float avgRating, int balance, String picture, String bankAccount, MyEnum.DriverStatus driverStatus) {
         this.phoneNo = phoneNo;
         this.name = name;
+        this.mail = mail;
         this.id = id;
         this.license = license;
         this.avgRating = avgRating;
@@ -103,6 +105,14 @@ public class DriverInfos {
 
     public MyEnum.DriverStatus getDriverStatus() {
         return driverStatus;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public void setDriverStatus(MyEnum.DriverStatus driverStatus) {

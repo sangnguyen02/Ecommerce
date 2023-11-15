@@ -15,20 +15,21 @@ import com.example.ecommerce.Employee.Driver.Fragments.ProfileFragmentDriver;
 import com.example.ecommerce.Employee.Driver.Fragments.WalletFragmentDriver;
 import com.example.ecommerce.R;
 import com.example.ecommerce.User.Fragments.HomeFragmentUser;
+import com.example.ecommerce.databinding.ActivityMainAdminBinding;
 import com.example.ecommerce.databinding.ActivityMainBinding;
 
 public class MainActivityAdmin extends AppCompatActivity {
 
-    ActivityMainBinding binding;
+    ActivityMainAdminBinding binding_admin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        binding_admin = ActivityMainAdminBinding.inflate(getLayoutInflater());
+        setContentView(binding_admin.getRoot());
         replaceFragment(new ManageDriverFragmentAdmin());
 
-        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+        binding_admin.bottomNavigationViewAdmin.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.manageDriver:
                     replaceFragment(new ManageDriverFragmentAdmin());
@@ -38,9 +39,9 @@ public class MainActivityAdmin extends AppCompatActivity {
                     replaceFragment(new StatisticRevenueFragmentAdmin());
                     break;
 
-                default:
+/*                default:
                     replaceFragment(new ManageDriverFragmentAdmin());
-                    break;
+                    break;*/
             }
             return true;
         });
