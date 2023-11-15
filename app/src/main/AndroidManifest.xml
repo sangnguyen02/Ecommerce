@@ -68,7 +68,13 @@
             android:name=".User.Activities.MapActivityUser"
             android:exported="false" />
         <activity
+            android:name=".User.Activities.LoginActivityUser"
+            android:exported="false" />
+        <activity
             android:name=".User.Activities.MainActivityUser"
+            android:exported="false" />x
+        <activity
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -86,20 +92,11 @@
                     android:scheme="demozpdk" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".User.Activities.LoginActivityUser"
-            android:exported="false" />
-        <activity
-            android:name=".SplashActivity"
-            android:exported="false" />
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_api_key" />
-
-        <activity
-            android:name=".User.Activities.RegisterActivityUser"
-            android:exported="false"></activity>
     </application>
 
 </manifest>

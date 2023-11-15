@@ -7,7 +7,7 @@ public class MyEnum {
         DENY,
         PENDING,
         ACTIVE,
-        Busy,
+        BUSY,
         OFFLINE
     }
     public enum PaymentMethod{
