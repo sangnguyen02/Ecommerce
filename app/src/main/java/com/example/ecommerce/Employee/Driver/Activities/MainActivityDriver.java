@@ -16,17 +16,21 @@ import com.example.ecommerce.User.Fragments.HistoryFragmentUser;
 import com.example.ecommerce.User.Fragments.HomeFragmentUser;
 import com.example.ecommerce.User.Fragments.PaymentFragmentUser;
 import com.example.ecommerce.User.Fragments.ProfileFragmentUser;
+import com.example.ecommerce.databinding.ActivityMainAdminBinding;
+import com.example.ecommerce.databinding.ActivityMainDriverBinding;
 import com.example.ecommerce.databinding.ActivityMainBinding;
 
 public class MainActivityDriver extends AppCompatActivity {
 
-    ActivityMainBinding binding;
+    ActivityMainDriverBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityMainDriverBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        replaceFragment(new HomeFragmentDriver());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {

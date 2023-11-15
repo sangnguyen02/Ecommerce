@@ -1,16 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".User.Activities.MapActivityUser">
+
   <fragment
 
+      android:id="@+id/map_user"
+      android:name="com.google.android.gms.maps.SupportMapFragment"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:id="@+id/map"
-      android:name="com.google.android.gms.maps.SupportMapFragment" />
+      android:layout_height="500dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/mapDestination" />
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  <!--    <androidx.cardview.widget.CardView-->
+  <!--        android:id="@+id/idCardView"-->
+  <!--        android:layout_width="match_parent"-->
+  <!--        android:layout_height="50dp"-->
+  <!--        android:layout_margin="5dp"-->
+  <!--        android:background="@color/white"-->
+  <!--        app:cardCornerRadius="4dp"-->
+  <!--        app:layout_constraintBottom_toTopOf="@+id/map_user"-->
+  <!--        app:layout_constraintEnd_toEndOf="parent"-->
+  <!--        app:layout_constraintStart_toStartOf="parent"-->
+
+  <!--        app:layout_constraintTop_toTopOf="parent"-->
+  <!--        tools:ignore="MissingConstraints">-->
+
+  <!--        <fragment-->
+  <!--            android:id="@+id/autocomplete_fragment2"-->
+  <!--            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
+  <!--            android:layout_width="match_parent"-->
+  <!--            android:layout_height="match_parent"-->
+
+  <!--            />-->
+
+  <!--    </androidx.cardview.widget.CardView>-->
+
+
+
+  <SearchView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/mapLocation"
+      android:layout_marginTop="10dp"
+      android:queryHint="Search..."
+      android:iconifiedByDefault="false"
+      android:elevation="5dp"
+      android:background="@color/white"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  <SearchView
+      android:id="@+id/mapDestination"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="84dp"
+      android:background="@color/white"
+      android:elevation="5dp"
+      android:iconifiedByDefault="false"
+      android:queryHint="Search..."
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+  <Button
+      android:id="@+id/routebtn"
+      android:layout_width="150dp"
+      android:layout_height="50dp"
+      android:layout_marginBottom="2dp"
+      android:text="Route"
+      app:layout_constraintBottom_toTopOf="@+id/map_user"
+      app:layout_constraintEnd_toStartOf="@+id/caculatePrice"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/mapDestination" />
+
+  <Button
+      android:id="@+id/caculatePrice"
+      android:layout_width="150dp"
+      android:layout_height="50dp"
+      android:layout_marginBottom="2dp"
+      android:text="Price"
+      app:layout_constraintBottom_toTopOf="@+id/map_user"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/mapDestination"
+      app:layout_constraintVertical_bias="0.48" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
