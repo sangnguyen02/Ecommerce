@@ -112,6 +112,13 @@ public class ProfileFragmentUser extends Fragment {
         }
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
+>>>>>>> master
     private void userInfoDisplay(final TextView fullName)
     {
         DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(phone);
