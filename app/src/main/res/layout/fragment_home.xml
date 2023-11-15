@@ -73,6 +73,7 @@
                 android:src="@drawable/motorbikeicon"
                 android:layout_gravity="center_horizontal"
                 android:layout_below="@id/view_pager_2"
+                android:clickable="true"
                 />
 
             <de.hdodenhof.circleimageview.CircleImageView

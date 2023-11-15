@@ -47,36 +47,36 @@ import java.util.Locale;
 
 
 public class MapActivityUser extends AppCompatActivity implements OnMapReadyCallback, RoutingListener, GoogleApiClient.OnConnectionFailedListener {
-    public static final String API_KEY = "AIzaSyAgiRVzm2vQ9kGUQQxp7trXj5AIbwV5NU0";
+    public  static final  String API_KEY="AIzaSyAgiRVzm2vQ9kGUQQxp7trXj5AIbwV5NU0";
 
     private GoogleMap mMap_User;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
-    public double distanceInKm = 0;
+    public  double distanceInKm=0;
     private FusedLocationProviderClient fusedLocationClient;
 
     private SearchView mapLocationSearch;
-    private SearchView mapDestinationSearch;
+    private  SearchView mapDestinationSearch;
     private Marker searchMarkerLocation;
     //    private Marker searchMarkerDestination;
     //use for directions api
-    private LatLng userLocationLatLng;
+    private Location userLocationLatLng;
     //use for directions api
-    private LatLng userDestinationtionLatLng;
+    private Location userDestinationLatLng;
 
-    private List<Polyline> polylines = null;
+    private List<Polyline> polylines=null;
 
     ArrayList<Marker> markerList = new ArrayList<>();
-    private Button RouteBTN, PriceBTN;
+    private Button RouteBTN,PriceBTN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_user);
         mapLocationSearch = findViewById(R.id.mapLocation);
-        mapDestinationSearch = findViewById(R.id.mapDestination);
+        mapDestinationSearch=findViewById(R.id.mapDestination);
         RouteBTN = findViewById(R.id.routebtn);
-        PriceBTN = findViewById(R.id.caculatePrice);
+        PriceBTN=findViewById(R.id.caculatePrice);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_user);
@@ -87,13 +87,12 @@ public class MapActivityUser extends AppCompatActivity implements OnMapReadyCall
         onSearchDestination();
         Draw();
     }
-
-    private void onSearchLocation() {
+    private void onSearchLocation( ) {
         mapLocationSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 clearOldMarkers();
-                String location = mapLocationSearch.getQuery().toString();
+                String location=mapLocationSearch.getQuery().toString();
                 if (searchMarkerLocation != null) {
                     searchMarkerLocation.remove();
                 }
@@ -103,13 +102,15 @@ public class MapActivityUser extends AppCompatActivity implements OnMapReadyCall
                     List<Address> addressList = geocoder.getFromLocationName(s, 1);
                     if (!addressList.isEmpty()) {
                         Address address = addressList.get(0);
-                        userLocationLatLng = new LatLng(address.getLatitude(), address.getLongitude());
+                        userLocationLatLng = new Location(s);
+                        userLocationLatLng.setLatitude(address.getLatitude());
+                        userLocationLatLng.setLongitude(address.getLongitude());
                         searchMarkerLocation = mMap_User.addMarker(new MarkerOptions()
-                                .position(userLocationLatLng)
+                                .position(new LatLng(userLocationLatLng.getLatitude(), userLocationLatLng.getLongitude()))
                                 .title(s)
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 
-                        mMap_User.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocationLatLng, 18));
+                        mMap_User.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(userLocationLatLng.getLatitude(), userLocationLatLng.getLongitude()), 18));
                         //drawDirections(userLocationLatLng, userDestinationtionLatLng);
                     } else {
                         // Handle the case where no results were found
@@ -122,7 +123,6 @@ public class MapActivityUser extends AppCompatActivity implements OnMapReadyCall
 
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String s) {
                 // onStartCompleteForSearchLocal();
@@ -130,13 +130,12 @@ public class MapActivityUser extends AppCompatActivity implements OnMapReadyCall
             }
         });
     }
-
-    private void onSearchDestination() {
+    private void onSearchDestination( ) {
         mapDestinationSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 clearOldMarkers();
-                String location = mapDestinationSearch.getQuery().toString();
+                String location=mapDestinationSearch.getQuery().toString();
                 if (searchMarkerLocation != null) {
                     searchMarkerLocation.remove();
                 }
@@ -146,11 +145,15 @@ public class MapActivityUser extends AppCompatActivity implements OnMapReadyCall
                     List<Address> addressList = geocoder.getFromLocationName(s, 1);
                     if (!addressList.isEmpty()) {
                         Address address = addressList.get(0);
-                        userDestinationtionLatLng = new LatLng(address.getLatitude(), address.getLongitude());
+                        if (userDestinationLatLng == null) {
+                            userDestinationLatLng = new Location("");
+                        }
+                        userDestinationLatLng.setLatitude(address.getLatitude());
+                        userDestinationLatLng.setLongitude(address.getLongitude());
                         searchMarkerLocation = mMap_User.addMarker(new MarkerOptions()
-                                .position(userDestinationtionLatLng)
+                                .position(new LatLng(userDestinationLatLng.getLatitude(), userDestinationLatLng.getLongitude()))
                                 .title(s));
-                        mMap_User.animateCamera(CameraUpdateFactory.newLatLngZoom(userDestinationtionLatLng, 18));
+                        mMap_User.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(userDestinationLatLng.getLatitude(), userDestinationLatLng.getLongitude()), 18));
                         //drawDirections(userLocationLatLng, userDestinationtionLatLng);
                     } else {
                         // Handle the case where no results were found
@@ -163,7 +166,6 @@ public class MapActivityUser extends AppCompatActivity implements OnMapReadyCall
 
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String s) {
                 // onStartCompleteForSearchLocal();
@@ -171,20 +173,19 @@ public class MapActivityUser extends AppCompatActivity implements OnMapReadyCall
             }
         });
     }
-
     private void clearOldMarkers() {
         for (Marker marker : markerList) {
             marker.remove();
         }
         markerList.clear();
     }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap_User = googleMap;
         // Check for location permissions
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        {
             // Get the user's current location and move the camera to that location
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -200,18 +201,20 @@ public class MapActivityUser extends AppCompatActivity implements OnMapReadyCall
                     REQUEST_LOCATION_PERMISSION);
         }
     }
-
-    public void getCurrentLocation(Location location) {
+    public void getCurrentLocation(Location location){
         if (location != null) {
-            userLocationLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(userLocationLatLng, 18);
+            // userLocationLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+            userLocationLatLng=location;
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(userLocationLatLng.getLatitude(), userLocationLatLng.getLongitude()), 18);
             mMap_User.moveCamera(cameraUpdate);
 
             // Add a marker for the user's location
             mMap_User.addMarker(new MarkerOptions()
-                    .position(userLocationLatLng)
+                    .position(new LatLng(userLocationLatLng.getLatitude(), userLocationLatLng.getLongitude()))
                     .title("Your Location")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+
 
             // Reverse geocode the location to get the address
             Geocoder geocoder = new Geocoder(MapActivityUser.this, Locale.getDefault());
@@ -232,51 +235,54 @@ public class MapActivityUser extends AppCompatActivity implements OnMapReadyCall
                 Toast.makeText(MapActivityUser.this, "Geocoding error", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(MapActivityUser.this, "Location not available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MapActivityUser.this, "Location not available",  Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void onRoutingFailure(RouteException e) {
         View parentLayout = findViewById(android.R.id.content);
-        Snackbar snackbar = Snackbar.make(parentLayout, e.toString(), Snackbar.LENGTH_LONG);
+        Snackbar snackbar= Snackbar.make(parentLayout, e.toString(), Snackbar.LENGTH_LONG);
         snackbar.show();
 
     }
 
     @Override
     public void onRoutingStart() {
-        Toast.makeText(MapActivityUser.this, "Finding Route...", Toast.LENGTH_LONG).show();
+        Toast.makeText(MapActivityUser.this,"Finding Route...",Toast.LENGTH_LONG).show();
 
     }
 
     @Override
     public void onRoutingSuccess(ArrayList<Route> arrayList, int shortestRouteIndex) {
 
-        CameraUpdate center = CameraUpdateFactory.newLatLng(userLocationLatLng);
+        CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(userLocationLatLng.getLatitude(), userLocationLatLng.getLongitude()));
+
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
-        if (polylines != null) {
+        if(polylines!=null) {
             polylines.clear();
         }
         PolylineOptions polyOptions = new PolylineOptions();
-        LatLng polylineStartLatLng = null;
-        LatLng polylineEndLatLng = null;
+        LatLng polylineStartLatLng=null;
+        LatLng polylineEndLatLng=null;
 
 
         polylines = new ArrayList<>();
         //add route(s) to the map using polyline
-        for (int i = 0; i < arrayList.size(); i++) {
+        for (int i = 0; i <arrayList.size(); i++) {
 
-            if (i == shortestRouteIndex) {
+            if(i==shortestRouteIndex)
+            {
                 polyOptions.color(getResources().getColor(com.google.android.libraries.places.R.color.quantum_grey));
                 polyOptions.width(7);
                 polyOptions.addAll(arrayList.get(shortestRouteIndex).getPoints());
                 Polyline polyline = mMap_User.addPolyline(polyOptions);
-                polylineStartLatLng = polyline.getPoints().get(0);
-                int k = polyline.getPoints().size();
-                polylineEndLatLng = polyline.getPoints().get(k - 1);
+                polylineStartLatLng=polyline.getPoints().get(0);
+                int k=polyline.getPoints().size();
+                polylineEndLatLng=polyline.getPoints().get(k-1);
                 polylines.add(polyline);
-            } else {
+            }
+            else {
 
             }
 
@@ -315,8 +321,8 @@ public class MapActivityUser extends AppCompatActivity implements OnMapReadyCall
         PriceBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MapActivityUser.this, CaculateMoneyActivity.class);
-                intent.putExtra("Distance", distanceInKm);
+                Intent intent=new Intent(MapActivityUser.this,CaculateMoneyActivity.class);
+                intent.putExtra("Distance",distanceInKm);
                 startActivity(intent);
             }
         });
@@ -324,20 +330,22 @@ public class MapActivityUser extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onRoutingCancelled() {
-        Findroutes(userLocationLatLng, userDestinationtionLatLng);
+        Findroutes(userLocationLatLng,userDestinationLatLng);
 
     }
-
-    public void Findroutes(LatLng Start, LatLng End) {
-        if (Start == null || End == null) {
-            Toast.makeText(MapActivityUser.this, "Unable to get location", Toast.LENGTH_LONG).show();
-        } else {
+    public void Findroutes(Location start, Location end)
+    {
+        if(start==null || end==null) {
+            Toast.makeText(MapActivityUser.this,"Unable to get location", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
             Routing routing = new Routing.Builder()
                     .travelMode(AbstractRouting.TravelMode.DRIVING)
                     .withListener(this)
                     .alternativeRoutes(true)
-                    .waypoints(Start, End)
-                    .key(API_KEY)  //also define your api key here.
+                    .waypoints(new LatLng(start.getLatitude(), start.getLongitude()), new LatLng(end.getLatitude(), end.getLongitude()))
+                    .key(API_KEY)
                     .build();
             routing.execute();
         }
@@ -345,18 +353,17 @@ public class MapActivityUser extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Findroutes(userLocationLatLng, userDestinationtionLatLng);
+        Findroutes(userLocationLatLng,userDestinationLatLng);
     }
-
-    public void Draw() {
+    public void Draw()
+    {
         RouteBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Findroutes(userLocationLatLng, userDestinationtionLatLng);
+                Findroutes(userLocationLatLng,userDestinationLatLng);
             }
         });
     }
-
 //public void onStartCompleteForSearchLocal()
 //{
 //    // Initialize Places. Make sure to use your own API Key.

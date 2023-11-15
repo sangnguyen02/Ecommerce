@@ -10,17 +10,20 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import android.widget.EditText;
 
 import com.example.ecommerce.Adapters.BannerViewPager2Adapter;
 import com.example.ecommerce.Animations.ZoomOutPageTransformer;
 import com.example.ecommerce.Models.ImageBanner;
 import com.example.ecommerce.R;
+import com.example.ecommerce.User.Activities.MapActivityUser;
 import com.example.ecommerce.User.Activities.ChooseDestinationActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator3;
 
 
@@ -70,6 +73,15 @@ public class HomeFragmentUser extends Fragment {
         });
 
         mViewPager2.setPageTransformer(new ZoomOutPageTransformer());
+        CircleImageView circleImageView = rootView.findViewById(R.id.motor_icon);
+        circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Your click event logic goes here
+                Intent intent = new Intent(rootView.getContext(), MapActivityUser.class);
+                startActivity(intent);
+            }
+        });
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
