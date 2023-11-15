@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import com.example.ecommerce.Adapters.BannerViewPager2Adapter;
 import com.example.ecommerce.Animations.ZoomOutPageTransformer;
 import com.example.ecommerce.Models.ImageBanner;
+import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
 import com.example.ecommerce.User.Activities.MapActivityUser;
 import com.example.ecommerce.User.Activities.ChooseDestinationActivity;
@@ -72,12 +74,18 @@ public class HomeFragmentUser extends Fragment {
             }
         });
 
+        Order order = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            order = this.getArguments().getSerializable("Order", Order.class);
+        }
+        Log.e("Order Client No: ", order.getClientNo());
         mViewPager2.setPageTransformer(new ZoomOutPageTransformer());
         CircleImageView circleImageView = rootView.findViewById(R.id.motor_icon);
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Your click event logic goes here
+
                 Intent intent = new Intent(rootView.getContext(), MapActivityUser.class);
                 startActivity(intent);
             }
