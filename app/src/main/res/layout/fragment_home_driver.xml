@@ -33,7 +33,7 @@
             android:src="@drawable/connect"
             android:layout_marginLeft="30dp"/>
         <ImageView
-            android:id="@+id/disconnect"
+            android:id="@+id/img_disconnect"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/disconnect"

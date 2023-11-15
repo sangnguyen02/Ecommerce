@@ -17,7 +17,7 @@ import com.example.ecommerce.databinding.ActivityMainBinding;
 public class MainActivityUser extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    String phone;
+    String phone, name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,7 @@ public class MainActivityUser extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             phone = extras.getString("phone_number");
+            name = extras.getString("user_name");
         }
         replaceFragment(new HomeFragmentUser());
 
@@ -52,6 +53,7 @@ public class MainActivityUser extends AppCompatActivity {
                     ProfileFragmentUser profileFragmentUser = new ProfileFragmentUser();
                     Bundle bundle = new Bundle();
                     bundle.putString("phone_number", phone);
+                    bundle.putString("user_name", name);
                     profileFragmentUser.setArguments(bundle);
                     replaceFragment(profileFragmentUser);
                     break;

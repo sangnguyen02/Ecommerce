@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_sheet_order_pop_up"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="16dp"
+    android:background="@color/white"
+    app:contentPadding="10dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/titleRequest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Request"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"
+            />
+
+        <TextView
+            android:id="@+id/label_From"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:text="From:"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/titleRequest"
+            />
+
+        <TextView
+            android:id="@+id/tv_From"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Some where"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:maxLines="2"
+            android:layout_below="@id/titleRequest"
+            android:layout_toEndOf="@id/label_From"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            />
+
+        <TextView
+            android:id="@+id/label_To"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="To:"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/label_From"
+            />
+
+        <TextView
+            android:id="@+id/tv_To"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Some where"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:maxLines="2"
+            android:layout_below="@id/tv_From"
+            android:layout_toEndOf="@id/label_To"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            />
+
+        <TextView
+            android:id="@+id/label_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Price:"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/label_To"
+            />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="200000VND"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/tv_To"
+            android:layout_toEndOf="@id/label_price"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            />
+
+
+
+        <TextView
+            android:id="@+id/label_method"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Payment method:"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/label_price"
+            />
+
+        <TextView
+            android:id="@+id/tv_method"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paypal"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/tv_price"
+            android:layout_toEndOf="@id/label_method"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="20dp"
+            />
+
+        <TextView
+            android:id="@+id/label_uPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="User phone:"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/label_method"
+            />
+
+        <TextView
+            android:id="@+id/tv_uPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+919999999911"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/tv_method"
+            android:layout_toEndOf="@id/label_uPhone"
+            android:layout_marginStart="75dp"
+            android:layout_marginTop="20dp"
+            />
+
+        <TextView
+            android:id="@+id/label_typeVehicle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Type of Vehicle:"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/label_uPhone"
+            />
+
+        <TextView
+            android:id="@+id/tv_typeVehicle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Car"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/tv_uPhone"
+            android:layout_toEndOf="@id/label_typeVehicle"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="20dp"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/acceptBook_btn"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:text="Accept"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/background_slogan"
+            android:layout_below="@id/label_typeVehicle"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancelBook_btn"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/acceptBook_btn"
+            android:text="Cancel"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/background_snack_bar"
+            android:layout_below="@id/label_typeVehicle"
+            />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
