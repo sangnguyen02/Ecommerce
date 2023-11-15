@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_sheet_driver_trip_fare"
+    android:layout_width="match_parent"
+    android:layout_height="320dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="16dp"
+    android:background="@color/white"
+    app:contentPadding="16dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/titleTripFare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trip Fare"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"
+            />
+
+        <TextView
+            android:id="@+id/label_earned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:text="You has earned:"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/titleTripFare"
+            />
+
+        <TextView
+            android:id="@+id/tv_earned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100000VND"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/titleTripFare"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="30dp"
+            />
+
+        <TextView
+            android:id="@+id/label_wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="50dp"
+            android:text="Wallet Balanced:"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/label_earned"
+            />
+
+        <TextView
+            android:id="@+id/tv_wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="200000VND"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/tv_earned"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="50dp"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/collect_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Collect"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/background_slogan"
+            android:layout_alignParentBottom="true"
+            />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

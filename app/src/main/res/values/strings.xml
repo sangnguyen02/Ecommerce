@@ -37,4 +37,6 @@
     <string name="phone_number_string">Phone Number</string>
     <string name="image_string">Image</string>
 
+    <color name="star">#FFC107</color>
+
 </resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".User.Activities.BookDriverActivityUser">
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+    <include layout="@layout/layout_bottom_sheet_book_driver"/>
+    <include layout="@layout/layout_bottom_sheet_waiting"/>
+    <include layout="@layout/layout_bottom_sheet_driver_coming"/>
+    <include layout="@layout/layout_bottom_sheet_driver_arrived"/>
+    <include layout="@layout/layout_bottom_sheet_driver_end_trip"/>
+
+    <include layout="@layout/layout_bottom_sheet_driver_drivercoming"/>
+    <include layout="@layout/layout_bottom_sheet_driver_driverstart"/>
+    <include layout="@layout/layout_bottom_sheet_driver_driverend"/>
+    <include layout="@layout/layout_bottom_sheet_driver_tripfare"/>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

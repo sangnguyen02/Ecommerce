@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".User.Activities.ChooseDestinationActivity">
+
+    <TextView
+        android:id="@+id/titleChooseDest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="Choose Destination"
+        android:textSize="26dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/label_yourLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/titleChooseDest"
+        android:text="Your Location"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        />
+
+    <SearchView
+        android:id="@+id/searchView_yourLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_yourLocation"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/search_view_background"
+        />
+
+    <TextView
+        android:id="@+id/label_yourDest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/searchView_yourLocation"
+        android:text="Your Destination"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        />
+
+    <SearchView
+        android:id="@+id/searchView_yourDest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_yourDest"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/search_view_background"
+        />
+
+    <TextView
+        android:id="@+id/label_searchResults"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/searchView_yourDest"
+        android:text="Search Results"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black"
+        />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/searchResult_card"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_margin="10dp"
+        android:layout_below="@id/label_searchResults">
+        <fragment
+            android:id="@+id/autoCompleteFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchResult_card">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/label_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/saved_location_icon"
+                    android:scaleType="centerCrop"
+                    />
+                <TextView
+                    android:id="@+id/label_savedLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Saved Location"
+                    android:textSize="20sp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/label_section"
+                android:layout_marginStart="40dp">
+                <ImageView
+                    android:id="@+id/img_home_Location"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/home_icon"
+                    android:scaleType="centerCrop"
+                    />
+                <TextView
+                    android:id="@+id/label_homeLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Home"
+                    android:textSize="20sp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/work_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/home_section"
+                android:layout_marginStart="40dp">
+                <ImageView
+                    android:id="@+id/img_work_Location"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/work_icon"
+                    android:scaleType="centerCrop"
+                    />
+                <TextView
+                    android:id="@+id/label_workLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Work"
+                    android:textSize="20sp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/confirmChoosen_btn"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_below="@+id/work_section"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/background_slogan"
+                android:text="Confirm"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
