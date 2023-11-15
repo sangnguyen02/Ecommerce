@@ -17,9 +17,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:text="Edit Profile"
+        android:text="Register Driver"
         android:textSize="26dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageUser"
@@ -118,13 +119,13 @@
             android:textSize="20sp"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/save_btn"
+            android:id="@+id/register_driver_btn"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:layout_marginTop="15dp"
             android:layout_below="@+id/editText_phoneNo"
             android:backgroundTint="@color/background_slogan"
-            android:text="Save"
+            android:text="Register"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"

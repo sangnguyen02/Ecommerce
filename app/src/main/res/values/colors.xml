@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="orange">#FF9800</color>
     <color name="background_login">#BBDD7C</color>
     <color name="background_slogan">#4C700E</color>
     <color name="input_design_stroke">#AC3043</color>

@@ -18,11 +18,9 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:text="Edit Profile"
+        android:textColor="@color/black"
         android:textSize="26dp"
         android:textStyle="bold" />
-
-
-
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageUser"
@@ -63,11 +61,13 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/input_design"
             android:hint="User's phone number"
-            android:inputType="number"
+            android:focusable="false"
+            android:clickable="false"
+            android:cursorVisible="false"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/save_btn"
