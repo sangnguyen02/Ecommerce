@@ -2,6 +2,7 @@ package com.example.ecommerce.User.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.example.ecommerce.R;
 //import com.example.ecommerce.utils.AndroidUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseException;
@@ -44,10 +46,12 @@ public class LoginActivityUser extends AppCompatActivity {
     String phoneNumber, verificationCode;
     Long timeoutSeconds = 30L;
     PhoneAuthProvider.ForceResendingToken  resendingToken;
-    EditText phoneInput, otpInput;
-    MaterialButton sendOTPBtn, loginBtn;
+    EditText phoneInput, otpInput, input_username_bottom_sheet;
+    MaterialButton sendOTPBtn, loginBtn, submitBtn;
     TextView resendOtpTextView, signInAsEmployee;
     View showSnackBarView;
+    CardView layoutBottomSheetInputUsername;
+    BottomSheetBehavior bottomSheetBehaviorInputUsername;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,13 @@ public class LoginActivityUser extends AppCompatActivity {
         resendOtpTextView = findViewById(R.id.resend_otp_textview);
         signInAsEmployee = findViewById(R.id.signInEmployee);
         showSnackBarView = findViewById(android.R.id.content);
+
+        layoutBottomSheetInputUsername = findViewById(R.id.bottom_sheet_input_username);
+        bottomSheetBehaviorInputUsername = BottomSheetBehavior.from(layoutBottomSheetInputUsername);
+
+        input_username_bottom_sheet = findViewById(R.id.inputText_fullname);
+        submitBtn = findViewById(R.id.submitName_btn);
+
 
         sendOTPBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,10 +182,11 @@ public class LoginActivityUser extends AppCompatActivity {
                 });
     }
 
-    private void goToMainActivity(String phoneNumber) {
+    private void goToMainActivity(String phoneNumber, String userName) {
         Intent intent = new Intent(LoginActivityUser.this, MainActivityUser.class);
         Bundle bundle = new Bundle();
         bundle.putString("phone_number", phoneNumber);
+        bundle.putString("user_name", userName);
         intent.putExtras(bundle);
         startActivity(intent);
 
@@ -217,13 +229,21 @@ public class LoginActivityUser extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    goToMainActivity(phone);
+                                    showNameUserForm(phone);
                                 }
 
                             });
                 }
-                else {
-                    goToMainActivity(phone);
+                else
+                {
+                    String nameUser = snapshot.child("Users").child(phone).child("nameUser").getValue(String.class);
+                    if (nameUser != null && nameUser.equals("empty")) {
+                        // NameUser is empty, show the form to fill in the nameUser
+                        showNameUserForm(phone);
+                    } else {
+                        // NameUser is not empty, proceed to the main activity
+                        goToMainActivity(phone, nameUser);
+                    }
                 }
             }
             @Override
@@ -232,4 +252,45 @@ public class LoginActivityUser extends AppCompatActivity {
             }
         });
     }
+
+    private void showNameUserForm(String phone) {
+        bottomSheetBehaviorInputUsername.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String nameUser = input_username_bottom_sheet.getText().toString().trim();
+                if (!nameUser.isEmpty()) {
+                    // Update the nameUser in Firebase
+                    updateNameUserInFirebase(phone, nameUser);
+                    // Hide the BottomSheetDialog
+                    bottomSheetBehaviorInputUsername.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                } else {
+                    // Handle empty nameUser
+                    // You can show a message or handle it as needed
+                    Snackbar snackbar = Snackbar.make(showSnackBarView, "The input name field is empty", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+            }
+        });
+    }
+
+    private void updateNameUserInFirebase(String phone, String nameUser) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(phone);
+        userRef.child("nameUser").setValue(nameUser)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // Update successful, proceed to the main activity
+                            goToMainActivity(phone, nameUser);
+                        } else {
+                            // Handle the error, show a message or handle it as needed
+                            Snackbar snackbar = Snackbar.make(showSnackBarView, "Failed", Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                        }
+                    }
+                });
+    }
+
 }

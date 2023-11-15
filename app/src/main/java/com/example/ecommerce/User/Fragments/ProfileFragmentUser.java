@@ -36,7 +36,6 @@ public class ProfileFragmentUser extends Fragment {
     TextView tv_fullname;
     MaterialButton editProfile, savedLocation, faq, registerDriver, logout;
     String phone, name;
-
     public static final int SIGN_UP_REQUEST = 1;
     public static final int FAILED_SIGN_UP_REQUEST = -1;
 
@@ -51,7 +50,11 @@ public class ProfileFragmentUser extends Fragment {
         registerDriver = rootView.findViewById(R.id.registerDriver_btn);
         logout = rootView.findViewById(R.id.log_out_btn);
         phone = getArguments().getString("phone_number");
-        userInfoDisplay(tv_fullname);
+        name = getArguments().getString("user_name");
+
+        Log.d("Phone", phone);
+        Log.d("name", name);
+        tv_fullname.setText(name);
 
 
         editProfile.setOnClickListener(new View.OnClickListener() {
@@ -89,9 +92,6 @@ public class ProfileFragmentUser extends Fragment {
                 startActivityForResult(signUpIntent, SIGN_UP_REQUEST);
             }
         });
-
-
-
         return rootView;
     }
 
@@ -110,26 +110,5 @@ public class ProfileFragmentUser extends Fragment {
                 }
             }
         }
-    }
-
-    private void userInfoDisplay(final TextView fullName)
-    {
-        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(phone);
-
-        UsersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                if (dataSnapshot.exists())
-                {
-                    String nameUser = dataSnapshot.child("nameUser").getValue().toString();
-                    tv_fullname.setText(nameUser);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 }

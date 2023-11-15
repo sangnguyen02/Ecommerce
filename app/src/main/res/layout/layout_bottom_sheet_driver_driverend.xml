@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_sheet_driver_driverend"
+    android:layout_width="match_parent"
+    android:layout_height="320dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="16dp"
+    android:background="@color/white"
+    app:contentPadding="16dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/titleInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Customer Information"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"
+            />
+
+        <TextView
+            android:id="@+id/label_userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:text="Name:"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/titleInfo"
+            />
+
+        <TextView
+            android:id="@+id/tv_userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nguyen Van B"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/titleInfo"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="30dp"
+            />
+
+        <TextView
+            android:id="@+id/label_userPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="50dp"
+            android:text="Phone number:"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/label_userName"
+            />
+
+        <TextView
+            android:id="@+id/tv_userPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9999999911"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_below="@id/tv_userName"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="50dp"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/end_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="End"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/background_slogan"
+            android:layout_alignParentBottom="true"
+            />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
