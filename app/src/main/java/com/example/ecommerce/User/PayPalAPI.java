@@ -45,7 +45,7 @@ public class PayPalAPI extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pay_pal_api);
+        setContentView(R.layout.fragment_payment);
 
         //start PayPal Service
         Intent intent = new Intent(this,PayPalService.class);
