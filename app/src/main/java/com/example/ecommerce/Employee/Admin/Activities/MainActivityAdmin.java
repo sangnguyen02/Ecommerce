@@ -10,20 +10,20 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.ecommerce.Employee.Admin.Fragments.ManageDriverFragmentAdmin;
 import com.example.ecommerce.Employee.Admin.Fragments.StatisticRevenueFragmentAdmin;
 import com.example.ecommerce.R;
-import com.example.ecommerce.databinding.ActivityMainDriverBinding;
+import com.example.ecommerce.databinding.ActivityMainAdminBinding;
 
 public class MainActivityAdmin extends AppCompatActivity {
 
-    ActivityMainDriverBinding binding;
+    ActivityMainAdminBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainDriverBinding.inflate(getLayoutInflater());
+        binding = ActivityMainAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new ManageDriverFragmentAdmin());
 
-        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+        binding.bottomNavigationViewAdmin.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.manageDriver:
                     replaceFragment(new ManageDriverFragmentAdmin());

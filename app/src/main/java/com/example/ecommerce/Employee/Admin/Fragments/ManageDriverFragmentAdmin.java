@@ -58,7 +58,7 @@ public class ManageDriverFragmentAdmin extends Fragment {
     public void onStart() {
         super.onStart();
 
-        FirebaseRecyclerOptions<Driver> options =
+       /* FirebaseRecyclerOptions<Driver> options =
                 new FirebaseRecyclerOptions.Builder<Driver>()
                         .setQuery(DriverRef, Driver.class)
                         .build();
@@ -89,6 +89,6 @@ public class ManageDriverFragmentAdmin extends Fragment {
                     }
                 };
         rcvManageDriver.setAdapter(adapter);
-        adapter.startListening();
+        adapter.startListening();*/
     }
 }
