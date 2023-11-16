@@ -30,26 +30,23 @@ public class MainActivityUser extends AppCompatActivity {
             phone = extras.getString("phone_number");
             name = extras.getString("user_name");
         }
-        replaceFragment(new HomeFragmentUser());
+
         Order order=new Order();
         order.setClientNo(phone);
         order.setClientName(name);
 
+        Bundle orderBundle = new Bundle();
+        orderBundle.putSerializable("order", order);
 
+        HomeFragmentUser homeFragmentUser = new HomeFragmentUser();
+        homeFragmentUser.setArguments(orderBundle);
+
+        replaceFragment(homeFragmentUser);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
-                    HomeFragmentUser homeFragmentUser = new HomeFragmentUser();
-                    Bundle bundleOrder = new Bundle();
-                    bundleOrder.putSerializable("Order",order);
-                    homeFragmentUser.setArguments(bundleOrder);
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                    fragmentTransaction.replace(R.id.frame_layout, homeFragmentUser);
-                    fragmentTransaction.commit();
-                    //replaceFragment(new HomeFragmentUser());
+                    replaceFragment(homeFragmentUser);
 
                     break;
                 case R.id.history:
