@@ -41,10 +41,9 @@ public class HomeFragmentUser extends Fragment {
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
-            if(mViewPager2.getCurrentItem() == mListImageBanner.size() - 1) {
+            if (mViewPager2.getCurrentItem() == mListImageBanner.size() - 1) {
                 mViewPager2.setCurrentItem(0);
-            }
-            else {
+            } else {
                 mViewPager2.setCurrentItem(mViewPager2.getCurrentItem() + 1);
             }
 
@@ -70,22 +69,23 @@ public class HomeFragmentUser extends Fragment {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 mHandler.removeCallbacks(mRunnable);
-                mHandler.postDelayed(mRunnable,5000);
+                mHandler.postDelayed(mRunnable, 5000);
             }
         });
 
         Order order = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            order = this.getArguments().getSerializable("Order", Order.class);
+            order = this.getArguments().getSerializable("order", Order.class);
+            Toast.makeText(rootView.getContext(), "Order Client no: "+  order.getClientNo(), Toast.LENGTH_SHORT).show();
         }
-        Log.e("Order Client No: ", order.getClientNo());
+
         mViewPager2.setPageTransformer(new ZoomOutPageTransformer());
+
         CircleImageView circleImageView = rootView.findViewById(R.id.motor_icon);
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Your click event logic goes here
-
                 Intent intent = new Intent(rootView.getContext(), MapActivityUser.class);
                 startActivity(intent);
             }
@@ -121,6 +121,6 @@ public class HomeFragmentUser extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mHandler.postDelayed(mRunnable,5000);
+        mHandler.postDelayed(mRunnable, 5000);
     }
 }
