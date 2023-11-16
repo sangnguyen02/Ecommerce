@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ecommerce.Employee.Admin.Activities.ManageDriverDetailActivityAdmin;
 import com.example.ecommerce.Employee.Admin.Activities.ManageRegisterDriverActivityAdmin;
+import com.example.ecommerce.Enum.MyEnum;
 import com.example.ecommerce.Models.Driver;
+import com.example.ecommerce.Models.DriverInfos;
 import com.example.ecommerce.R;
 import com.example.ecommerce.ViewHolder.ManageDriverViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -21,6 +23,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 public class ManageDriverFragmentAdmin extends Fragment {
@@ -41,7 +44,7 @@ public class ManageDriverFragmentAdmin extends Fragment {
 
 
         rcvManageDriver.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(rootView.getContext(),RecyclerView.VERTICAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(rootView.getContext(), RecyclerView.VERTICAL, false);
         rcvManageDriver.setLayoutManager(linearLayoutManager);
 
         manageRegisterButton.setOnClickListener(new View.OnClickListener() {
@@ -57,19 +60,32 @@ public class ManageDriverFragmentAdmin extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-       /* FirebaseRecyclerOptions<Driver> options =
-                new FirebaseRecyclerOptions.Builder<Driver>()
-                        .setQuery(DriverRef, Driver.class)
+        Query query = DriverRef.orderByChild("driverStatus").equalTo("PENDING");
+        FirebaseRecyclerOptions<DriverInfos> options =
+                new FirebaseRecyclerOptions.Builder<DriverInfos>()
+                        .setQuery(DriverRef, DriverInfos.class)
                         .build();
 
-        FirebaseRecyclerAdapter<Driver, ManageDriverViewHolder> adapter =
-                new FirebaseRecyclerAdapter<Driver, ManageDriverViewHolder>(options) {
+        FirebaseRecyclerAdapter<DriverInfos, ManageDriverViewHolder> adapter =
+                new FirebaseRecyclerAdapter<DriverInfos, ManageDriverViewHolder>(options) {
+                    //View Holder
+                    @NonNull
                     @Override
-                    protected void onBindViewHolder(@NonNull ManageDriverViewHolder holder, int position, @NonNull Driver model) {
-                        Picasso.get().load(model.getImage()).into(holder.imgDriver);
-                        holder.tvName.setText(model.getName());
-                        holder.tvStatus.setText(model.getStatus());
+                    public ManageDriverViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_manage_driver, parent, false);
+                        ManageDriverViewHolder holder = new ManageDriverViewHolder(view);
+                        return holder;
+                    }
+
+                    @Override
+                    protected void onBindViewHolder(@NonNull ManageDriverViewHolder holder, int position, @NonNull DriverInfos model) {
+                        if (model.getDriverStatus() == MyEnum.DriverStatus.PENDING) {
+                            Picasso.get().load(model.getPicture() ).into(holder.imgDriver);
+                            holder.tvName.setText(model.getName());
+                            holder.tvStatus.setText(model.getDriverStatus().toString());
+                        }else{
+                            return;
+                        }
 
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -80,15 +96,9 @@ public class ManageDriverFragmentAdmin extends Fragment {
                             }
                         });
                     }
-                    @NonNull
-                    @Override
-                    public ManageDriverViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_manage_driver, parent, false);
-                        ManageDriverViewHolder holder = new ManageDriverViewHolder(view);
-                        return holder;
-                    }
+
                 };
         rcvManageDriver.setAdapter(adapter);
-        adapter.startListening();*/
+        adapter.startListening();
     }
 }

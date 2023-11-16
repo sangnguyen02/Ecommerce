@@ -50,7 +50,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkFields()){
+                if (checkFields()) {
                     registerDriver();
                 }
 
@@ -59,7 +59,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
 
     }
 
-    private void registerDriver(){
+    private void registerDriver() {
         String fullNameValue = fullname.getText().toString().trim();
         String phoneNoValue = phoneNo.getText().toString().trim();
         String mailValue = mail.getText().toString().trim();
@@ -67,7 +67,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
         String licenseValue = license.getText().toString().trim();
         String bankNoValue = bankNo.getText().toString().trim();
 
-        DriverInfos driverInfos = new DriverInfos(phoneNoValue,fullNameValue,mailValue,idValue,licenseValue,5f,0,"notyet",bankNoValue, MyEnum.DriverStatus.PENDING);
+        DriverInfos driverInfos = new DriverInfos(phoneNoValue, fullNameValue, mailValue, idValue, licenseValue, 5f, 0, "notyet", bankNoValue, MyEnum.DriverStatus.PENDING);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("DriversInfo").child(driverInfos.getId());
         databaseReference.setValue(driverInfos)
@@ -85,6 +85,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
                 });
 
     }
+
     private boolean checkFields() {
         String fullNameValue = fullname.getText().toString().trim();
         String phoneNoValue = phoneNo.getText().toString().trim();
@@ -127,13 +128,13 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
         return true;
     }
 
-    private void returnAfterRegistation(){
+    private void returnAfterRegistation() {
         Intent resultIntent = new Intent();
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }
 
-    private void returnAfterRegistationFailed(String error){
+    private void returnAfterRegistationFailed(String error) {
 
         setResult(Activity.RESULT_CANCELED);
 

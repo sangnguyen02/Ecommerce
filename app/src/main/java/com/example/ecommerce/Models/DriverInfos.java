@@ -32,6 +32,7 @@ public class DriverInfos {
         this.driverStatus = driverStatus;
     }
 
+    public DriverInfos(){}
     public String getPhoneNo() {
         return phoneNo;
     }
