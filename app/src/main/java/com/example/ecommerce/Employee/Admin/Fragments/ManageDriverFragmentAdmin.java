@@ -38,14 +38,15 @@ public class ManageDriverFragmentAdmin extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_manage_driver_admin, container, false);
-        DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo");
         rcvManageDriver = rootView.findViewById(R.id.rcv_manageDriver);
-        manageRegisterButton = rootView.findViewById(R.id.manageRegister_btn);
-
-
         rcvManageDriver.setHasFixedSize(true);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(rootView.getContext(), RecyclerView.VERTICAL, false);
         rcvManageDriver.setLayoutManager(linearLayoutManager);
+
+        manageRegisterButton = rootView.findViewById(R.id.manageRegister_btn);
+
+        DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo");
 
         manageRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +61,7 @@ public class ManageDriverFragmentAdmin extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
         Query query = DriverRef.orderByChild("driverStatus").equalTo("PENDING");
         FirebaseRecyclerOptions<DriverInfos> options =
                 new FirebaseRecyclerOptions.Builder<DriverInfos>()
@@ -79,18 +81,19 @@ public class ManageDriverFragmentAdmin extends Fragment {
 
                     @Override
                     protected void onBindViewHolder(@NonNull ManageDriverViewHolder holder, int position, @NonNull DriverInfos model) {
-                        if (model.getDriverStatus() == MyEnum.DriverStatus.PENDING) {
-                            Picasso.get().load(model.getPicture() ).into(holder.imgDriver);
-                            holder.tvName.setText(model.getName());
-                            holder.tvStatus.setText(model.getDriverStatus().toString());
+/*                        if (model.getDriverStatus() != MyEnum.DriverStatus.PENDING) {
+
                         }else{
                             return;
-                        }
-
+                        }*/
+                        Picasso.get().load(model.getPicture() ).into(holder.imgDriver);
+                        holder.tvName.setText(model.getName());
+                        holder.tvStatus.setText(model.getDriverStatus().toString());
+                        holder.tvRating.setText("Rating: " + String.valueOf( model.getAvgRating()));
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(getActivity(), ManageDriverDetailActivityAdmin.class);
+                                Intent intent = new Intent(getContext(), ManageDriverDetailActivityAdmin.class);
                                 intent.putExtra("pid", model.getId());
                                 startActivity(intent);
                             }

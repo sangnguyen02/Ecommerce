@@ -14,7 +14,7 @@ public class ManageDriverViewHolder extends RecyclerView.ViewHolder implements V
 
 
     public ImageView imgDriver;
-    public TextView tvName, tvStatus;
+    public TextView tvName, tvStatus, tvRating;
     public ItemClickListener listener;
 
     public ManageDriverViewHolder(@NonNull View itemView) {
@@ -23,6 +23,7 @@ public class ManageDriverViewHolder extends RecyclerView.ViewHolder implements V
         imgDriver = itemView.findViewById(R.id.img_driver);
         tvName = itemView.findViewById(R.id.tv_fullname);
         tvStatus = itemView.findViewById(R.id.tv_status);
+        tvRating = itemView.findViewById(R.id.tv_rating);
     }
 
     public void setItemClickListener(ItemClickListener listener)
