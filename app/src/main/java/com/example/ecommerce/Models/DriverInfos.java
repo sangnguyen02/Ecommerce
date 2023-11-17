@@ -2,9 +2,10 @@ package com.example.ecommerce.Models;
 
 import com.example.ecommerce.Enum.MyEnum;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class DriverInfos {
+public class DriverInfos implements Serializable {
     private String phoneNo;
     private String name;
     private String mail;

@@ -1,6 +1,7 @@
 package com.example.ecommerce.Employee.Admin.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.ecommerce.Enum.MyEnum;
 import com.example.ecommerce.Models.DriverInfos;
@@ -23,12 +25,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
+
 public class ManageRegisterDriverActivityAdmin extends AppCompatActivity {
 
     DatabaseReference DriverRef;
     RecyclerView rcvManageDriver;
-    MaterialButton manageRegisterButton;
 
+    private static final int DRIVER_REGISTER_DETAIL_CODE = 123;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,8 +82,11 @@ public class ManageRegisterDriverActivityAdmin extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(getApplicationContext(), ManageRegisterDriverDetailActivityAdmin.class);
-                                intent.putExtra("pid", model.getId());
-                                startActivity(intent);
+                                Bundle driverBundle = new Bundle();
+                                driverBundle.putSerializable("RegisterDriver", (Serializable) model);
+                                intent.putExtras(driverBundle);
+                                //startActivity(intent);
+                                startActivityForResult(intent,DRIVER_REGISTER_DETAIL_CODE);
                             }
                         });
                     }
@@ -87,5 +94,18 @@ public class ManageRegisterDriverActivityAdmin extends AppCompatActivity {
                 };
         rcvManageDriver.setAdapter(adapter);
         adapter.startListening();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == DRIVER_REGISTER_DETAIL_CODE) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(getApplicationContext(),"Driver Added!", Toast.LENGTH_SHORT).show();
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(getApplicationContext(),"Driver Deny!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
