@@ -82,10 +82,10 @@ public class ManageRegisterDriverActivityAdmin extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(getApplicationContext(), ManageRegisterDriverDetailActivityAdmin.class);
-                                Bundle driverBundle = new Bundle();
+                                /*Bundle driverBundle = new Bundle();
                                 driverBundle.putSerializable("RegisterDriver", (Serializable) model);
-                                intent.putExtras(driverBundle);
-                                //startActivity(intent);
+                                intent.putExtras(driverBundle);*/
+                                intent.putExtra("RegisterDriver", model);
                                 startActivityForResult(intent,DRIVER_REGISTER_DETAIL_CODE);
                             }
                         });

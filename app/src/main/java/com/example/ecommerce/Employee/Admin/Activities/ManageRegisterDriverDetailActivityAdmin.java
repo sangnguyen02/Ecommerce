@@ -1,12 +1,15 @@
 package com.example.ecommerce.Employee.Admin.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ecommerce.Enum.MyEnum;
 import com.example.ecommerce.Models.DriverInfos;
@@ -33,6 +36,7 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
     private com.google.android.material.button.MaterialButton denyBtn;
     private DatabaseReference driversRef;
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +61,10 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
         DriverInfos driverInfos = new DriverInfos();
         if (extras != null) {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                driverInfos = extras.getSerializable("RegisterDriver", DriverInfos.class);
+                //driverInfos = extras.getSerializable("RegisterDriver", DriverInfos.class);
+                driverInfos = (DriverInfos) extras.get("RegisterDriver");
+            }else{
+                driverInfos = (DriverInfos) extras.get("RegisterDriver");
             }
         }
 
@@ -111,11 +118,12 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
                         specificDriverRef.setValue(currentDriver);
                     }
                 }
+                //return false;
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle errors here
+                Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT).show();
             }
         });
 
