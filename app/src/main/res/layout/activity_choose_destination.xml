@@ -35,10 +35,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/label_yourLocation"
+        android:queryHint="Search..."
+        android:iconifiedByDefault="false"
+        android:elevation="5dp"
+        android:background="@color/white"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/search_view_background"
         />
 
     <TextView
@@ -58,10 +61,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/label_yourDest"
+        android:queryHint="Search..."
+        android:iconifiedByDefault="false"
+        android:elevation="5dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/search_view_background"
         />
 
     <TextView
@@ -84,10 +91,10 @@
         android:layout_margin="10dp"
         android:layout_below="@id/label_searchResults">
         <fragment
-            android:id="@+id/autoCompleteFragment"
+            android:id="@+id/mMapUser"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"/>
+            android:name="com.google.android.gms.maps.SupportMapFragment"/>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -104,23 +111,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp">
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/saved_location_icon"
-                    android:scaleType="centerCrop"
-                    />
-                <TextView
-                    android:id="@+id/label_savedLocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Saved Location"
-                    android:textSize="20sp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/black"
-                    />
+<!--                <ImageView-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:src="@drawable/saved_location_icon"-->
+<!--                    android:scaleType="centerCrop"-->
+<!--                    />-->
+<!--                <TextView-->
+<!--                    android:id="@+id/label_savedLocation"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:text="Saved Location"-->
+<!--                    android:textSize="20sp"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_marginTop="5dp"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    />-->
             </LinearLayout>
 
             <LinearLayout
@@ -131,23 +138,23 @@
                 android:layout_marginTop="10dp"
                 android:layout_below="@id/label_section"
                 android:layout_marginStart="40dp">
-                <ImageView
-                    android:id="@+id/img_home_Location"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/home_icon"
-                    android:scaleType="centerCrop"
-                    />
-                <TextView
-                    android:id="@+id/label_homeLocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Home"
-                    android:textSize="20sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/black"
-                    />
+<!--                <ImageView-->
+<!--                    android:id="@+id/img_home_Location"-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:src="@drawable/home_icon"-->
+<!--                    android:scaleType="centerCrop"-->
+<!--                    />-->
+<!--                <TextView-->
+<!--                    android:id="@+id/label_homeLocation"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:text="Home"-->
+<!--                    android:textSize="20sp"-->
+<!--                    android:layout_marginTop="5dp"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    />-->
             </LinearLayout>
 
             <LinearLayout
@@ -158,23 +165,23 @@
                 android:layout_marginTop="10dp"
                 android:layout_below="@id/home_section"
                 android:layout_marginStart="40dp">
-                <ImageView
-                    android:id="@+id/img_work_Location"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/work_icon"
-                    android:scaleType="centerCrop"
-                    />
-                <TextView
-                    android:id="@+id/label_workLocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Work"
-                    android:textSize="20sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/black"
-                    />
+<!--                <ImageView-->
+<!--                    android:id="@+id/img_work_Location"-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:src="@drawable/work_icon"-->
+<!--                    android:scaleType="centerCrop"-->
+<!--                    />-->
+<!--                <TextView-->
+<!--                    android:id="@+id/label_workLocation"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:text="Work"-->
+<!--                    android:textSize="20sp"-->
+<!--                    android:layout_marginTop="5dp"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    />-->
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton

@@ -19,7 +19,7 @@ import com.example.ecommerce.Animations.ZoomOutPageTransformer;
 import com.example.ecommerce.Models.ImageBanner;
 import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
-import com.example.ecommerce.User.Activities.MapActivityUser;
+
 import com.example.ecommerce.User.Activities.ChooseDestinationActivity;
 
 import java.util.ArrayList;
@@ -86,10 +86,20 @@ public class HomeFragmentUser extends Fragment {
             @Override
             public void onClick(View v) {
                 // Your click event logic goes here
-                Intent intent = new Intent(rootView.getContext(), MapActivityUser.class);
+                Intent intent = new Intent(rootView.getContext(), ChooseDestinationActivity.class);
                 startActivity(intent);
             }
         });
+        CircleImageView circleImageView2 = rootView.findViewById(R.id.car_icon);
+        circleImageView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Your click event logic goes here
+                Intent intent = new Intent(rootView.getContext(), ChooseDestinationActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
