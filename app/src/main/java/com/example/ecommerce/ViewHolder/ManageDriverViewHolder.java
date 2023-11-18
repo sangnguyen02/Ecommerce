@@ -20,10 +20,9 @@ public class ManageDriverViewHolder extends RecyclerView.ViewHolder implements V
     public ManageDriverViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        imgDriver = itemView.findViewById(R.id.img_driver);
+        imgDriver = itemView.findViewById(R.id.img_registerDriver);
         tvName = itemView.findViewById(R.id.tv_fullname);
         tvStatus = itemView.findViewById(R.id.tv_status);
-        tvRating = itemView.findViewById(R.id.tv_rating);
     }
 
     public void setItemClickListener(ItemClickListener listener)
