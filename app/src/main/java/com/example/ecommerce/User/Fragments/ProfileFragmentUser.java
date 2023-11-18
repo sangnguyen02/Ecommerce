@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -13,10 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ecommerce.Models.DriverInfos;
 import com.example.ecommerce.R;
 import com.example.ecommerce.User.Activities.EditProfileActivityUser;
 import com.example.ecommerce.User.Activities.FaqActivityUser;
@@ -27,9 +28,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragmentUser extends Fragment {
 
@@ -38,6 +38,8 @@ public class ProfileFragmentUser extends Fragment {
     String phone, name;
     public static final int SIGN_UP_REQUEST = 1;
     public static final int FAILED_SIGN_UP_REQUEST = -1;
+
+    private DatabaseReference driversRef;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,10 +54,21 @@ public class ProfileFragmentUser extends Fragment {
         phone = getArguments().getString("phone_number");
         name = getArguments().getString("user_name");
 
-        Log.d("Phone", phone);
+        Log.e("Phone", phone);
         Log.d("name", name);
         tv_fullname.setText(name);
 
+        // Initialize Firebase
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        driversRef = database.getReference("DriversInfo");
+
+        initButton(rootView);
+
+        return rootView;
+    }
+
+
+    private void initButton(View rootView) {
 
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +105,6 @@ public class ProfileFragmentUser extends Fragment {
                 startActivityForResult(signUpIntent, SIGN_UP_REQUEST);
             }
         });
-        return rootView;
     }
 
     @Override
@@ -110,5 +122,31 @@ public class ProfileFragmentUser extends Fragment {
                 }
             }
         }
+    }
+
+    private void IsDriver(String userPhone) {
+
+        // Retrieve the reference to the specific driver
+        Query query = driversRef.orderByChild("phoneNo").equalTo(userPhone);
+        Log.e("UserPhone: ", userPhone);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Check if the driver exists in the database
+                if (dataSnapshot.exists()) {
+                    registerDriver.setEnabled(false);
+                    registerDriver.setText("You Are A Driver");
+                } else {
+                    registerDriver.setEnabled(true);
+                    registerDriver.setText("Register Driver");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getContext(), "Network Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }
