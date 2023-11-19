@@ -3,12 +3,14 @@ package com.example.ecommerce.User.Activities;
 import static com.example.ecommerce.User.Fragments.ProfileFragmentUser.FAILED_SIGN_UP_REQUEST;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,9 +27,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,6 +45,8 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
     MaterialButton register;
 
     CircleImageView circleImageView;
+
+    ProgressDialog progressDialog;
 
     // Constants
     private static final int PICK_IMAGE_REQUEST = 454;
@@ -54,6 +64,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
         bankNo = findViewById(R.id.editText_bankNo);
         register = findViewById(R.id.register_driver_btn);
         circleImageView = findViewById(R.id.imageUser);
+        _localPictureUrl = null;
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("PHONE_KEY")) {
@@ -66,7 +77,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (checkFields()) {
-                    registerDriver();
+                    UploadDriverToFireBase(_localPictureUrl);
                 }
             }
         });
@@ -91,19 +102,27 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri selectedImageUri = data.getData();
-
-            // Load the image into CircleImageView
-            try {
-                InputStream imageStream = getContentResolver().openInputStream(selectedImageUri);
-                Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                circleImageView.setImageBitmap(selectedImage);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            _localPictureUrl = data.getData();
+            LoadImageToCircleImageView(selectedImageUri);
         }
     }
 
-    private void registerDriver() {
+    private void LoadImageToCircleImageView(Uri selectedImageUri) {
+        try {
+            InputStream imageStream = getContentResolver().openInputStream(selectedImageUri);
+            Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+            circleImageView.setImageBitmap(selectedImage);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    String _firebaseDownloadUrl;
+    Uri _localPictureUrl;
+
+    private void UploadDriverToFireBase(Uri selectedLocalImageUri) {
+
+        //Get data from UI
         String fullNameValue = fullname.getText().toString().trim();
         String phoneNoValue = phoneNo.getText().toString().trim();
         String mailValue = mail.getText().toString().trim();
@@ -111,23 +130,57 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
         String licenseValue = license.getText().toString().trim();
         String bankNoValue = bankNo.getText().toString().trim();
 
-        DriverInfos driverInfos = new DriverInfos(phoneNoValue, fullNameValue, mailValue, idValue, licenseValue, 5f, 0, "notyet", bankNoValue, MyEnum.DriverStatus.PENDING);
+        //Generate File Name
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+        Date now = new Date();
+        String filename = formatter.format(now);
+        filename = filename + "_" + fullNameValue;
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("DriversInfo").child(driverInfos.getId());
-        databaseReference.setValue(driverInfos)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            showToast("Driver registered successfully");
-                            // Finish the activity or navigate back to the user fragment as needed
-                            returnAfterRegistation();
-                        } else {
-                            returnAfterRegistationFailed(task.getException().getMessage());
-                        }
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Registering...");
+        progressDialog.show();
+
+        //Upload
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference imageRef = storageRef.child("DriverImage/" + filename);
+
+        imageRef.putFile(selectedLocalImageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // Image uploaded successfully, get the download URL
+                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        // Save the download URL to Firebase Database or use it as needed
+                        _firebaseDownloadUrl = uri.toString();
+
+                        DriverInfos driverInfos = new DriverInfos(phoneNoValue, fullNameValue, mailValue, idValue, licenseValue, 5f, 0, _firebaseDownloadUrl, bankNoValue, MyEnum.DriverStatus.PENDING);
+
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("DriversInfo").child(driverInfos.getId());
+                        databaseReference.setValue(driverInfos)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            if(progressDialog.isShowing()){
+                                                progressDialog.dismiss();
+                                            }
+                                            showToast("Driver registered successfully");
+                                            // Finish the activity or navigate back to the user fragment as needed
+                                            returnAfterRegistation();
+                                        } else {
+                                            returnAfterRegistationFailed(task.getException().getMessage());
+                                        }
+                                    }
+                                });
+
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    // Handle unsuccessful uploads
+                    if(progressDialog.isShowing()){
+                        progressDialog.dismiss();
                     }
+                    Toast.makeText(this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
-
     }
 
     private boolean checkFields() {
@@ -137,7 +190,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
         String idValue = id.getText().toString().trim();
         String licenseValue = license.getText().toString().trim();
         String bankNoValue = bankNo.getText().toString().trim();
-
+        Uri imageUriAfterSelected = _localPictureUrl;
         if (TextUtils.isEmpty(fullNameValue)) {
             showToast("Please enter your full name!");
             return false;
@@ -168,6 +221,10 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
             return false;
         }
 
+        if (imageUriAfterSelected == null) {
+            showToast("Please select picture");
+            return false;
+        }
 
         return true;
     }

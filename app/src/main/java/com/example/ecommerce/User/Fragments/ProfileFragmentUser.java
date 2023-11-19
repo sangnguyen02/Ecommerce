@@ -115,6 +115,8 @@ public class ProfileFragmentUser extends Fragment {
         if (requestCode == SIGN_UP_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(getContext(), "Sign-up successful!", Toast.LENGTH_SHORT).show();
+                registerDriver.setEnabled(false);
+                registerDriver.setText("Your Request Has Been Sented!");
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 // Handle registration failure
                 if (data != null && data.hasExtra("ERROR_CODE")) {
