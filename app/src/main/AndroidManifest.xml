@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -18,70 +20,92 @@
         tools:targetApi="31">
         <activity
             android:name=".User.Activities.BookDriverActivityUser"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".User.Activities.ChooseDestinationActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".User.Activities.CaculateMoneyActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".Employee.Driver.Activities.EditProfileActivityDriver"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".Employee.Driver.Activities.FaqActivityDriver"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".User.Activities.DetailHistoryActivityUser"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".Employee.Driver.Activities.DetailHistoryActivityDriver"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".Employee.Admin.Activities.ManageRegisterDriverDetailActivityAdmin"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".Employee.Admin.Activities.ManageRegisterDriverActivityAdmin"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".Employee.Admin.Activities.ManageDriverDetailActivityAdmin"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".Employee.Admin.Activities.MainActivityAdmin"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".User.PayPalAPI"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".User.Activities.RegisterDriverActivityUser"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".Employee.Driver.Activities.MainActivityDriver"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".User.Activities.FaqActivityUser"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".User.Activities.SavedLocationActivityUser"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".User.Activities.EditProfileActivityUser"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".Employee.LoginActivityEmployee"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".User.Activities.MapActivityUser"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".User.Activities.LoginActivityUser"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".User.Activities.MainActivityUser"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="fullSensor"/>
         <activity
             android:name=".SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
