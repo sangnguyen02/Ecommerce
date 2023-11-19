@@ -105,6 +105,8 @@ public class ProfileFragmentUser extends Fragment {
                 startActivityForResult(signUpIntent, SIGN_UP_REQUEST);
             }
         });
+
+        IsDriver(phone);
     }
 
     @Override

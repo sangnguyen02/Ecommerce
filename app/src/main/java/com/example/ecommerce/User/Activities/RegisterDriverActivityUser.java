@@ -4,6 +4,9 @@ import static com.example.ecommerce.User.Fragments.ProfileFragmentUser.FAILED_SI
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ecommerce.Enum.MyEnum;
@@ -22,10 +26,20 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class RegisterDriverActivityUser extends AppCompatActivity {
 
     EditText fullname, phoneNo, mail, id, license, bankNo;
     MaterialButton register;
+
+    CircleImageView circleImageView;
+
+    // Constants
+    private static final int PICK_IMAGE_REQUEST = 454;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +53,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
         license = findViewById(R.id.editText_license);
         bankNo = findViewById(R.id.editText_bankNo);
         register = findViewById(R.id.register_driver_btn);
+        circleImageView = findViewById(R.id.imageUser);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("PHONE_KEY")) {
@@ -53,10 +68,39 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
                 if (checkFields()) {
                     registerDriver();
                 }
-
             }
         });
 
+        circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
+
+    }
+
+    private void openGallery() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri selectedImageUri = data.getData();
+
+            // Load the image into CircleImageView
+            try {
+                InputStream imageStream = getContentResolver().openInputStream(selectedImageUri);
+                Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                circleImageView.setImageBitmap(selectedImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void registerDriver() {
