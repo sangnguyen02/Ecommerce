@@ -53,9 +53,6 @@ public class ProfileFragmentUser extends Fragment {
         logout = rootView.findViewById(R.id.log_out_btn);
         phone = getArguments().getString("phone_number");
         name = getArguments().getString("user_name");
-
-        Log.e("Phone", phone);
-        Log.d("name", name);
         tv_fullname.setText(name);
 
         // Initialize Firebase
@@ -69,7 +66,6 @@ public class ProfileFragmentUser extends Fragment {
 
 
     private void initButton(View rootView) {
-
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,9 +94,7 @@ public class ProfileFragmentUser extends Fragment {
         registerDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("Phoneuser: ", phone);
                 Intent signUpIntent = new Intent(rootView.getContext(), RegisterDriverActivityUser.class);
-                //startActivity(signUpIntent);
                 signUpIntent.putExtra("PHONE_KEY", phone);
                 startActivityForResult(signUpIntent, SIGN_UP_REQUEST);
             }
@@ -115,10 +109,11 @@ public class ProfileFragmentUser extends Fragment {
         if (requestCode == SIGN_UP_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(getContext(), "Sign-up successful!", Toast.LENGTH_SHORT).show();
+                registerDriver.setEnabled(false);
+                registerDriver.setText("Your Request Has Been Sented!");
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 // Handle registration failure
                 if (data != null && data.hasExtra("ERROR_CODE")) {
-                    int errorCode = data.getIntExtra("ERROR_CODE", -1);
                     String errorInfo = data.getStringExtra("ERROR_INFO");
                     Toast.makeText(getContext(), errorInfo, Toast.LENGTH_SHORT).show();
                 }
@@ -130,14 +125,13 @@ public class ProfileFragmentUser extends Fragment {
 
         // Retrieve the reference to the specific driver
         Query query = driversRef.orderByChild("phoneNo").equalTo(userPhone);
-        Log.e("UserPhone: ", userPhone);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Check if the driver exists in the database
                 if (dataSnapshot.exists()) {
                     registerDriver.setEnabled(false);
-                    registerDriver.setText("You Are A Driver");
+                    registerDriver.setText("You Already Registered");
                 } else {
                     registerDriver.setEnabled(true);
                     registerDriver.setText("Register Driver");
