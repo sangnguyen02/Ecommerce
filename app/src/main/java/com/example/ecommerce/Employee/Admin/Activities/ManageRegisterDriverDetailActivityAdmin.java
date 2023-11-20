@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.ecommerce.Enum.MyEnum;
 import com.example.ecommerce.Models.DriverInfos;
+import com.example.ecommerce.Models.User;
 import com.example.ecommerce.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import utils.SendMailTask;
 
 public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
 
@@ -82,6 +84,7 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AcceptDriverRegistration(finalDriverInfos.getId());
+                SendAccountEmail(finalDriverInfos.getMail(),finalDriverInfos.getId(),finalDriverInfos.getName());
                 setResult(RESULT_OK);
                 finish();
             }
@@ -127,5 +130,20 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void SendAccountEmail(String driverEmail, String driverID, String driverName){
+        String emailSubject = "Welcome To Driver Hub";
+        String emailMessage = "Dear " + driverName + ",\n" +
+                "\n" +
+                "Congratulations! You have successfully completed the registration process and are now officially a registered driver with our platform. We are thrilled to welcome you to our community of drivers. As a registered driver, you now have access to a range of features and opportunities to enhance your experience. Get ready to embark on a journey with us, providing valuable services and contributing to the success of our platform. Thank you for choosing to be part of our community, and we look forward to a successful and rewarding partnership.\n" +
+                "\n" +
+                "Your username is : " + driverEmail + "\n" +
+                "Your password is your id" +
+                //"Your password is : " + driverID + "\n" +
+                "\n" +
+                "Best regards,";
+
+        new SendMailTask(this, driverEmail, emailSubject, emailMessage).execute();
     }
 }

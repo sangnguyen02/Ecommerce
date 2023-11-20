@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.ecommerce.Models.DriverInfos;
 import com.example.ecommerce.R;
+import com.example.ecommerce.SplashActivity;
 import com.example.ecommerce.User.Activities.EditProfileActivityUser;
 import com.example.ecommerce.User.Activities.FaqActivityUser;
 import com.example.ecommerce.User.Activities.RegisterDriverActivityUser;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.paypal.android.sdk.payments.LoginActivity;
 
 public class ProfileFragmentUser extends Fragment {
 
@@ -97,6 +99,14 @@ public class ProfileFragmentUser extends Fragment {
                 Intent signUpIntent = new Intent(rootView.getContext(), RegisterDriverActivityUser.class);
                 signUpIntent.putExtra("PHONE_KEY", phone);
                 startActivityForResult(signUpIntent, SIGN_UP_REQUEST);
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(rootView.getContext(), SplashActivity.class);
+                startActivity(intent);
             }
         });
 
