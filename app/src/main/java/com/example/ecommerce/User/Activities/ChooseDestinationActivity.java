@@ -320,6 +320,8 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
         // You can convert the distance to other units if needed
         distanceInKm = distance / 1000.0;
 //        double distanceInMiles = distance / 1609.34;
+        Intent intent = new Intent(ChooseDestinationActivity.this, BookDriverActivityUser.class);
+        intent.putExtra("distanceInKm", distanceInKm);
 
         // Display the distance on the map
         String distanceText = String.format("Distance: %.2f km", distanceInKm);
