@@ -158,8 +158,7 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
 
         //HashPassword (driverID)
         String password = driverID;
-        String salt = PasswordHasher.generateSalt();
-        String hashedPassword = PasswordHasher.hashPassword(password, salt);
+        String hashedPassword = PasswordHasher.hashPassword(password);
 
         //Upload to Firebase
         DriverAccount driverAccount = new DriverAccount(driverPhone,driverMail,hashedPassword);

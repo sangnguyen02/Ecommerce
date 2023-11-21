@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import utils.PasswordHasher;
+
 public class LoginActivityEmployee extends AppCompatActivity {
 
     EditText emailInput, passwordInput;
@@ -62,7 +64,8 @@ public class LoginActivityEmployee extends AppCompatActivity {
                 if (email.contains("admin")){
                     SignInAsAdmin(email, password);
                 }else{
-                    SignInAsDriver(email, password);
+                    String hashedPassword = PasswordHasher.hashPassword(password);
+                    SignInAsDriver(email, hashedPassword);
                 }
 
 
@@ -80,7 +83,7 @@ public class LoginActivityEmployee extends AppCompatActivity {
                 //Find account
                 boolean isAuthenticated = false;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String dbUsername = snapshot.child("email").getValue(String.class);
+                    String dbUsername = snapshot.child("username").getValue(String.class);
                     String dbPassword = snapshot.child("password").getValue(String.class);
 
                     if (dbUsername.equals(email) && dbPassword.equals(password)) {
