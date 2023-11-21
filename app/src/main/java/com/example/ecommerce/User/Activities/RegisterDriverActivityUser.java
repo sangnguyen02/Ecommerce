@@ -41,7 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterDriverActivityUser extends AppCompatActivity {
 
-    EditText fullname, phoneNo, mail, id, license, bankNo;
+    EditText fullname, phoneNo, mail, id, license, bankNo, bankName;
     MaterialButton register;
 
     CircleImageView circleImageView;
@@ -62,6 +62,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
         id = findViewById(R.id.editText_ID);
         license = findViewById(R.id.editText_license);
         bankNo = findViewById(R.id.editText_bankNo);
+        bankName = findViewById(R.id.editText_bankName);
         register = findViewById(R.id.register_driver_btn);
         circleImageView = findViewById(R.id.imageUser);
         _localPictureUrl = null;
@@ -129,18 +130,20 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
         String idValue = id.getText().toString().trim();
         String licenseValue = license.getText().toString().trim();
         String bankNoValue = bankNo.getText().toString().trim();
+        String bankNameValue = bankName.getText().toString().trim();
 
-        //Generate File Name
+        //Generate FireBase File Name
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
         Date now = new Date();
         String filename = formatter.format(now);
         filename = filename + "_" + fullNameValue;
 
+        //ProgressDialog Be Responsive
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Registering...");
         progressDialog.show();
 
-        //Upload
+        //Upload Image To FireBase
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
         StorageReference imageRef = storageRef.child("DriverImage/" + filename);
@@ -152,7 +155,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
                         // Save the download URL to Firebase Database or use it as needed
                         _firebaseDownloadUrl = uri.toString();
 
-                        DriverInfos driverInfos = new DriverInfos(phoneNoValue, fullNameValue, mailValue, idValue, licenseValue, 5f, 0, _firebaseDownloadUrl, bankNoValue, MyEnum.DriverStatus.PENDING);
+                        DriverInfos driverInfos = new DriverInfos(phoneNoValue, fullNameValue, mailValue, idValue, licenseValue, 5f, 0, _firebaseDownloadUrl,bankNameValue ,bankNoValue, MyEnum.DriverStatus.PENDING);
 
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("DriversInfo").child(driverInfos.getId());
                         databaseReference.setValue(driverInfos)
@@ -190,6 +193,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
         String idValue = id.getText().toString().trim();
         String licenseValue = license.getText().toString().trim();
         String bankNoValue = bankNo.getText().toString().trim();
+        String bankNameValue = bankName.getText().toString().trim();
         Uri imageUriAfterSelected = _localPictureUrl;
         if (TextUtils.isEmpty(fullNameValue)) {
             showToast("Please enter your full name!");
@@ -218,6 +222,11 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
 
         if (TextUtils.isEmpty(bankNoValue)) {
             showToast("Please enter your banking no!");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(bankNameValue)) {
+            showToast("Please enter choose your bank!");
             return false;
         }
 

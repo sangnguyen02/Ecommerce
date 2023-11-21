@@ -1,5 +1,7 @@
 package com.example.ecommerce.Models;
 
+import android.location.Location;
+
 import com.example.ecommerce.Enum.MyEnum;
 
 import java.io.Serializable;
@@ -18,9 +20,26 @@ public class DriverInfos implements Serializable {
     private String bankName;
     private List<Bill> bills;
     private MyEnum.DriverStatus driverStatus;
+    private Location currentLocation;
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public Location getCurrentLocation() {
+        return currentLocation;
+    }
+
+    public void setCurrentLocation(Location currentLocation) {
+        this.currentLocation = currentLocation;
+    }
 
     //Driver Information Without Bill
-    public DriverInfos(String phoneNo, String name, String mail, String id, String license, float avgRating, int balance, String picture, String bankAccount, MyEnum.DriverStatus driverStatus) {
+    public DriverInfos(String phoneNo, String name, String mail, String id, String license, float avgRating, int balance, String picture, String bankName,String bankAccount, MyEnum.DriverStatus driverStatus) {
         this.phoneNo = phoneNo;
         this.name = name;
         this.mail = mail;
@@ -29,8 +48,10 @@ public class DriverInfos implements Serializable {
         this.avgRating = avgRating;
         this.balance = balance;
         this.picture = picture;
+        this.bankName = bankName;
         this.bankAccount = bankAccount;
         this.driverStatus = driverStatus;
+        this.currentLocation = new Location("10.850727233146756, 106.77189164232747");
     }
 
     public DriverInfos(){}
