@@ -61,6 +61,9 @@
             android:name=".Employee.Driver.Activities.ReceiveOrderActivityDriver"
             android:exported="false" />
         <activity
+            android:name=".Employee.Driver.Activities.SendNotificationActivityDriver"
+            android:exported="false" />
+        <activity
             android:name=".User.Activities.FaqActivityUser"
             android:exported="false" />
         <activity

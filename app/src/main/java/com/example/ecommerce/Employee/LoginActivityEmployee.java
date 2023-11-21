@@ -26,6 +26,7 @@ public class LoginActivityEmployee extends AppCompatActivity {
     EditText emailInput, passwordInput;
     MaterialButton loginBtn;
     TextView signInAsUser;
+    String key_driver= "123";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,22 +49,27 @@ public class LoginActivityEmployee extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = emailInput.getText().toString().trim();
-                String password = passwordInput.getText().toString().trim();
-
-                //Validating Input
-                if (email.isEmpty() || password.isEmpty()) {
-                    // Show an error message for empty fields
-                    Toast.makeText(LoginActivityEmployee.this, "Please enter both username and password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                //Validating Sign In Method
-                if (email.contains("admin")){
-                    SignInAsAdmin(email, password);
-                }else{
-                    SignInAsDriver(email, password);
-                }
+                Intent intent = new Intent(LoginActivityEmployee.this, MainActivityDriver.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("key_driver", key_driver);
+                intent.putExtras(bundle);
+                startActivity(intent);
+//                String email = emailInput.getText().toString().trim();
+//                String password = passwordInput.getText().toString().trim();
+//
+//                //Validating Input
+//                if (email.isEmpty() || password.isEmpty()) {
+//                    // Show an error message for empty fields
+//                    Toast.makeText(LoginActivityEmployee.this, "Please enter both username and password", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//
+//                //Validating Sign In Method
+//                if (email.contains("admin")){
+//                    SignInAsAdmin(email, password);
+//                }else{
+//                    SignInAsDriver(email, password);
+//                }
 
 
             }
@@ -85,6 +91,7 @@ public class LoginActivityEmployee extends AppCompatActivity {
 
                     if (dbUsername.equals(email) && dbPassword.equals(password)) {
                         // Authentication successful
+                        key_driver = snapshot.getKey();
                         isAuthenticated = true;
                         Toast.makeText(LoginActivityEmployee.this, "Authentication Successfully.",
                                 Toast.LENGTH_SHORT).show();
@@ -95,6 +102,9 @@ public class LoginActivityEmployee extends AppCompatActivity {
                 if (isAuthenticated) {
                     // Proceed to the next activity or show a success message
                     Intent intent = new Intent(LoginActivityEmployee.this, MainActivityDriver.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("key_driver", key_driver);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                     finish(); // Optional: Finish the current activity to prevent going back on pressing back button
                 } else {
