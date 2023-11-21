@@ -6,15 +6,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ecommerce.Enum.MyEnum;
+import com.example.ecommerce.Models.DriverAccount;
 import com.example.ecommerce.Models.DriverInfos;
 import com.example.ecommerce.Models.User;
 import com.example.ecommerce.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -86,6 +90,7 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
             public void onClick(View v) {
                 AcceptDriverRegistration(finalDriverInfos.getPhoneNo());
                 SendAccountEmail(finalDriverInfos.getMail(),finalDriverInfos.getId(),finalDriverInfos.getName());
+                CreateDriverAccount(finalDriverInfos.getPhoneNo(),finalDriverInfos.getMail(),finalDriverInfos.getId());
                 setResult(RESULT_OK);
                 finish();
             }
@@ -117,7 +122,7 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
 
                     // Update the attribute of the object locally
                     if (currentDriver != null) {
-                        currentDriver.setDriverStatus(MyEnum.DriverStatus.ACTIVE);
+                        currentDriver.setDriverStatus(MyEnum.DriverStatus.OFFLINE);
                         // Set the updated object back to the Firebase reference
                         specificDriverRef.setValue(currentDriver);
                     }
@@ -146,5 +151,24 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
                 "Best regards,";
 
         new SendMailTask(this, driverEmail, emailSubject, emailMessage).execute();
+    }
+
+    private void CreateDriverAccount(String driverPhone, String driverMail, String driverID){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("DriversAccount");
+        DriverAccount driverAccount = new DriverAccount(driverPhone,driverMail,driverID);
+
+        String key = driverPhone;
+        databaseReference.child(key).setValue(driverAccount).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(),"DriverAccountCreated",Toast.LENGTH_SHORT).show();
+                } else {
+                    Exception e = task.getException();
+                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 }

@@ -157,7 +157,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
 
                         DriverInfos driverInfos = new DriverInfos(phoneNoValue, fullNameValue, mailValue, idValue, licenseValue, 5f, 0, _firebaseDownloadUrl,bankNameValue ,bankNoValue, MyEnum.DriverStatus.PENDING);
 
-                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("DriversInfo").child(driverInfos.getId());
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("DriversInfo").child(driverInfos.getPhoneNo());
                         databaseReference.setValue(driverInfos)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
