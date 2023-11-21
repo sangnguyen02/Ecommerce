@@ -58,8 +58,6 @@ public class ReceiveOrderActivityDriver extends AppCompatActivity {
         PendingIntent acceptPendingIntent = PendingIntent.getActivity(this, 0, acceptIntent, 0);
 
         // Intent to handle "Cancel" action
-        Intent cancelIntent = new Intent(this, CancelOrderActivityDriver.class);
-        PendingIntent cancelPendingIntent = PendingIntent.getActivity(this, 0, cancelIntent, 0);
 
         // Build the notification with actions
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -69,8 +67,7 @@ public class ReceiveOrderActivityDriver extends AppCompatActivity {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent) // Set the main intent
-                .addAction(R.drawable.ic_accept, "Accept", acceptPendingIntent)
-                .addAction(R.drawable.ic_cancel, "Cancel", cancelPendingIntent);
+                .addAction(R.drawable.ic_accept, "Accept", acceptPendingIntent);
 
         // Add additional actions or customize the notification further as needed
 
