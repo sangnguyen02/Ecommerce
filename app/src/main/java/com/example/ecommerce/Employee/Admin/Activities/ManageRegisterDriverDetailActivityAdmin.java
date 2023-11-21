@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import utils.PasswordHasher;
 import utils.SendMailTask;
 
 public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
@@ -154,9 +155,15 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
     }
 
     private void CreateDriverAccount(String driverPhone, String driverMail, String driverID){
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("DriversAccount");
-        DriverAccount driverAccount = new DriverAccount(driverPhone,driverMail,driverID);
 
+        //HashPassword (driverID)
+        String password = driverID;
+        String salt = PasswordHasher.generateSalt();
+        String hashedPassword = PasswordHasher.hashPassword(password, salt);
+
+        //Upload to Firebase
+        DriverAccount driverAccount = new DriverAccount(driverPhone,driverMail,hashedPassword);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("DriversAccount");
         String key = driverPhone;
         databaseReference.child(key).setValue(driverAccount).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
