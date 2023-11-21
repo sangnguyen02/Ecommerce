@@ -9,9 +9,11 @@ import java.io.Serializable;
 
 public class  Order implements Serializable {
     private int id;
-    private Location pickupLocation;
-    private Location destination;
-    private int price;
+    private String pickupLocation_Latitude;
+    private String pickupLocation_Longtitude;
+    private String destination_Latitude;
+    private String destination_Longtidue;
+    private float price;
     private String clientName;
     private String clientNo;
     private MyEnum.PaymentMethod paymentMethod;
@@ -20,105 +22,118 @@ public class  Order implements Serializable {
     private DriverInfos driverInfos;
 
     //OrderNoDriverConstructor
-    public Order(int id, Location pickupLocation, Location desination, int price, String clientName, String clientNo, MyEnum.PaymentMethod paymentMethod, MyEnum.VehicleType vehicleType, MyEnum.OrderStatus orderStatus) {
+
+    public  Order() {
+
+    }
+    public Order(int id, String pickupLocation_Latitude, String pickupLocation_Longtitude, String destination_Latitude, String destination_Longtidue, float price, String clientName, String clientNo, MyEnum.PaymentMethod paymentMethod, MyEnum.VehicleType vehicleType, MyEnum.OrderStatus orderStatus, DriverInfos driverInfos) {
         this.id = id;
-        this.pickupLocation = pickupLocation;
-        this.destination = desination;
+        this.pickupLocation_Latitude = pickupLocation_Latitude;
+        this.pickupLocation_Longtitude = pickupLocation_Longtitude;
+        this.destination_Latitude = destination_Latitude;
+        this.destination_Longtidue = destination_Longtidue;
         this.price = price;
         this.clientName = clientName;
         this.clientNo = clientNo;
         this.paymentMethod = paymentMethod;
         this.vehicleType = vehicleType;
         this.orderStatus = orderStatus;
-    }
-    public Order() {
-
-    }
-
-    public int getId() {
-        return id;
+        this.driverInfos = driverInfos;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public Location getPickupLocation() {
-        return pickupLocation;
+    public void setPickupLocation_Latitude(String pickupLocation_Latitude) {
+        this.pickupLocation_Latitude = pickupLocation_Latitude;
     }
 
-
-    public Location getDesination() {
-        return destination;
+    public void setPickupLocation_Longtitude(String pickupLocation_Longtitude) {
+        this.pickupLocation_Longtitude = pickupLocation_Longtitude;
     }
 
-    public void setDesination(Location desination) {
-        this.destination = desination;
+    public void setDestination_Latitude(String destination_Latitude) {
+        this.destination_Latitude = destination_Latitude;
     }
 
-    public int getPrice() {
-        return price;
+    public void setDestination_Longtidue(String destination_Longtidue) {
+        this.destination_Longtidue = destination_Longtidue;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
-    }
-
-    public String getClientName() {
-        return clientName;
     }
 
     public void setClientName(String clientName) {
         this.clientName = clientName;
     }
 
-    public String getClientNo() {
-        return clientNo;
-    }
-
     public void setClientNo(String clientNo) {
         this.clientNo = clientNo;
-    }
-
-    public MyEnum.PaymentMethod getPaymentMethod() {
-        return paymentMethod;
     }
 
     public void setPaymentMethod(MyEnum.PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 
-    public MyEnum.VehicleType getVehicleType() {
-        return vehicleType;
-    }
-
     public void setVehicleType(MyEnum.VehicleType vehicleType) {
         this.vehicleType = vehicleType;
-    }
-
-    public MyEnum.OrderStatus getOrderStatus() {
-        return orderStatus;
     }
 
     public void setOrderStatus(MyEnum.OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 
-    public DriverInfos getDriverInfos() {
-        return driverInfos;
-    }
-
     public void setDriverInfos(DriverInfos driverInfos) {
         this.driverInfos = driverInfos;
     }
 
-    public void setPickupLocation(Location pickupLocation) {
-        if (pickupLocation != null) {
-            this.pickupLocation = pickupLocation;
-        } else {
-            // Handle null input, throw exception, or log a warning.
-        }
+    public int getId() {
+        return id;
     }
 
+    public String getPickupLocation_Latitude() {
+        return pickupLocation_Latitude;
+    }
 
+    public String getPickupLocation_Longtitude() {
+        return pickupLocation_Longtitude;
+    }
+
+    public String getDestination_Latitude() {
+        return destination_Latitude;
+    }
+
+    public String getDestination_Longtidue() {
+        return destination_Longtidue;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public String getClientNo() {
+        return clientNo;
+    }
+
+    public MyEnum.PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public MyEnum.VehicleType getVehicleType() {
+        return vehicleType;
+    }
+
+    public MyEnum.OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public DriverInfos getDriverInfos() {
+        return driverInfos;
+    }
 }

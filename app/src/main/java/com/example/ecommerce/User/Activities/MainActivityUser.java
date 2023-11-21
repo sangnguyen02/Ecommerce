@@ -1,6 +1,8 @@
 package com.example.ecommerce.User.Activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -29,17 +31,20 @@ public class MainActivityUser extends AppCompatActivity {
         if (extras != null) {
             phone = extras.getString("phone_number");
             name = extras.getString("user_name");
+            SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+            preferences.edit().putString("phone_number", phone).apply();
+            preferences.edit().putString("user_name", name).apply();
+
+
+
+
+//            Log.d("Phone No", phoneNumber);
+//            Log.d("Username", userName);
         }
 
-        Order order=new Order();
-        order.setClientNo(phone);
-        order.setClientName(name);
-
-        Bundle orderBundle = new Bundle();
-        orderBundle.putSerializable("order", order);
 
         HomeFragmentUser homeFragmentUser = new HomeFragmentUser();
-        homeFragmentUser.setArguments(orderBundle);
+
 
         replaceFragment(homeFragmentUser);
 

@@ -4,10 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+
+import com.example.ecommerce.Enum.MyEnum;
+import com.example.ecommerce.Models.Order;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.rey.material.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RatingBar;
@@ -24,6 +32,7 @@ import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class BookDriverActivityUser extends AppCompatActivity {
 
@@ -45,7 +54,10 @@ public class BookDriverActivityUser extends AppCompatActivity {
     private static final int NIGHT_FEE_21_23 = 6000; // Night fee from 21h to 23h
     private static final int NIGHT_FEE_23_1 = 10000; // Night fee from 23h to 1h
     private static final int NIGHT_FEE_1_4 = 15000; // Night fee from 1h to 4h
-    private double distanceInKm;
+
+    private boolean type=false;
+    private float motor_price=0;
+    private float car_price=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +79,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
         // Init rating bar
         ratingBar = findViewById(R.id.ratingBar);
         ratingScore = findViewById(R.id.tv_ratingScore);
-        Intent intent = getIntent();
-        if (intent != null) {
-            distanceInKm = intent.getDoubleExtra("distanceInKm", 0.0);
-        }
 
-        else
-        {
-            distanceInKm=0;
-        }
 
         // Init Category payment method
         spinnerCategory = findViewById(R.id.spn_category);
@@ -115,9 +119,67 @@ public class BookDriverActivityUser extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bottomSheetBehaviorBook.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
+                String phoneNumber = preferences.getString("phone_number","" );
+                String userName = preferences.getString("user_name", "");
+                String user_location_latitude=preferences.getString("user_location_latitude","");
+                String user_location_longtitude=preferences.getString("user_location_longtitude","");
+                String user_destination_latitude=preferences.getString("user_destination_latitude","");
+                String user_destination_longtitude=preferences.getString("user_destination_longitude","");
+
+                Order order= new Order();
+                order.setClientNo(phoneNumber);
+                order.setClientName(userName);
+                order.setPickupLocation_Latitude(user_location_latitude);
+                order.setPickupLocation_Longtitude(user_location_longtitude);
+                order.setDestination_Latitude(user_destination_latitude);
+                order.setDestination_Longtidue(user_destination_longtitude);
+                if(type)
+                {
+                    order.setVehicleType(MyEnum.VehicleType.CAR);
+                    order.setPrice(car_price);
+                }
+                else
+                {
+                    order.setVehicleType(MyEnum.VehicleType.MOTORBIKE);
+                    order.setPrice(motor_price);
+                }
+                order.setOrderStatus(MyEnum.OrderStatus.PENDING);
+                order.setDriverInfos(null);
+                order.setPaymentMethod(MyEnum.PaymentMethod.COD);
+                uploadOrderToFirebase(order);
+
+
+
+
                 bottomSheetBehaviorWaiting.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
+    }
+    private void uploadOrderToFirebase(Order order) {
+        // Get a reference to the root of your Firebase Realtime Database
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        // Get a reference to the "orders" node (adjust the path as needed)
+        DatabaseReference ordersReference = databaseReference.child("Order");
+
+        // Push the Order object to the database to generate a unique ID
+        DatabaseReference newOrderRef = ordersReference.push();
+
+        // Set the unique ID as the order's ID
+        order.setId(Integer.parseInt(newOrderRef.getKey()));
+
+        // Set the value of the Order object at the generated ID
+        newOrderRef.setValue(order)
+                .addOnSuccessListener(aVoid -> {
+                    // Order uploaded successfully
+                    // You can perform any additional actions here
+                })
+                .addOnFailureListener(e -> {
+                    // Error occurred while uploading order
+                    // Handle the error
+                });
     }
 
     private void updateRatingScore(int rating) {
@@ -147,12 +209,14 @@ public class BookDriverActivityUser extends AppCompatActivity {
         ratingScore.setText(ratingText);
     }
 
+
     private void setCheckBoxAuto() {
         motorCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // If the motor checkbox is checked, uncheck the car checkbox
+                    type=true;
                     carCheckBox.setChecked(false);
                 }
             }
@@ -162,6 +226,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    type=false;
                     // If the car checkbox is checked, uncheck the motor checkbox
                     motorCheckBox.setChecked(false);
                 }
@@ -171,13 +236,15 @@ public class BookDriverActivityUser extends AppCompatActivity {
 
     private void SetMotorPrice()
     {
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        float distance = Float.parseFloat(preferences.getString("distance", ""));
 
-        int distancePrice = (int) (distanceInKm * PRICE_PER_KM_A2);
+        float distancePrice =  (distance * PRICE_PER_KM_A2);
         Calendar calendar = Calendar.getInstance();
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
 
         // Calculate night fee based on the hour
-        int nightFee = 0;
+        float nightFee = 0;
         if (currentHour >= 21 && currentHour < 23) {
             nightFee = NIGHT_FEE_21_23;
         } else if (currentHour >= 23 && currentHour < 1) {
@@ -186,19 +253,22 @@ public class BookDriverActivityUser extends AppCompatActivity {
             nightFee = NIGHT_FEE_1_4;
         }
         // Calculate the total price
-        int totalPrice = BASE_PRICE_A2 + distancePrice + nightFee;
+        float totalPrice = BASE_PRICE_A2 + distancePrice + nightFee;
+        motor_price=totalPrice;
         motorPrice.setText(totalPrice+ " VND");
 
     }
     private void SetCarPrice()
     {
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        float distance = Float.parseFloat(preferences.getString("distance", ""));
 
-        int distancePrice = (int) (distanceInKm * BASE_PRICE_B2);
+        float distancePrice =  (distance * BASE_PRICE_B2);
         Calendar calendar = Calendar.getInstance();
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
 
         // Calculate night fee based on the hour
-        int nightFee = 0;
+        float nightFee = 0;
         if (currentHour >= 21 && currentHour < 23) {
             nightFee = NIGHT_FEE_21_23;
         } else if (currentHour >= 23 && currentHour < 1) {
@@ -207,7 +277,8 @@ public class BookDriverActivityUser extends AppCompatActivity {
             nightFee = NIGHT_FEE_1_4;
         }
         // Calculate the total price
-        int totalPrice = BASE_PRICE_B2 + distancePrice + nightFee;
+        float totalPrice = BASE_PRICE_B2 + distancePrice + nightFee;
+        car_price=totalPrice;
         carPrice.setText(totalPrice+ " VND");
 
     }

@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -66,6 +68,7 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
     //use for directions api
     private Location userDestinationLatLng;
 
+
     private List<Polyline> polylines=null;
 
     ArrayList<Marker> markerList = new ArrayList<>();
@@ -92,6 +95,12 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
+                preferences.edit().putString("user_location_latitude", String.valueOf(userLocationLatLng.getLatitude())).apply();
+                preferences.edit().putString("user_location_longtitude", String.valueOf(userLocationLatLng.getLongitude())).apply();
+                preferences.edit().putString("user_destination_latitude", String.valueOf(userDestinationLatLng.getLatitude())).apply();
+                preferences.edit().putString("user_destination_longitude", String.valueOf(userDestinationLatLng.getLongitude())).apply();
                 Intent intent = new Intent(ChooseDestinationActivity.this, BookDriverActivityUser.class);
                 startActivity(intent);
             }
@@ -322,7 +331,8 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
 //        double distanceInMiles = distance / 1609.34;
         Intent intent = new Intent(ChooseDestinationActivity.this, BookDriverActivityUser.class);
         intent.putExtra("distanceInKm", distanceInKm);
-
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        preferences.edit().putString("distance", String.valueOf(distanceInKm)).apply();
         // Display the distance on the map
         String distanceText = String.format("Distance: %.2f km", distanceInKm);
 
