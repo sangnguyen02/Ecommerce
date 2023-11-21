@@ -34,6 +34,7 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
     private EditText editTextID;
     private EditText editTextLicense;
     private EditText editTextBankNo;
+    private EditText editTextBankName;
     private com.google.android.material.button.MaterialButton acceptBtn;
     private com.google.android.material.button.MaterialButton denyBtn;
     private DatabaseReference driversRef;
@@ -51,7 +52,7 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
         editTextID = findViewById(R.id.editText_ID);
         editTextLicense = findViewById(R.id.editText_license);
         editTextBankNo = findViewById(R.id.editText_bankNo);
-
+        editTextBankName = findViewById(R.id.editText_bankname);
         acceptBtn = findViewById(R.id.accept_btn);
         denyBtn = findViewById(R.id.deny_btn);
 
@@ -77,13 +78,13 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
         editTextID.setText(driverInfos.getId());
         editTextLicense.setText(driverInfos.getLicense());
         editTextBankNo.setText(driverInfos.getBankAccount());
-
+        editTextBankName.setText(driverInfos.getBankName());
 
         DriverInfos finalDriverInfos = driverInfos;
         acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AcceptDriverRegistration(finalDriverInfos.getId());
+                AcceptDriverRegistration(finalDriverInfos.getPhoneNo());
                 SendAccountEmail(finalDriverInfos.getMail(),finalDriverInfos.getId(),finalDriverInfos.getName());
                 setResult(RESULT_OK);
                 finish();
@@ -100,10 +101,10 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
 
     }
 
-    private void AcceptDriverRegistration( String driverId){
+    private void AcceptDriverRegistration(String driverPhoneNo){
 
         // Retrieve the reference to the specific driver
-        DatabaseReference specificDriverRef = driversRef.child(driverId);
+        DatabaseReference specificDriverRef = driversRef.child(driverPhoneNo);
 
         // Retrieve the current data of the specific driver
         specificDriverRef.addListenerForSingleValueEvent(new ValueEventListener() {
