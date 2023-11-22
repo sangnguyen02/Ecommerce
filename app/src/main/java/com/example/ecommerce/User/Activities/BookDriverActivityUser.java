@@ -1,5 +1,6 @@
 package com.example.ecommerce.User.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -14,8 +15,14 @@ import android.widget.Button;
 
 import com.example.ecommerce.Enum.MyEnum;
 import com.example.ecommerce.Models.Order;
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.rey.material.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RatingBar;
@@ -168,18 +175,22 @@ public class BookDriverActivityUser extends AppCompatActivity {
         DatabaseReference newOrderRef = ordersReference.push();
 
         // Set the unique ID as the order's ID
-        order.setId(Integer.parseInt(newOrderRef.getKey()));
+        order.setId(newOrderRef.getKey());
 
         // Set the value of the Order object at the generated ID
         newOrderRef.setValue(order)
-                .addOnSuccessListener(aVoid -> {
-                    // Order uploaded successfully
-                    // You can perform any additional actions here
-                })
-                .addOnFailureListener(e -> {
-                    // Error occurred while uploading order
-                    // Handle the error
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getApplicationContext(), "Order Created!", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+                        Toast.makeText(getApplicationContext(), "Network Error!", Toast.LENGTH_SHORT).show();
+                    }
                 });
+
     }
 
     private void updateRatingScore(int rating) {

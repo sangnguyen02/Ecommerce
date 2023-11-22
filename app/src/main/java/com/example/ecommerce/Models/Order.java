@@ -8,7 +8,7 @@ import com.example.ecommerce.Enum.MyEnum;
 import java.io.Serializable;
 
 public class  Order implements Serializable {
-    private int id;
+    private String id;
     private String pickupLocation_Latitude;
     private String pickupLocation_Longtitude;
     private String destination_Latitude;
@@ -23,10 +23,7 @@ public class  Order implements Serializable {
 
     //OrderNoDriverConstructor
 
-    public  Order() {
-
-    }
-    public Order(int id, String pickupLocation_Latitude, String pickupLocation_Longtitude, String destination_Latitude, String destination_Longtidue, float price, String clientName, String clientNo, MyEnum.PaymentMethod paymentMethod, MyEnum.VehicleType vehicleType, MyEnum.OrderStatus orderStatus, DriverInfos driverInfos) {
+    public Order(String id, String pickupLocation_Latitude, String pickupLocation_Longtitude, String destination_Latitude, String destination_Longtidue, float price, String clientName, String clientNo, MyEnum.PaymentMethod paymentMethod, MyEnum.VehicleType vehicleType, MyEnum.OrderStatus orderStatus, DriverInfos driverInfos) {
         this.id = id;
         this.pickupLocation_Latitude = pickupLocation_Latitude;
         this.pickupLocation_Longtitude = pickupLocation_Longtitude;
@@ -40,9 +37,9 @@ public class  Order implements Serializable {
         this.orderStatus = orderStatus;
         this.driverInfos = driverInfos;
     }
-    public Order() {
+    public Order() {}
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -90,7 +87,7 @@ public class  Order implements Serializable {
         this.driverInfos = driverInfos;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
