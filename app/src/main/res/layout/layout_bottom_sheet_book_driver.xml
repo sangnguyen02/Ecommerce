@@ -125,7 +125,7 @@
                     app:cbd_strokeColor="@android:color/holo_green_dark"
                     android:background="@color/white"
                     android:layout_gravity="center_vertical"
-                    android:checked="true"
+                    android:checked="false"
                     />
             </LinearLayout>
         </LinearLayout>
