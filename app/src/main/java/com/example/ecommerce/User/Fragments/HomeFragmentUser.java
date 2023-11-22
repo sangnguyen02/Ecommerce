@@ -1,5 +1,6 @@
 package com.example.ecommerce.User.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,11 +10,13 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.ecommerce.Adapters.BannerViewPager2Adapter;
 import com.example.ecommerce.Animations.ZoomOutPageTransformer;
 import com.example.ecommerce.Models.ImageBanner;
 import com.example.ecommerce.R;
+import com.example.ecommerce.User.Activities.ChooseDestinationActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,8 @@ public class HomeFragmentUser extends Fragment {
     private ViewPager2 mViewPager2;
     private CircleIndicator3 mCircleIndicator3;
     private List<ImageBanner> mListImageBanner;
+
+    private EditText search;
 
     private Handler mHandler = new Handler();
     private Runnable mRunnable = new Runnable() {
@@ -45,7 +50,7 @@ public class HomeFragmentUser extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
+        search = rootView.findViewById(R.id.editText_search);
         mViewPager2 = rootView.findViewById(R.id.view_pager_2);
         mCircleIndicator3 = rootView.findViewById(R.id.circle_indicator_3);
 
@@ -65,6 +70,14 @@ public class HomeFragmentUser extends Fragment {
         });
 
         mViewPager2.setPageTransformer(new ZoomOutPageTransformer());
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(rootView.getContext(), ChooseDestinationActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }
