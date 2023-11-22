@@ -51,7 +51,7 @@ public class DriverInfos implements Serializable {
         this.bankName = bankName;
         this.bankAccount = bankAccount;
         this.driverStatus = driverStatus;
-        this.currentLocation = new Location("10.850727233146756, 106.77189164232747");
+        this.currentLocation = null;
     }
 
     public DriverInfos(){}

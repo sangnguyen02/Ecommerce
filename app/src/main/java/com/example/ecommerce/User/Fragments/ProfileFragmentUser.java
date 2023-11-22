@@ -98,6 +98,7 @@ public class ProfileFragmentUser extends Fragment {
             public void onClick(View view) {
                 Intent signUpIntent = new Intent(rootView.getContext(), RegisterDriverActivityUser.class);
                 signUpIntent.putExtra("PHONE_KEY", phone);
+                signUpIntent.putExtra("NAME_KEY", name);
                 startActivityForResult(signUpIntent, SIGN_UP_REQUEST);
             }
         });

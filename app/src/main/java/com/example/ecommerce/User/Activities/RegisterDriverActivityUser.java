@@ -70,7 +70,9 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("PHONE_KEY")) {
             String phone = intent.getStringExtra("PHONE_KEY");
+            String name = intent.getStringExtra("NAME_KEY");
             phoneNo.setText(phone);
+            fullname.setText(name);
         }
 
 
