@@ -36,7 +36,7 @@
         android:id="@+id/editSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="10dp"
@@ -44,11 +44,14 @@
         <EditText
             android:id="@+id/editText_fullname"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/input_design"
             android:hint="User's fullname"
             android:inputType="textPersonName"
+            android:clickable="false"
+            android:focusable="false"
+            android:cursorVisible="false"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textStyle="bold"
@@ -57,7 +60,7 @@
         <EditText
             android:id="@+id/editText_phoneNo"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/input_design"
             android:hint="User's phone number"
@@ -72,7 +75,7 @@
         <EditText
             android:id="@+id/editText_mail"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/input_design"
             android:hint="User's mail"
@@ -85,7 +88,7 @@
         <EditText
             android:id="@+id/editText_ID"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/input_design"
             android:hint="User's ID"
@@ -98,7 +101,7 @@
         <EditText
             android:id="@+id/editText_license"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/input_design"
             android:hint="User's license"
@@ -109,9 +112,22 @@
             android:textSize="20sp"/>
 
         <EditText
+            android:id="@+id/editText_bankName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/input_design"
+            android:hint="User's bank Name"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+
+        <EditText
             android:id="@+id/editText_bankNo"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/input_design"
             android:hint="User's bank number"

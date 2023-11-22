@@ -22,6 +22,8 @@ import com.example.ecommerce.Animations.ZoomOutPageTransformer;
 import com.example.ecommerce.Models.ImageBanner;
 import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
+import com.example.ecommerce.User.Activities.MapActivityUser;
+import com.example.ecommerce.User.Activities.ChooseDestinationActivity;
 import com.example.ecommerce.User.Activities.ChooseDestinationActivity;
 
 import com.example.ecommerce.User.Activities.ChooseDestinationActivity;

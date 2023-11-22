@@ -4,11 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".User.Fragments.ProfileFragmentUser">
-    <include
-        android:id="@+id/app_bar"
-        layout="@layout/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -70,6 +65,13 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="20sp"/>
+
+            <include
+                android:id="@+id/app_bar"
+                layout="@layout/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/savedLocation_btn"
                 android:layout_width="match_parent"

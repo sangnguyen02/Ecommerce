@@ -40,6 +40,7 @@ public class  Order implements Serializable {
         this.orderStatus = orderStatus;
         this.driverInfos = driverInfos;
     }
+    public Order() {
 
     public void setId(int id) {
         this.id = id;

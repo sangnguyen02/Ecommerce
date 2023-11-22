@@ -42,9 +42,15 @@ public class MainActivityUser extends AppCompatActivity {
 //            Log.d("Username", userName);
         }
 
+        Order order=new Order();
+        order.setClientNo(phone);
+        order.setClientName(name);
+
+        Bundle orderBundle = new Bundle();
+        orderBundle.putSerializable("order", order);
 
         HomeFragmentUser homeFragmentUser = new HomeFragmentUser();
-
+        homeFragmentUser.setArguments(orderBundle);
 
         replaceFragment(homeFragmentUser);
 
