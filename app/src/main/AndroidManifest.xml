@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".User.Paypal.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,7 +16,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ecommerce"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".User.VNPay.VNP_API"
+            android:exported="false" >
+        </activity>
+
+        <activity
+            android:name=".User.Paypal.PaypalAPI"
+            android:exported="true">
+
+        </activity>
         <activity
             android:name=".User.Activities.CaculateMoneyActivity"
             android:exported="false" />
@@ -42,9 +54,6 @@
             android:exported="false" />
         <activity
             android:name=".Employee.Admin.Activities.MainActivityAdmin"
-            android:exported="false" />
-        <activity
-            android:name=".User.PayPalAPI"
             android:exported="false" />
         <activity
             android:name=".User.Activities.RegisterDriverActivityUser"
@@ -92,7 +101,6 @@
                     android:scheme="demozpdk" />
             </intent-filter>
         </activity>
-
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
