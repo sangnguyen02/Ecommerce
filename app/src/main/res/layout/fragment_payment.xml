@@ -4,30 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".User.PayPalAPI">
+    tools:context=".User.Fragments.PaymentFragmentUser">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <com.paypal.checkout.paymentbutton.PaymentButtonContainer
+        android:id="@+id/payment_button_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:text="Payment"
-        android:textSize="26dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:layout_centerInParent="true"
+        app:paypal_button_color="blue"
+        app:paypal_button_enabled="true"
+        app:paypal_button_label="pay"
+        app:paypal_button_shape="rectangle"
+        app:paypal_button_size="large" />
 
-        <EditText
-            android:id="@+id/edtAmount"
-            android:hint="Enter Amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:id="@+id/btnPayNow"
-            android:hint="Pay Now"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btnOpenSdk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/payment_button_container"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="165dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="153dp"
+        android:layout_marginBottom="207dp"
+        android:text="VNPAY" />
 
-    </LinearLayout>
 </RelativeLayout>

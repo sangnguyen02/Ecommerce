@@ -10,6 +10,7 @@
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
+        android:name=".User.Paypal.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -17,7 +18,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ecommerce"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".User.VNPay.VNP_API"
+            android:exported="false" >
+        </activity>
+
+        <activity
+            android:name=".User.Paypal.PaypalAPI"
+            android:exported="true">
+
+        </activity>
         <activity
             android:name=".User.Activities.BookDriverActivityUser"
             android:exported="false"
@@ -60,10 +72,6 @@
             android:screenOrientation="fullSensor"/>
         <activity
             android:name=".Employee.Admin.Activities.MainActivityAdmin"
-            android:exported="false"
-            android:screenOrientation="fullSensor"/>
-        <activity
-            android:name=".User.PayPalAPI"
             android:exported="false"
             android:screenOrientation="fullSensor"/>
         <activity
