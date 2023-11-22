@@ -28,8 +28,6 @@ import com.paypal.checkout.order.OnCaptureComplete;
 import com.paypal.checkout.order.OrderRequest;
 import com.paypal.checkout.order.PurchaseUnit;
 import com.paypal.checkout.paymentbutton.PaymentButtonContainer;
-import com.vnpay.authentication.VNP_AuthenticationActivity;
-import com.vnpay.authentication.VNP_SdkCompletedCallback;
 
 import org.jetbrains.annotations.NotNull;
 

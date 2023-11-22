@@ -19,6 +19,7 @@ import com.example.ecommerce.Employee.Driver.Activities.ReceiveOrderActivityDriv
 import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -71,7 +72,7 @@ public class HomeFragmentDriver extends Fragment {
     private void setDriver_available() {
 
 
-        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
+       /* DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
 
         UsersRef.child("driverStatus").setValue("Unavailable").addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -82,13 +83,13 @@ public class HomeFragmentDriver extends Fragment {
                 Snackbar snackbar = Snackbar.make(showSnackBarView, "Failed to change status", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
-        });
+        });*/
     }
 
     private void setDriver_unavailable() {
 
 
-        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Order").child(key_driver);
+      /*  DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Order").child(key_driver);
 
         UsersRef.child("Status").setValue("Accept").addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -99,7 +100,7 @@ public class HomeFragmentDriver extends Fragment {
                 Snackbar snackbar = Snackbar.make(showSnackBarView, "Failed to accept", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
-        });
+        });*/
     }
 
 
