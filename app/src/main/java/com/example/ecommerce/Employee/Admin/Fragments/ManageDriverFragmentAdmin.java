@@ -2,7 +2,6 @@ package com.example.ecommerce.Employee.Admin.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,23 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ecommerce.Adapters.DriverAdapter;
-import com.example.ecommerce.Employee.Admin.Activities.ManageDriverDetailActivityAdmin;
 import com.example.ecommerce.Employee.Admin.Activities.ManageRegisterDriverActivityAdmin;
 import com.example.ecommerce.Enum.MyEnum;
-import com.example.ecommerce.Models.Driver;
 import com.example.ecommerce.Models.DriverInfos;
 import com.example.ecommerce.R;
-import com.example.ecommerce.ViewHolder.ManageDriverViewHolder;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
