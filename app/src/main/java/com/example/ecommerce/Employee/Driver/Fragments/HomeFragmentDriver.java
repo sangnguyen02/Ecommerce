@@ -1,5 +1,6 @@
 package com.example.ecommerce.Employee.Driver.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,8 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ecommerce.Employee.Driver.Activities.ReceiveOrderActivityDriver;
 import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -64,4 +68,40 @@ public class HomeFragmentDriver extends Fragment {
 
         return rootView;
     }
+    private void setDriver_available() {
+
+
+        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
+
+        UsersRef.child("driverStatus").setValue("Unavailable").addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Snackbar snackbar = Snackbar.make(showSnackBarView, "Change status successfully", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+            else {
+                Snackbar snackbar = Snackbar.make(showSnackBarView, "Failed to change status", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+        });
+    }
+
+    private void setDriver_unavailable() {
+
+
+        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Order").child(key_driver);
+
+        UsersRef.child("Status").setValue("Accept").addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Snackbar snackbar = Snackbar.make(showSnackBarView, "Accept confirmed", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+            else {
+                Snackbar snackbar = Snackbar.make(showSnackBarView, "Failed to accept", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+        });
+    }
+
+
+
 }

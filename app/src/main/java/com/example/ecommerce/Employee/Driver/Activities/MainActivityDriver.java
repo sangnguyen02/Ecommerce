@@ -12,16 +12,21 @@ import com.example.ecommerce.Employee.Driver.Fragments.HomeFragmentDriver;
 import com.example.ecommerce.Employee.Driver.Fragments.ProfileFragmentDriver;
 import com.example.ecommerce.Employee.Driver.Fragments.WalletFragmentDriver;
 import com.example.ecommerce.R;
+import com.example.ecommerce.User.Fragments.ProfileFragmentUser;
 import com.example.ecommerce.databinding.ActivityMainDriverBinding;
 
 public class MainActivityDriver extends AppCompatActivity {
-
+    String email_driver;
     ActivityMainDriverBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainDriverBinding.inflate(getLayoutInflater());
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            email_driver = extras.getString("email_driver");
+        }
         setContentView(binding.getRoot());
 
         replaceFragment(new HomeFragmentDriver());
@@ -29,7 +34,11 @@ public class MainActivityDriver extends AppCompatActivity {
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
-                    replaceFragment(new HomeFragmentDriver());
+                    HomeFragmentDriver profileFragmentDriver = new HomeFragmentDriver();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("email_driver", email_driver);
+                    profileFragmentDriver.setArguments(bundle);
+                    replaceFragment(profileFragmentDriver);
                     break;
 
 
