@@ -32,10 +32,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+
 }
 
 dependencies {
-    implementation 'com.paypal.sdk:paypal-android-sdk:2.16.0'
+
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -51,6 +53,8 @@ dependencies {
     // Add the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-auth")
+
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -70,4 +74,13 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.6.0")
     implementation("commons-codec:commons-codec:1.14")
     //compileSdk(name:'zpdk-release-v3.1', ext:'aar')
+
+    //PayPal
+    implementation('com.paypal.checkout:android-sdk:1.1.0')
+    implementation 'com.paypal.sdk:paypal-android-sdk:2.16.0'
+
+    //VN
+    implementation fileTree(dir: 'D:\\nam4\\EC', include: ['*.aar', '*.jar'], exclude: [])
+    //implementation 'com.google.code.gson:gson:2.8.5'
+    //implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.14.1'
 }
