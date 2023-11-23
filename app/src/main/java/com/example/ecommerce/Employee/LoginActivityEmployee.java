@@ -28,7 +28,7 @@ public class LoginActivityEmployee extends AppCompatActivity {
     EditText emailInput, passwordInput;
     MaterialButton loginBtn;
     TextView signInAsUser;
-    String key_driver= "123";
+    String key_driver= "+84352419723";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,10 +86,11 @@ public class LoginActivityEmployee extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String dbUsername = snapshot.child("username").getValue(String.class);
                     String dbPassword = snapshot.child("password").getValue(String.class);
-
+                    isAuthenticated = true;
                     if (dbUsername.equals(email) && dbPassword.equals(password)) {
                         // Authentication successful
                         isAuthenticated = true;
+                        key_driver=snapshot.getKey();
                         Toast.makeText(LoginActivityEmployee.this, "Authentication Successfully.",
                                 Toast.LENGTH_SHORT).show();
                         break;
@@ -99,6 +100,9 @@ public class LoginActivityEmployee extends AppCompatActivity {
                 if (isAuthenticated) {
                     // Proceed to the next activity or show a success message
                     Intent intent = new Intent(LoginActivityEmployee.this, MainActivityDriver.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("key_driver", key_driver);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                     finish(); // Optional: Finish the current activity to prevent going back on pressing back button
                 } else {

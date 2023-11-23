@@ -1,6 +1,7 @@
 package com.example.ecommerce.Employee.Driver.Activities;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -16,7 +17,8 @@ import com.example.ecommerce.User.Fragments.ProfileFragmentUser;
 import com.example.ecommerce.databinding.ActivityMainDriverBinding;
 
 public class MainActivityDriver extends AppCompatActivity {
-    String email_driver;
+    String key_driver,orderId;
+    String fragment;
     ActivityMainDriverBinding binding;
 
     @Override
@@ -25,20 +27,23 @@ public class MainActivityDriver extends AppCompatActivity {
         binding = ActivityMainDriverBinding.inflate(getLayoutInflater());
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            email_driver = extras.getString("email_driver");
+            key_driver = extras.getString("key_driver");
+            orderId = extras.getString("orderId");
         }
+        Log.e("Home",key_driver);
         setContentView(binding.getRoot());
 
-        replaceFragment(new HomeFragmentDriver());
 
+        HomeFragmentDriver homeFragmentDriver = new HomeFragmentDriver();
+        Bundle bundle = new Bundle();
+        bundle.putString("key_driver", key_driver);
+        bundle.putString("orderId", orderId);
+        homeFragmentDriver.setArguments(bundle);
+        replaceFragment(homeFragmentDriver);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
-                    HomeFragmentDriver profileFragmentDriver = new HomeFragmentDriver();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("email_driver", email_driver);
-                    profileFragmentDriver.setArguments(bundle);
-                    replaceFragment(profileFragmentDriver);
+                    replaceFragment(homeFragmentDriver);
                     break;
 
 
