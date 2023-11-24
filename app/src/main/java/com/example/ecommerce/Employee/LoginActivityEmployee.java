@@ -2,6 +2,7 @@ package com.example.ecommerce.Employee;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ public class LoginActivityEmployee extends AppCompatActivity {
     EditText emailInput, passwordInput;
     MaterialButton loginBtn;
     TextView signInAsUser;
-    String key_driver= "+84352419723";
+    String key_driver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +67,9 @@ public class LoginActivityEmployee extends AppCompatActivity {
                     SignInAsAdmin(email, password);
                 }else{
                     String hashedPassword = PasswordHasher.hashPassword(password);
+                    Log.e("LoginActivity",hashedPassword);
                     SignInAsDriver(email, hashedPassword);
+
                 }
 
 
@@ -86,7 +89,7 @@ public class LoginActivityEmployee extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String dbUsername = snapshot.child("username").getValue(String.class);
                     String dbPassword = snapshot.child("password").getValue(String.class);
-                    isAuthenticated = true;
+
                     if (dbUsername.equals(email) && dbPassword.equals(password)) {
                         // Authentication successful
                         isAuthenticated = true;

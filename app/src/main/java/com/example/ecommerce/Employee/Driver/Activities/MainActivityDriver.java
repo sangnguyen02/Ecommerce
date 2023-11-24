@@ -35,10 +35,13 @@ public class MainActivityDriver extends AppCompatActivity {
 
 
         HomeFragmentDriver homeFragmentDriver = new HomeFragmentDriver();
+        HistoryFragmentDriver historyFragmentDriver = new HistoryFragmentDriver();
+        ProfileFragmentDriver profileFragmentDriver = new ProfileFragmentDriver();
         Bundle bundle = new Bundle();
         bundle.putString("key_driver", key_driver);
         bundle.putString("orderId", orderId);
         homeFragmentDriver.setArguments(bundle);
+        profileFragmentDriver.setArguments(bundle);
         replaceFragment(homeFragmentDriver);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -58,7 +61,7 @@ public class MainActivityDriver extends AppCompatActivity {
 
 
                 case R.id.profile:
-                    replaceFragment(new ProfileFragmentDriver());
+                    replaceFragment(profileFragmentDriver);
                     break;
 
 
