@@ -3,11 +3,13 @@ package com.example.ecommerce.Employee.Driver.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.ecommerce.R;
 import com.google.android.material.button.MaterialButton;
@@ -18,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
 
 public class EditProfileActivityDriver extends AppCompatActivity {
     EditText fullNameEditText,phoneNoEditText, mailEditText, idEditText,licenseEditText, bankNoEditText ;
@@ -47,7 +51,8 @@ public class EditProfileActivityDriver extends AppCompatActivity {
 
         showSnackBarView = findViewById(android.R.id.content);
         if ( key_driver!= null){
-            driverInfoDisplay();
+            driverInfoDisplay(fullNameEditText,phoneNoEditText,mailEditText,
+                    idEditText,licenseEditText, bankNoEditText,imageDriver);
         }
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,9 +64,12 @@ public class EditProfileActivityDriver extends AppCompatActivity {
     }
 
 
-    private void driverInfoDisplay()
+    private void driverInfoDisplay(final EditText fullNameEditText,final EditText phoneNoEditText,
+                                   final EditText mailEditText,final EditText idEditText,
+                                   final EditText licenseEditText,final EditText bankNoEditText,
+                                   final ImageView imageDriver)
     {
-        DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriverInfo").child(key_driver);
+        DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
 
         DriverRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -99,10 +107,6 @@ public class EditProfileActivityDriver extends AppCompatActivity {
                         Picasso.get().load(picDriver).into(imageDriver);
                     }
 
-
-
-
-
                 }
             }
             @Override
@@ -121,27 +125,56 @@ public class EditProfileActivityDriver extends AppCompatActivity {
         String newBank = bankNoEditText.getText().toString();
 
 
-        if (TextUtils.isEmpty(newName)||TextUtils.isEmpty(newPhone)||TextUtils.isEmpty(newMail)||TextUtils.isEmpty(newId)||
-                TextUtils.isEmpty(newLicense)||TextUtils.isEmpty(newBank)) {
-            Snackbar snackbar = Snackbar.make(showSnackBarView, "Please fill all required information", Snackbar.LENGTH_LONG);
+        if (!isContainOnlyChar(newName)) {
+            Snackbar snackbar = Snackbar.make(showSnackBarView, "Invalid name (should only contain letters)", Snackbar.LENGTH_LONG);
             snackbar.show();
+            return; // Exit the method if the name is invalid
         }
+
+        // Validate the email
+        /*if (!isValidEmail(newMail)) {
+            Snackbar snackbar = Snackbar.make(showSnackBarView, "Invalid email (should only contain valid characters)", Snackbar.LENGTH_LONG);
+            snackbar.show();
+            return; // Exit the method if the email is invalid
+        }*/
 
         DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
 
-        UsersRef.child("name").setValue(newName)
+        if (!TextUtils.isEmpty(newName)) {
+            UsersRef.child("name").setValue(newName);
+        }
+
+        if (!TextUtils.isEmpty(newPhone)) {
+            UsersRef.child("phoneNo").setValue(newPhone);
+        }
+
+        if (!TextUtils.isEmpty(newMail)) {
+            UsersRef.child("mail").setValue(newMail);
+        }
+
+        if (!TextUtils.isEmpty(newId)) {
+            UsersRef.child("id").setValue(newId);
+        }
+
+        if (!TextUtils.isEmpty(newLicense)) {
+            UsersRef.child("license").setValue(newLicense);
+        }
+
+        if (!TextUtils.isEmpty(newBank)) {
+            UsersRef.child("bankAccount").setValue(newBank);
+        }
+
+        UsersRef.updateChildren(new HashMap<String, Object>())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // Update other user information
-                        UsersRef.child("phoneNo").setValue(newPhone);
-                        UsersRef.child("mail").setValue(newMail);
-                        UsersRef.child("id").setValue(newId);
-                        UsersRef.child("license").setValue(newLicense);
-                        UsersRef.child("bankAccount").setValue(newBank);
-
                         Snackbar snackbar = Snackbar.make(showSnackBarView, "Update profile successfully", Snackbar.LENGTH_LONG);
                         snackbar.show();
-                        finish();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                finish(); // Finish the activity after the delay
+                            }
+                        }, 3000);
                     } else {
                         Snackbar snackbar = Snackbar.make(showSnackBarView, "Failed to update profile", Snackbar.LENGTH_LONG);
                         snackbar.show();
@@ -150,10 +183,18 @@ public class EditProfileActivityDriver extends AppCompatActivity {
 
 
 
-
-
-
-
     }
+    private boolean isContainOnlyChar(String input) {
+        // Check if the input does not contain any special characters except for "@"
+        return input.matches("^[a-zA-Z ]+$");
+    }
+
+
+    private boolean isValidEmail(String email) {
+        // Check if the email contains only valid characters
+        return email.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9.]+$");
+    }
+
+
 
 }

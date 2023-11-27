@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.core.app.NotificationCompat;
 
@@ -48,7 +49,7 @@ public class HomeFragmentDriver extends Fragment {
     BottomSheetBehavior bottomSheetBehaviorRequestPopUp;
     View showSnackBarView;
     ImageView setAvailable, setUnavailable;
-    TextView tvFrom, tvTo, tvPrice, tvMethod, tvUPhone, tvTypeVehicle;
+    TextView tvFrom, tvTo, tvPrice, tvMethod, tvUPhone, tvTypeVehicle, status_driver;
     MaterialButton acceptBook_btn,cancelBook_btn;
     public static final String CHANNEL_ID = "notification_driver";
 
@@ -86,6 +87,9 @@ public class HomeFragmentDriver extends Fragment {
         tvTypeVehicle = rootView.findViewById(R.id.tv_typeVehicle);
         acceptBook_btn= rootView.findViewById(R.id.acceptBook_btn);
         cancelBook_btn= rootView.findViewById(R.id.cancelBook_btn);
+        status_driver= rootView.findViewById(R.id.status_home_driver);
+
+        setStatus(status_driver);
 
         if (orderId != null) {
             Log.e("Update after notify",orderId);
@@ -107,10 +111,10 @@ public class HomeFragmentDriver extends Fragment {
                     Log.e("HomeFrag","searchForDatabase");
                     // This method will be called whenever data at the specified location changes
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String clientNo = snapshot.child("clientNo").getValue(String.class);
+                        String driverNo = snapshot.child("driverNo").getValue(String.class);
                         String orderStatus = snapshot.child("orderStatus").getValue(String.class);
 
-                        if (clientNo.equals(key_driver) && orderStatus.equals("PENDING")) {
+                        if (driverNo.equals(key_driver) && orderStatus.equals("PENDING")) {
                             // Authentication successful
                             Order dataObject = snapshot.getValue(Order.class);
                             orderId=snapshot.getKey();
@@ -147,14 +151,30 @@ public class HomeFragmentDriver extends Fragment {
 
 
 
-//        setAvailable.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                createNotificationChannel();
-//                sendNotification();
-//
-//            }
-//        });
+        setAvailable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setDriver_available();
+            }
+        });
+        setUnavailable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setDriver_unavailable();
+            }
+        });
+        acceptBook_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                acceptOrder();
+            }
+        });
+        cancelBook_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cancelOrder();
+            }
+        });
 
         return rootView;
     }
@@ -162,15 +182,13 @@ public class HomeFragmentDriver extends Fragment {
     private void setDriver_available() {
 
 
-        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
+        DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
 
-        UsersRef.child("driverStatus").setValue("Unavailable").addOnCompleteListener(task -> {
+        DriverRef.child("driverStatus").setValue("ACTIVE").addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Snackbar snackbar = Snackbar.make(showSnackBarView, "Change status successfully", Snackbar.LENGTH_LONG);
-                snackbar.show();
+
             } else {
-                Snackbar snackbar = Snackbar.make(showSnackBarView, "Failed to change status", Snackbar.LENGTH_LONG);
-                snackbar.show();
+
             }
         });
     }
@@ -178,18 +196,101 @@ public class HomeFragmentDriver extends Fragment {
     private void setDriver_unavailable() {
 
 
-        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Order").child(key_driver);
+        DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
 
-        UsersRef.child("Status").setValue("Accept").addOnCompleteListener(task -> {
+        DriverRef.child("driverStatus").setValue("OFFLINE").addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Snackbar snackbar = Snackbar.make(showSnackBarView, "Accept confirmed", Snackbar.LENGTH_LONG);
-                snackbar.show();
+
             } else {
-                Snackbar snackbar = Snackbar.make(showSnackBarView, "Failed to accept", Snackbar.LENGTH_LONG);
-                snackbar.show();
+
             }
         });
     }
+    private void acceptOrder() {
+
+
+        DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
+
+        DriverRef.child("driverStatus").setValue("BUSY").addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+
+            } else {
+
+            }
+        });
+
+        if (orderId!=null){
+            DatabaseReference OrdersRef = FirebaseDatabase.getInstance().getReference().child("Order").child(orderId);
+            OrdersRef.child("orderStatus").setValue("ACCEPT");
+        }
+    }
+    private void cancelOrder() {
+
+
+        DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
+
+        DriverRef.child("driverStatus").setValue("DENY").addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+
+            } else {
+
+            }
+        });
+
+        if (orderId!=null){
+            DatabaseReference OrdersRef = FirebaseDatabase.getInstance().getReference().child("Order").child(orderId);
+            OrdersRef.child("orderStatus").setValue("PENDING");
+        }
+
+
+    }
+
+
+    private void setStatus(final TextView status_driver)
+    {
+        DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
+
+        DriverRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Log.e("Profile Frag Color", "da tim thay ");
+                    if (dataSnapshot.hasChild("driverStatus")) {
+                        String statusDriver = dataSnapshot.child("driverStatus").getValue().toString();
+                        status_driver.setText(statusDriver);
+
+                        // Change text color based on the driver status
+                        int textColor = getColorForDriverStatus(statusDriver);
+                        status_driver.setTextColor(textColor);
+                    }
+                }
+            }
+
+            private int getColorForDriverStatus(String status) {
+                int color;
+                if ("ACTIVE".equals(status)) {
+                    // Set color to green for "ACTIVE" status
+                    color = ContextCompat.getColor(requireContext(), R.color.teal_200); // Change R.color.green to your color resource
+                } else if ("OFFLINE".equals(status)||"DENY".equals(status)) {
+                    // Set color to red for "BUSY" status
+                    color = ContextCompat.getColor(requireContext(), R.color.background_snack_bar); // Change R.color.red to your color resource
+                } else {
+                    // Default color (you can set it to another color or handle other cases)
+                    color = ContextCompat.getColor(requireContext(), R.color.orange);
+                }
+                return color;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle errors
+                Log.e("Profile Driver Fragment", "Error database");
+            }
+        });
+
+    }
+
+
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -253,8 +354,6 @@ public class HomeFragmentDriver extends Fragment {
                     // This method will be called whenever data at the specified location changes
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String orderNum =snapshot.getKey();
-
-
                         if (orderNum.equals(orderId)) {
                             // Authentication successful
                             Order dataObject = snapshot.getValue(Order.class);
