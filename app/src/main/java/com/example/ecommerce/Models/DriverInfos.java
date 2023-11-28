@@ -3,6 +3,7 @@ package com.example.ecommerce.Models;
 import android.location.Location;
 
 import com.example.ecommerce.Enum.MyEnum;
+import com.firebase.geofire.GeoFire;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,7 +21,11 @@ public class DriverInfos implements Serializable {
     private String bankName;
     private List<Bill> bills;
     private MyEnum.DriverStatus driverStatus;
-    private Location currentLocation;
+    private GeoFire currentLocation;
+
+    public void setCurrentLocation(GeoFire currentLocation) {
+        this.currentLocation = currentLocation;
+    }
 
     public String getBankName() {
         return bankName;
@@ -30,13 +35,11 @@ public class DriverInfos implements Serializable {
         this.bankName = bankName;
     }
 
-    public Location getCurrentLocation() {
+    public GeoFire getCurrentLocation() {
         return currentLocation;
     }
 
-    public void setCurrentLocation(Location currentLocation) {
-        this.currentLocation = currentLocation;
-    }
+
 
     //Driver Information Without Bill
     public DriverInfos(String phoneNo, String name, String mail, String id, String license, float avgRating, int balance, String picture, String bankName,String bankAccount, MyEnum.DriverStatus driverStatus) {

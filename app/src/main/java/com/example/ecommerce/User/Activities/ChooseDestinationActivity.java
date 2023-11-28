@@ -24,6 +24,11 @@ import com.directions.route.RouteException;
 import com.directions.route.Routing;
 import com.directions.route.RoutingListener;
 import com.example.ecommerce.R;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryDataEventListener;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -42,6 +47,10 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,6 +82,9 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
 
     ArrayList<Marker> markerList = new ArrayList<>();
     private Button RouteBTN,PriceBTN;
+    private Boolean driverFound=false;
+    private String driverFoundID;
+    private int radius=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,12 +113,56 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
                 preferences.edit().putString("user_location_longtitude", String.valueOf(userLocationLatLng.getLongitude())).apply();
                 preferences.edit().putString("user_destination_latitude", String.valueOf(userDestinationLatLng.getLatitude())).apply();
                 preferences.edit().putString("user_destination_longitude", String.valueOf(userDestinationLatLng.getLongitude())).apply();
+                getClosesDriver();
                 Intent intent = new Intent(ChooseDestinationActivity.this, BookDriverActivityUser.class);
                 startActivity(intent);
             }
         });
 
     }
+    private  void getClosesDriver()
+    {
+        DatabaseReference driverLocation= FirebaseDatabase.getInstance().getReference().child("DriversInfo");
+        GeoFire geoFire= new GeoFire(driverLocation);
+        GeoQuery geoQuery=geoFire.queryAtLocation(new GeoLocation(userLocationLatLng.getLatitude(),userLocationLatLng.getLongitude()),radius);
+        geoQuery.removeAllListeners();
+       geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+           @Override
+           public void onKeyEntered(String key, GeoLocation location) {
+               if(!driverFound)
+               {
+                   driverFound=true;
+                   driverFoundID=key;
+               }
+           }
+
+           @Override
+           public void onKeyExited(String key) {
+
+           }
+
+           @Override
+           public void onKeyMoved(String key, GeoLocation location) {
+
+           }
+
+           @Override
+           public void onGeoQueryReady() {
+               if(!driverFound)
+               {
+                   radius++;
+                   getClosesDriver();
+               }
+
+           }
+
+           @Override
+           public void onGeoQueryError(DatabaseError error) {
+
+           }
+       });
+    }
+
     private void onSearchLocation( ) {
         urlocation.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
