@@ -12,46 +12,62 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp">
-            <TextView
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/title_home_driver"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Status: "
-                android:textSize="26sp"
-                android:layout_gravity="center_horizontal"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                />
-            <TextView
-                android:id="@+id/status_home_driver"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="26sp"
-                android:layout_gravity="center_horizontal"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                />
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status: "
+                    android:textSize="26sp"
+                    android:layout_gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    />
+                <TextView
+                    android:id="@+id/status_home_driver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="26sp"
+                    android:layout_gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    />
 
-            <ImageView
-                android:id="@+id/img_connect"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/connect"
-                android:layout_marginLeft="30dp"/>
-            <ImageView
-                android:id="@+id/img_disconnect"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/disconnect"
-                android:layout_marginLeft="30dp"/>
+                <ImageView
+                    android:id="@+id/img_connect"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/connect"
+                    android:layout_marginLeft="30dp"/>
+                <ImageView
+                    android:id="@+id/img_disconnect"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/disconnect"
+                    android:layout_marginLeft="30dp"/>
 
-        </LinearLayout>
+            </LinearLayout>
+            <fragment
+                class="com.google.android.gms.maps.MapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/title_home_driver"
+                android:layout_marginTop="20dp"
+                android:id="@+id/mMapDriver"/>
+
+
+        </RelativeLayout>
+
 
         <include layout="@layout/layout_bottom_sheet_order_pop_up"/>
 
