@@ -14,6 +14,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.ecommerce.R;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.paypal.checkout.approve.Approval;
 import com.paypal.checkout.approve.OnApprove;
 import com.paypal.checkout.createorder.CreateOrder;
@@ -38,7 +44,9 @@ public class PaymentFragmentUser extends Fragment {
     PaymentButtonContainer paymentButtonContainer;
     Button VNPayBtt;
     private static final String TAG = "MyTag";
+    private DatabaseReference databaseReference;
 
+    private float currencyRate = 0.04f;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,47 +54,28 @@ public class PaymentFragmentUser extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_payment, container, false);
         paymentButtonContainer = rootView.findViewById(R.id.payment_button_container);
 
-        paymentButtonContainer.setup(
+        // Initialize Firebase
+        FirebaseApp.initializeApp(requireContext());
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Order").child("-Njp-kTCxUGK_nj6O2dO").child("price");
 
-                new CreateOrder() {
+       databaseReference.addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot snapshot) {
+               Float priceVND =snapshot.getValue(Float.class);
+               if(priceVND!=null) {
+                   Float price=convertVndToUsd(priceVND);
+                   setupPayPal(price);
+               }
 
-                    @Override
-                    public void create(@NonNull CreateOrderActions createOrderActions) {
-                        Log.d(TAG, "create: ");
-                        ArrayList<PurchaseUnit> purchaseUnits = new ArrayList<>();
-                        purchaseUnits.add(
-                                new PurchaseUnit.Builder()
-                                        .amount(
-                                                new Amount.Builder()
-                                                        .currencyCode(CurrencyCode.USD)
-                                                        .value("10.00")
-                                                        .build()
-                                        )
-                                        .build()
-                        );
-                        OrderRequest order = new OrderRequest(
-                                OrderIntent.CAPTURE,
-                                new AppContext.Builder()
-                                        .userAction(UserAction.PAY_NOW)
-                                        .build(),
-                                purchaseUnits
-                        );
-                        createOrderActions.create(order, (CreateOrderActions.OnOrderCreated) null);
-                    }
-                },
-                new OnApprove() {
-                    @Override
-                    public void onApprove(@NonNull Approval approval) {
-                        approval.getOrderActions().capture(new OnCaptureComplete() {
-                            @Override
-                            public void onCaptureComplete(@NotNull CaptureOrderResult result) {
-                                Log.d(TAG, String.format("CaptureOrderResult: %s", result));
-                                Toast.makeText(rootView.getContext(), "Successful", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }
-        );
+
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError error) {
+               Log.e(TAG, "onCancelled: "+ error.getMessage());
+           }
+       });
+
 
 
         //VNPay
@@ -130,6 +119,56 @@ public class PaymentFragmentUser extends Fragment {
 //        startActivity(intent);
 //    }
 
+    //Paypal method
+    private float convertVndToUsd(float priceVnd) {
+        return priceVnd * currencyRate;
+    }
+
+
+    private  void setupPayPal(Float price){
+        paymentButtonContainer.setup(
+
+                new CreateOrder() {
+
+                    @Override
+                    public void create(@NonNull CreateOrderActions createOrderActions) {
+                        Log.d(TAG, "create: ");
+                        ArrayList<PurchaseUnit> purchaseUnits = new ArrayList<>();
+                        purchaseUnits.add(
+                                new PurchaseUnit.Builder()
+                                        .amount(
+                                                new Amount.Builder()
+                                                        .currencyCode(CurrencyCode.USD)
+                                                        .value(Float.toString(price))
+                                                        .build()
+                                        )
+                                        .build()
+                        );
+                        OrderRequest order = new OrderRequest(
+                                OrderIntent.CAPTURE,
+                                new AppContext.Builder()
+                                        .userAction(UserAction.PAY_NOW)
+                                        .build(),
+                                purchaseUnits
+                        );
+                        createOrderActions.create(order, (CreateOrderActions.OnOrderCreated) null);
+                    }
+                },
+                new OnApprove() {
+                    @Override
+                    public void onApprove(@NonNull Approval approval) {
+                        approval.getOrderActions().capture(new OnCaptureComplete() {
+                            @Override
+                            public void onCaptureComplete(@NotNull CaptureOrderResult result) {
+                                Log.d(TAG, String.format("CaptureOrderResult: %s", result));
+                                Toast.makeText(requireContext(), "Successful", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+        );
+
+    }
 
 
 }
