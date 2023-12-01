@@ -17,7 +17,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ecommerce.Enum.MyEnum;
+import com.example.ecommerce.Models.Bill;
 import com.example.ecommerce.Models.DriverInfos;
+import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
 import com.example.ecommerce.SplashActivity;
 import com.example.ecommerce.User.Activities.EditProfileActivityUser;
@@ -25,6 +28,8 @@ import com.example.ecommerce.User.Activities.FaqActivityUser;
 import com.example.ecommerce.User.Activities.RegisterDriverActivityUser;
 import com.example.ecommerce.User.Activities.SavedLocationActivityUser;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +37,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.paypal.android.sdk.payments.LoginActivity;
+
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 public class ProfileFragmentUser extends Fragment {
 

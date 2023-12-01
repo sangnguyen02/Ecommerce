@@ -27,12 +27,13 @@
             android:id="@+id/labels"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/title_bill"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="50dp"
                 android:text="The trip to:"
                 android:textStyle="bold"
                 android:textSize="20sp"
@@ -55,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="40dp"
-                android:text="Date and time:"
+                android:text="Date:"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="@color/black"
@@ -66,13 +67,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/title_bill"
             android:layout_toEndOf="@id/labels"
             android:layout_gravity="center_horizontal">
             <TextView
-                android:id="@+id/tv_destination"
+                android:id="@+id/tv_destination_history_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
                 android:layout_marginStart="20dp"
                 android:text="Destination"
                 android:maxLines="3"
@@ -82,7 +84,7 @@
                 />
 
             <TextView
-                android:id="@+id/tv_price"
+                android:id="@+id/tv_price_history_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
@@ -94,7 +96,7 @@
                 />
 
             <TextView
-                android:id="@+id/tv_datetime"
+                android:id="@+id/tv_datetime_history_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"

@@ -3,14 +3,14 @@ package com.example.ecommerce.Models;
 import java.util.Date;
 
 public class Bill {
-    private int bId;
+    private String bId;
     private Order order;
     private Date timeStamp;
     private Feedback feedback;
 
     private float promotion;
 
-    public void setbId(int bId) {
+    public void setbId(String bId) {
         this.bId = bId;
     }
 
@@ -22,7 +22,7 @@ public class Bill {
         this.promotion = promotion;
     }
 
-    public Bill(int bId, Order order, Date timeStamp, Feedback feedback) {
+    public Bill(String bId, Order order, Date timeStamp, Feedback feedback) {
         this.bId = bId;
         this.order = order;
         this.timeStamp = timeStamp;
@@ -30,10 +30,17 @@ public class Bill {
         this.promotion = CalculatePromotion(order.getPrice());
     }
 
+    public Bill(String bId, Order order, Date timeStamp, float promotion) {
+        this.bId = bId;
+        this.order = order;
+        this.timeStamp = timeStamp;
+        this.promotion = promotion;
+    }
+
     public Bill() {
     }
 
-    public int getbId() {
+    public String getbId() {
         return bId;
     }
 
