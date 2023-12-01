@@ -137,4 +137,9 @@ public class HomeFragmentUser extends Fragment {
         super.onResume();
         mHandler.postDelayed(mRunnable, 5000);
     }
+
+
+
+
+
 }

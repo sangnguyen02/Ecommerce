@@ -156,14 +156,13 @@ public class BookDriverActivityUser extends AppCompatActivity {
                 order.setDriverInfos(null);
                 order.setPaymentMethod(MyEnum.PaymentMethod.COD);
                 uploadOrderToFirebase(order);
-
-
-
-
                 bottomSheetBehaviorWaiting.setState(BottomSheetBehavior.STATE_EXPANDED);
+                CheckDriver();
             }
         });
     }
+
+
     private void uploadOrderToFirebase(Order order) {
         // Get a reference to the root of your Firebase Realtime Database
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -302,4 +301,8 @@ public class BookDriverActivityUser extends AppCompatActivity {
             list.add(new CategoryPaymentMethod("Paypal", "paypal"));
             return list;
         }
+    private void CheckDriver(){
+
     }
+}
+
