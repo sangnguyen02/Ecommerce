@@ -113,6 +113,9 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
             public boolean onQueryTextSubmit(String s) {
                 clearOldMarkers();
                 String location=urdestination.getQuery().toString();
+                SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
+                preferences.edit().putString("user_location", location).apply();
                 if (searchMarkerLocation != null) {
                     searchMarkerLocation.remove();
                 }
