@@ -2,6 +2,7 @@ package com.example.ecommerce.Employee;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ public class LoginActivityEmployee extends AppCompatActivity {
     EditText emailInput, passwordInput;
     MaterialButton loginBtn;
     TextView signInAsUser;
-    String key_driver= "123";
+    String key_driver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +67,9 @@ public class LoginActivityEmployee extends AppCompatActivity {
                     SignInAsAdmin(email, password);
                 }else{
                     String hashedPassword = PasswordHasher.hashPassword(password);
+                    Log.e("LoginActivity",hashedPassword);
                     SignInAsDriver(email, hashedPassword);
+
                 }
 
 
@@ -90,6 +93,7 @@ public class LoginActivityEmployee extends AppCompatActivity {
                     if (dbUsername.equals(email) && dbPassword.equals(password)) {
                         // Authentication successful
                         isAuthenticated = true;
+                        key_driver=snapshot.getKey();
                         Toast.makeText(LoginActivityEmployee.this, "Authentication Successfully.",
                                 Toast.LENGTH_SHORT).show();
                         break;
@@ -99,6 +103,9 @@ public class LoginActivityEmployee extends AppCompatActivity {
                 if (isAuthenticated) {
                     // Proceed to the next activity or show a success message
                     Intent intent = new Intent(LoginActivityEmployee.this, MainActivityDriver.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("key_driver", key_driver);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                     finish(); // Optional: Finish the current activity to prevent going back on pressing back button
                 } else {

@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -84,15 +85,11 @@
             android:name=".Employee.Driver.Activities.MainActivityDriver"
             android:exported="false"
             android:screenOrientation="fullSensor"/>
-        <activity
-            android:name=".Employee.Driver.Activities.AcceptOrderActivityDriver"
-            android:exported="false" />
+
         <activity
             android:name=".Employee.Driver.Activities.ReceiveOrderActivityDriver"
             android:exported="false" />
-        <activity
-            android:name=".Employee.Driver.Activities.SendNotificationActivityDriver"
-            android:exported="false" />
+
         <activity
             android:name=".User.Activities.FaqActivityUser"
             android:exported="false"
