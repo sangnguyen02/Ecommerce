@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:text="DriverID:"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -57,7 +57,7 @@
                     android:layout_marginTop="10dp"
                     android:text="Fullname:"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -66,7 +66,7 @@
                     android:layout_marginTop="10dp"
                     android:text="Phone:"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -75,16 +75,16 @@
                     android:layout_marginTop="10dp"
                     android:text="Email:"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Password:"
+                    android:text="Balance:"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -93,7 +93,7 @@
                     android:layout_marginTop="10dp"
                     android:text="License:"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -102,7 +102,7 @@
                     android:layout_marginTop="10dp"
                     android:text="BankAccount:"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -111,7 +111,7 @@
                     android:layout_marginTop="10dp"
                     android:text="ActivityStatus:"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
             </LinearLayout>
@@ -127,9 +127,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:layout_marginEnd="120dp"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
                 <TextView
                     android:id="@+id/tv_Fullname"
@@ -138,7 +137,7 @@
                     android:layout_marginTop="10dp"
                     android:text="Nguyen Van A"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
                 <TextView
                     android:id="@+id/tv_phone"
@@ -147,7 +146,7 @@
                     android:layout_marginTop="10dp"
                     android:text="+919999999911"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
                 <TextView
                     android:id="@+id/tv_email"
@@ -156,17 +155,17 @@
                     android:layout_marginTop="10dp"
                     android:text="abc@gmail.com"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/tv_password"
+                    android:id="@+id/tv_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="123456789"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -176,7 +175,7 @@
                     android:layout_marginTop="10dp"
                     android:text="A1"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -186,7 +185,7 @@
                     android:layout_marginTop="10dp"
                     android:text="123456789"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -196,7 +195,7 @@
                     android:layout_marginTop="10dp"
                     android:text="Active"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"/>
             </LinearLayout>
         </RelativeLayout>
@@ -212,8 +211,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/viewHistory_btn"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_marginTop="30dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
             android:layout_below="@+id/editText_phoneNo"
             android:backgroundTint="@color/background_slogan"
             android:text="View History"
@@ -225,8 +224,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/lock_btn"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_marginTop="30dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
             android:backgroundTint="@color/orange"
             android:text="Lock Account"
             android:textColor="@color/white"
@@ -237,8 +236,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/unlock_btn"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_marginTop="30dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
             android:backgroundTint="@color/orange"
             android:text="Unlock Account"
             android:textColor="@color/white"
@@ -249,8 +248,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/delete_btn"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_marginTop="30dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
             android:backgroundTint="@color/input_design_stroke"
             android:text="Delete Account"
             android:textColor="@color/white"
