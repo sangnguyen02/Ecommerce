@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -90,6 +92,20 @@ public class ManageDriverDetailActivityAdmin extends AppCompatActivity {
                 lockDriverAccount(clickedDriver.getPhoneNo());
             }
         });
+
+        unlockButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unlockDriverAccount(clickedDriver.getPhoneNo());
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performDeleteDriverAccount(clickedDriver.getPhoneNo());
+            }
+        });
     }
 
     private void lockDriverAccount(String driverID) {
@@ -109,5 +125,73 @@ public class ManageDriverDetailActivityAdmin extends AppCompatActivity {
 
         // Inform the user or handle the result as needed
         Toast.makeText(this, "Driver locked successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    private void unlockDriverAccount(String driverID) {
+        // Get a reference to the Firebase Realtime Database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference driverInfoRef = database.getReference("DriversInfo"); // Change this to your actual node
+
+        // Assuming you have a driver ID for the driver you want to lock
+        String driverId = driverID;
+
+        // Retrieve the specific DriverInfos node from the database
+        DatabaseReference specificDriverRef = driverInfoRef.child(driverId);
+
+        // Update the driverStatus field to DriverStatus.BLOCK
+        specificDriverRef.child("driverStatus").setValue(MyEnum.DriverStatus.OFFLINE);
+        activityStatusTextView.setText(MyEnum.DriverStatus.OFFLINE.toString());
+
+        // Inform the user or handle the result as needed
+        Toast.makeText(this, "Driver locked successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    private void deleteDriverAccount(String driverID){
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Deleting driver account...");
+        progressDialog.setCancelable(false); // Prevent users from cancelling the operation
+
+        progressDialog.show();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference driverInfoRef = database.getReference("DriversInfo");
+
+        String driverId = driverID; // Replace with the actual driver ID
+        DatabaseReference specificDriverRef = driverInfoRef.child(driverId);
+
+        // Remove the driver's information from the database with a completion listener
+        specificDriverRef.removeValue((error, ref) -> {
+            progressDialog.dismiss();
+            if (error == null) {
+                // The deletion was successful
+                Toast.makeText(this, "Driver account deleted successfully", Toast.LENGTH_SHORT).show();
+                // Optionally, you can navigate the user back or perform other actions
+                finish();
+            } else {
+                // There was an error during the deletion
+                Toast.makeText(this, "Failed to delete driver account: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void performDeleteDriverAccount(String driverIdd) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Driver Account");
+        builder.setMessage("Are you sure you want to delete this driver account? This action cannot be undone.");
+
+        // Add buttons to the dialog
+        builder.setPositiveButton("Delete", (dialog, which) -> {
+            // User clicked "Delete" button
+            deleteDriverAccount(driverIdd);
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            // User clicked "Cancel" button
+            dialog.dismiss();
+        });
+
+        // Create and show the dialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
