@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -42,8 +43,31 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 
-public class HomeFragmentDriver extends Fragment {
+import android.os.Build;
+
+public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener  {
     String key_driver,orderId;
     CardView layoutBottomSheetRequestPopUp;
     BottomSheetBehavior bottomSheetBehaviorRequestPopUp;
@@ -55,14 +79,18 @@ public class HomeFragmentDriver extends Fragment {
 
     private DatabaseReference databaseReference;
     private NotificationManagerCompat notificationManager;
-
+    private GoogleMap mMap_Driver;
+    GoogleApiClient mGoogleApiClient;
+    Location mLastLocation;
+    LocationRequest mLocationRequest;
+    View rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
-        View rootView = inflater.inflate(R.layout.fragment_home_driver, container, false);
+         rootView = inflater.inflate(R.layout.fragment_home_driver, container, false);
         key_driver = getArguments().getString("key_driver");
         orderId = getArguments().getString("orderId");
 
@@ -88,6 +116,9 @@ public class HomeFragmentDriver extends Fragment {
         acceptBook_btn= rootView.findViewById(R.id.acceptBook_btn);
         cancelBook_btn= rootView.findViewById(R.id.cancelBook_btn);
         status_driver= rootView.findViewById(R.id.status_home_driver);
+        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+                .findFragmentById(R.id.mMapDriver);
+        mapFragment.getMapAsync((OnMapReadyCallback) rootView.getContext());
 
         setStatus(status_driver);
 
@@ -380,5 +411,89 @@ public class HomeFragmentDriver extends Fragment {
 
 
         }
+    }
+
+    //update location
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        if (ActivityCompat.checkSelfPermission(rootView.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(rootView.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+
+
+    }
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        mLastLocation =location;
+        LatLng latLng= new LatLng(location.getLatitude(),location.getLongitude());
+        mMap_Driver.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap_Driver.animateCamera(CameraUpdateFactory.zoomTo(11));
+
+        String userId= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("DriversInfo");
+
+        GeoFire geoFire= new GeoFire(ref);
+        geoFire.setLocation(userId, new GeoLocation(location.getLatitude(),location.getLongitude()));
+
+
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap_Driver = googleMap;
+        if (ActivityCompat.checkSelfPermission(rootView.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(rootView.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        buildGoogleAPIClient();
+        mMap_Driver.setMyLocationEnabled(true);
+
+    }
+
+    protected synchronized void buildGoogleAPIClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(rootView.getContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
+
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        String userId= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("DriversInfo");
+
+        GeoFire geoFire= new GeoFire(ref);
+        geoFire.removeLocation(userId);
     }
 }
