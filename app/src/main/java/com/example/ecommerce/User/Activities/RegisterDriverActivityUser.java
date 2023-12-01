@@ -38,6 +38,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import utils.SendMailTask;
 
 public class RegisterDriverActivityUser extends AppCompatActivity {
 
@@ -165,6 +166,7 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+                                            SendConfirmEmail(mailValue,fullNameValue);
                                             if(progressDialog.isShowing()){
                                                 progressDialog.dismiss();
                                             }
@@ -262,4 +264,17 @@ public class RegisterDriverActivityUser extends AppCompatActivity {
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
+    private void SendConfirmEmail(String driverEmail, String driverName){
+        String emailSubject = "Confirm Registration To Driver Hub";
+        String emailMessage = "Dear " + driverName + ",\n" +
+                "\n" +
+                "You have successfully registered to become our driver with our platform. Please wait for our us to process your request\n" +
+                "Your request might take up to 1-2 working days\n" +
+                "Thank you for your patience!\n" +
+                "Best regards,";
+
+        new SendMailTask(this, driverEmail, emailSubject, emailMessage).execute();
+    }
+
 }
