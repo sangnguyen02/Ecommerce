@@ -1,6 +1,8 @@
 package com.example.ecommerce.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ecommerce.Interface.ItemClickListener;
 import com.example.ecommerce.Models.DriverInfos;
 import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
+import com.example.ecommerce.User.Activities.HistoryUserDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -25,8 +29,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HistoryUserAdapter extends RecyclerView.Adapter<HistoryUserAdapter.HistoryUserViewHolder> {
 
-    private List<Order> orderList;
+    private static List<Order> orderList;
     private Context context;
+
+
 
     public HistoryUserAdapter(List<Order> orderList, Context context) {
         this.orderList = orderList;
@@ -45,7 +51,6 @@ public class HistoryUserAdapter extends RecyclerView.Adapter<HistoryUserAdapter.
         Order order = orderList.get(position);
         holder.tv_destination.setText(order.getDestination_Latitude());
         holder.tv_price.setText(String.valueOf(order.getPrice()));
-        holder.tv_datetime.setText("N/A");
     }
 
     @Override
@@ -53,14 +58,36 @@ public class HistoryUserAdapter extends RecyclerView.Adapter<HistoryUserAdapter.
         return orderList.size();
     }
 
-    public static class HistoryUserViewHolder extends RecyclerView.ViewHolder {
+    public static class HistoryUserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_destination, tv_price, tv_datetime;
 
         public HistoryUserViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_destination = itemView.findViewById(R.id.tv_destination_history_user);
             tv_price = itemView.findViewById(R.id.tv_price_history_user);
-            tv_datetime = itemView.findViewById(R.id.tv_datetime_history_user);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Order clickedOrder = orderList.get(position);
+
+                        String orderID = clickedOrder.getId();
+
+                        Intent intent = new Intent(itemView.getContext(), HistoryUserDetailActivity.class);
+
+                        intent.putExtra("ORDER_ID", orderID);
+
+                        itemView.getContext().startActivity(intent);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onClick(View view) {
+            //listener.onClick(view, getAdapterPosition(),false);
         }
     }
 }

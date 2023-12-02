@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,6 @@ import android.view.ViewGroup;
 import com.example.ecommerce.Adapters.HistoryUserAdapter;
 import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -79,6 +76,9 @@ public class HistoryFragmentUser extends Fragment {
 
         adapter = new HistoryUserAdapter(orderList, getContext());
         rcv_history_user.setAdapter(adapter);
+
+
+        //loadHistoryOrderUser();
 
 
         return rootView;
