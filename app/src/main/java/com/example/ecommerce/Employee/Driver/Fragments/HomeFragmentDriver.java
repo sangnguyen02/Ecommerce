@@ -118,7 +118,13 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         status_driver= rootView.findViewById(R.id.status_home_driver);
         SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
                 .findFragmentById(R.id.mMapDriver);
-        mapFragment.getMapAsync((OnMapReadyCallback) rootView.getContext());
+
+        if (getActivity() instanceof OnMapReadyCallback) {
+            OnMapReadyCallback onMapReadyCallback = (OnMapReadyCallback) getActivity();
+            mapFragment.getMapAsync(onMapReadyCallback);
+        } else {
+            // Handle the case where the activity does not implement OnMapReadyCallback
+        }
 
         setStatus(status_driver);
 
