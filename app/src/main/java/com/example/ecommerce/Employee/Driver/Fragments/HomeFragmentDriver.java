@@ -144,7 +144,7 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String driverNo = snapshot.child("driverNo").getValue(String.class);
                         String orderStatus = snapshot.child("orderStatus").getValue(String.class);
-
+                        Log.e("HomeFrag", key_driver);
                         if (driverNo.equals(key_driver) && orderStatus.equals("PENDING")) {
                             // Authentication successful
                             Order dataObject = snapshot.getValue(Order.class);
@@ -525,7 +525,7 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversInfo");
         GeoFire geoFire= new GeoFire(ref);
 
-        geoFire.removeLocation(Userid);
+        geoFire.removeLocation("currentLocation");
     }
 
     private void stopLocationUpdates() {

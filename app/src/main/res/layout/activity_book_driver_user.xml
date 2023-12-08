@@ -22,6 +22,7 @@
     <include layout="@layout/layout_bottom_sheet_driver_driverstart"/>
     <include layout="@layout/layout_bottom_sheet_driver_driverend"/>
     <include layout="@layout/layout_bottom_sheet_driver_tripfare"/>
+    <include layout="@layout/layout_bottom_sheet_paypal"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
