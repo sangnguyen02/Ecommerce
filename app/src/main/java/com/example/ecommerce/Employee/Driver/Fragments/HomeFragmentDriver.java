@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -56,7 +57,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.android.gms.maps.GoogleMap;
 
+import com.example.ecommerce.Employee.Driver.ReverseGeocodingTask;
 public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+    private Context context;
+    boolean valid_status=false;
+    String errorMessage="Qualify";
     String key_driver, orderId;
     CardView layoutBottomSheetRequestPopUp;
     BottomSheetBehavior bottomSheetBehaviorRequestPopUp;
@@ -76,6 +81,11 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
     GoogleApiClient mGoogleAPIClient;
     Location mLastLocation;
     LocationRequest mLocationRequest;
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -106,11 +116,16 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
             mapFragment.getMapAsync(this);
         }
 
+        ReverseGeocodingTask reverseGeocodingTask1 = new ReverseGeocodingTask(tvFrom);
+        ReverseGeocodingTask reverseGeocodingTask2 = new ReverseGeocodingTask(tvTo);
+
+
         setStatus(status_driver);
 
         if (orderId != null) {
-            Log.e("Update after notify", orderId);
-            updateBottomSheet(orderId);
+            Log.e("Update after notify",orderId);
+            updateBottomSheet(orderId,reverseGeocodingTask1,reverseGeocodingTask2);
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -133,9 +148,10 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
                         if (driverNo.equals(key_driver) && orderStatus.equals("PENDING")) {
                             // Authentication successful
                             Order dataObject = snapshot.getValue(Order.class);
-                            orderId = snapshot.getKey();
-                            Toast.makeText(rootView.getContext(), "requested order", Toast.LENGTH_SHORT).show();
-                            updateBottomSheet(orderId);
+                            orderId=snapshot.getKey();
+                            Toast.makeText(rootView.getContext(), "New order", Toast.LENGTH_SHORT).show();
+                            updateBottomSheet(orderId,reverseGeocodingTask1,reverseGeocodingTask2);
+
                             bottomSheetBehaviorRequestPopUp.setState(BottomSheetBehavior.STATE_EXPANDED);
                             createNotificationChannel();
                             sendNotification();
@@ -155,19 +171,21 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         setAvailable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setDriver_available();
+                if (errorMessage=="Qualify") setDriver_available();
+                else Toast.makeText(rootView.getContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
         setUnavailable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setDriver_unavailable();
+                if (errorMessage=="Qualify") setDriver_unavailable();
+                else Toast.makeText(rootView.getContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
         acceptBook_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                acceptOrder();
+                acceptOrder(reverseGeocodingTask1,reverseGeocodingTask2);
             }
         });
         cancelBook_btn.setOnClickListener(new View.OnClickListener() {
@@ -207,8 +225,13 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
             }
         });
     }
+    private void acceptOrder(final ReverseGeocodingTask reverseGeocodingTask1,
+                             final ReverseGeocodingTask reverseGeocodingTask2) {
+        if (orderId!=null){
+            DatabaseReference OrdersRef = FirebaseDatabase.getInstance().getReference().child("Order").child(orderId);
+            OrdersRef.child("orderStatus").setValue("ACCEPT");
+        }
 
-    private void acceptOrder() {
         DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
 
         DriverRef.child("driverStatus").setValue("BUSY").addOnCompleteListener(task -> {
@@ -222,12 +245,16 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
             DatabaseReference OrdersRef = FirebaseDatabase.getInstance().getReference().child("Order").child(orderId);
             OrdersRef.child("orderStatus").setValue("ACCEPT");
         }
+        reverseGeocodingTask1.cancelTask();
+        reverseGeocodingTask2.cancelTask();
+
     }
 
     private void cancelOrder() {
         DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
         DriverRef.child("driverStatus").setValue("DENY").addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                bottomSheetBehaviorRequestPopUp.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
             } else {
 
@@ -236,7 +263,7 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
 
         if (orderId != null) {
             DatabaseReference OrdersRef = FirebaseDatabase.getInstance().getReference().child("Order").child(orderId);
-            OrdersRef.child("orderStatus").setValue("PENDING");
+            OrdersRef.child("orderStatus").setValue("CANCEL");
         }
 
 
@@ -255,28 +282,31 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
                         status_driver.setText(statusDriver);
 
                         // Change text color based on the driver status
-                        int textColor = getColorForDriverStatus(statusDriver);
+                        int textColor = checkDriverStatus(statusDriver);
                         status_driver.setTextColor(textColor);
+                    }
+                    else {
+                        errorMessage="Your account is not existed";
                     }
                 }
             }
 
-            private int getColorForDriverStatus(String status) {
+            private int checkDriverStatus(String status) {
                 int color;
-                if (isAdded() && getContext() != null) {
-                    if ("ACTIVE".equals(status)) {
-                        // Set color to green for "ACTIVE" status
-                        color = ContextCompat.getColor(requireContext(), R.color.teal_200);
-                    } else if ("OFFLINE".equals(status) || "DENY".equals(status)) {
-                        // Set color to red for "BUSY" status
-                        color = ContextCompat.getColor(requireContext(), R.color.background_snack_bar);
-                    } else {
-                        // Default color (you can set it to another color or handle other cases)
-                        color = ContextCompat.getColor(requireContext(), R.color.orange);
-                    }
-                } else {
-                    // Handle the case when the fragment is not attached
-                    color = 0; // or another default color
+                if ("ACTIVE".equals(status)) {
+                    errorMessage="Qualify";
+                    // Set color to green for "ACTIVE" status
+                    color = ContextCompat.getColor(context, R.color.teal_200); // Change R.color.green to your color resource
+                } else if ("OFFLINE".equals(status)||"DENY".equals(status)) {
+                    errorMessage="Qualify";
+                    // Set color to red for "BUSY" status
+                    color = ContextCompat.getColor(context, R.color.rectangle_1_color); // Change R.color.red to your color resource
+                }
+                else {
+                    // Default color (you can set it to another color or handle other cases)
+                    color = ContextCompat.getColor(context, R.color.background_snack_bar);
+                    if ("BANNED".equals(status)) errorMessage="You was banned";
+                    else if ("DEBT".equals(status)) errorMessage="Your need to charge your balance";
                 }
                 return color;
             }
@@ -334,7 +364,8 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         notificationManager.notify(1, builder.build());
     }
 
-    private void updateBottomSheet(String orderId) {
+    private void updateBottomSheet(String orderId, final ReverseGeocodingTask reverseGeocodingTask1,
+                                   final ReverseGeocodingTask reverseGeocodingTask2) {
         // Extract relevant information from the Order object and update the TextViews
         Log.e("Set information", "Starting");
 
@@ -350,12 +381,19 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
                     Log.e("HomeFrag", "searchForDatabase");
                     // This method will be called whenever data at the specified location changes
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String orderNum = snapshot.getKey();
-                        if (orderNum.equals(orderId)) {
+                        String orderNum =snapshot.getKey();
+                        String orderStatus= snapshot.child("orderStatus").getValue(String.class);
+                        if (orderNum.equals(orderId)&&orderStatus.equals("PENDING")) {
                             // Authentication successful
                             Order dataObject = snapshot.getValue(Order.class);
-                            tvFrom.setText(dataObject.getPickupLocation_Longtitude());
-                            tvTo.setText(dataObject.getDestination_Latitude());
+                            Double pickLong = Double.parseDouble(dataObject.getPickupLocation_Longtitude());
+                            Double pickLa = Double.parseDouble(dataObject.getPickupLocation_Latitude());
+                            Double destLong = Double.parseDouble(dataObject.getDestination_Longtidue());
+                            Double destLa = Double.parseDouble(dataObject.getDestination_Latitude());
+                            Log.e("HomeFrag", String.valueOf(pickLong));
+                            reverseGeocodingTask1.execute(pickLa,pickLong);
+                            reverseGeocodingTask2.execute(destLa,destLong);
+
                             tvPrice.setText(String.valueOf(dataObject.getPrice()));
                             tvMethod.setText(String.valueOf(dataObject.getPaymentMethod()));
                             tvUPhone.setText(dataObject.getClientNo());

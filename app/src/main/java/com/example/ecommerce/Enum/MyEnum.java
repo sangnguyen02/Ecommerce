@@ -8,7 +8,9 @@ public class MyEnum {
         PENDING,
         ACTIVE,
         BUSY,
-        OFFLINE
+        OFFLINE,
+        BANNED,
+        DEBT,
     }
     public enum PaymentMethod{
         COD,
@@ -20,7 +22,8 @@ public class MyEnum {
         PENDING,
         ACCEPT,
         PICKEDUP,
-        SUCCEED
+        SUCCEED,
+        CANCEL,
     }
     public enum VehicleType {
         MOTORBIKE,

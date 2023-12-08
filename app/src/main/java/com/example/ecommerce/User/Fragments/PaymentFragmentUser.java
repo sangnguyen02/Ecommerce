@@ -62,6 +62,7 @@ public class PaymentFragmentUser extends Fragment {
            @Override
            public void onDataChange(@NonNull DataSnapshot snapshot) {
                Float priceVND =snapshot.getValue(Float.class);
+               priceVND = (float)Math.round(priceVND/1000);
                if(priceVND!=null) {
                    Float price=convertVndToUsd(priceVND);
                    setupPayPal(price);
@@ -121,6 +122,7 @@ public class PaymentFragmentUser extends Fragment {
 
     //Paypal method
     private float convertVndToUsd(float priceVnd) {
+
         return priceVnd * currencyRate;
     }
 

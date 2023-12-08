@@ -17,6 +17,10 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -49,10 +53,14 @@ import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
-public class ProfileFragmentDriver extends Fragment implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+public class ProfileFragmentDriver extends Fragment {
+    String key_driver;
+    MaterialButton edit_btn;
+    TextView driverName;
+    ImageView driverImage;
 
     private GoogleMap mMapDriver;
     private GoogleApiClient mGoogleApiClient;
@@ -63,11 +71,23 @@ public class ProfileFragmentDriver extends Fragment implements OnMapReadyCallbac
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile_driver, container, false);
+        key_driver = getArguments().getString("key_driver");
+        Log.e("ProfileFrag", key_driver);
+        edit_btn = rootView.findViewById(R.id.editProfile_btn);
+        driverName = rootView.findViewById(R.id.tv_fullname);
+        driverImage = rootView.findViewById(R.id.img_driver);
+        edit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(rootView.getContext(), EditProfileActivityDriver.class);
+                intent.putExtra("key_driver", key_driver);
+                Log.e("ProfileFrag","Gui key driver: "+key_driver);
+                startActivity(intent);
+            }
+        });
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager()
-                .findFragmentById(R.id.mMapDriver);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
+        if (key_driver!=null){
+            driverInfoDisplay(driverName,driverImage);
         }
 
         return rootView;
@@ -80,17 +100,26 @@ public class ProfileFragmentDriver extends Fragment implements OnMapReadyCallbac
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                    mGoogleApiClient, mLocationRequest, this);
-        }
-    }
+    private void driverInfoDisplay(final TextView edt_driverName, final ImageView image_view)
+    {
+        DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
 
-    @Override
-    public void onConnectionSuspended(int i) {
-        // Handle connection suspended
-    }
+        DriverRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                if (dataSnapshot.exists())
+                {
+                    Log.e("Profile Frag","da tim thay ");
+                    if (dataSnapshot.hasChild("name")){
+                        String nameDriver = dataSnapshot.child("name").getValue().toString();
+                        edt_driverName.setText(nameDriver);
+                        String picDriver = dataSnapshot.child("picture").getValue().toString();
+                        if (picDriver != null && !picDriver.isEmpty()) {
+                            Picasso.get().load(picDriver).into(image_view);
+                        }
+
+                    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
