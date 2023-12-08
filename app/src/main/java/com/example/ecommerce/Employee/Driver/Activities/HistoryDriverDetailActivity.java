@@ -1,4 +1,4 @@
-package com.example.ecommerce.User.Activities;
+package com.example.ecommerce.Employee.Driver.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,37 +15,36 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
-public class HistoryUserDetailActivity extends AppCompatActivity {
+public class HistoryDriverDetailActivity extends AppCompatActivity {
 
     DatabaseReference orderDetailRef;
     ReverseGeocodingTask reverseGeocodingTaskFrom, reverseGeocodingTaskTo;
     String driverName;
 
-    TextView tv_dateTime, tv_BillID, tv_price, tv_pMethod, tv_typeVehicle, tv_from, tv_to, tv_driverName, tv_feedback;
+    TextView tv_dateTime, tv_BillID, tv_price, tv_pMethod, tv_typeVehicle, tv_from, tv_to, tv_clientName, tv_feedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history_user_detail);
+        setContentView(R.layout.activity_history_driver_detail);
 
-        tv_dateTime = findViewById(R.id.title_date);
-        tv_BillID = findViewById(R.id.tv_bill_id_order_detail);
-        tv_price = findViewById(R.id.tv_price_order_detail);
-        tv_pMethod = findViewById(R.id.tv_pMethod_order_detail);
-        tv_typeVehicle = findViewById(R.id.tv_typeVehicle_order_detail);
-        tv_from = findViewById(R.id.tv_from_order_detail);
-        tv_to = findViewById(R.id.tv_to_order_detail);
-        tv_driverName = findViewById(R.id.tv_driver_name_order_detail);
-        tv_feedback = findViewById(R.id.tv_feedback_order_detail);
+        tv_dateTime = findViewById(R.id.title_date_driver);
+        tv_BillID = findViewById(R.id.tv_bill_id_order_detail_driver);
+        tv_price = findViewById(R.id.tv_price_order_detail_driver);
+        tv_pMethod = findViewById(R.id.tv_pMethod_order_detail_driver);
+        tv_typeVehicle = findViewById(R.id.tv_typeVehicle_order_detail_driver);
+        tv_from = findViewById(R.id.tv_from_order_detail_driver);
+        tv_to = findViewById(R.id.tv_to_order_detail_driver);
+        tv_clientName = findViewById(R.id.tv_client_name_order_detail_driver);
+        tv_feedback = findViewById(R.id.tv_feedback_order_detail_driver);
 
         reverseGeocodingTaskFrom = new ReverseGeocodingTask(tv_from);
         reverseGeocodingTaskTo = new ReverseGeocodingTask(tv_to);
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("ORDER_ID")) {
-            String orderID = intent.getStringExtra("ORDER_ID");
+        if (intent != null && intent.hasExtra("ORDER_ID_DRIVER")) {
+            String orderID = intent.getStringExtra("ORDER_ID_DRIVER");
 
             Log.d("ID", orderID);
 
@@ -72,7 +71,7 @@ public class HistoryUserDetailActivity extends AppCompatActivity {
                         String from = reverseGeocodingTaskFrom.execute(pickLat,pickLong).toString();
                         String to = reverseGeocodingTaskTo.execute(desLat, desLong).toString();
 
-                        String driverNo = snapshot.child("driverNo").getValue().toString();
+                        String clientNo = snapshot.child("clientNo").getValue().toString();
                         String feedBack = "Good";
 
                         if(!order_ID.isEmpty()) {
@@ -103,13 +102,13 @@ public class HistoryUserDetailActivity extends AppCompatActivity {
                             tv_to.setText(to);
                         }
 
-                        DatabaseReference driverRef = FirebaseDatabase.getInstance().getReference("DriversInfo").child(driverNo);
+                        DatabaseReference driverRef = FirebaseDatabase.getInstance().getReference("Users").child(clientNo);
                         driverRef.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if(snapshot.child("name").exists()) {
-                                    driverName = snapshot.child("name").getValue().toString();
-                                    tv_driverName.setText(driverName);
+                                if(snapshot.child("nameUser").exists()) {
+                                    driverName = snapshot.child("nameUser").getValue().toString();
+                                    tv_clientName.setText(driverName);
                                 }
                             }
                             @Override

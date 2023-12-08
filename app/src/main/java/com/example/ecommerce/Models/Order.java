@@ -23,6 +23,8 @@ public class  Order implements Serializable {
     private MyEnum.VehicleType vehicleType;
     private MyEnum.OrderStatus orderStatus;
     private DriverInfos driverInfos;
+
+    private String driverNo;
     private Date timeStamp;
 
     //OrderNoDriverConstructor
@@ -108,6 +110,10 @@ public class  Order implements Serializable {
         this.driverInfos = driverInfos;
     }
 
+    public void setDriverNo(String driverNo) {
+        this.driverNo = driverNo;
+    }
+
     public void setDatetime(Date timeStamp) {
         this.timeStamp = timeStamp;
     }
@@ -162,6 +168,10 @@ public class  Order implements Serializable {
 
     public Date getDatetime() {
         return timeStamp;
+    }
+
+    public String getDriverNo() {
+        return driverNo;
     }
 
 }

@@ -7,10 +7,13 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -31,14 +34,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Employee.Driver.Activities.HistoryDriverDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".User.Activities.HistoryUserDetailActivity"
             android:exported="false" />
         <activity
             android:name=".User.VNPay.VNP_API"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".User.Paypal.PaypalAPI"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".User.Activities.BookDriverActivityUser"
             android:exported="false"
@@ -94,7 +100,6 @@
         <activity
             android:name=".Employee.Driver.Activities.ReceiveOrderActivityDriver"
             android:exported="false" />
-
         <activity
             android:name=".User.Activities.FaqActivityUser"
             android:exported="false"
