@@ -23,7 +23,7 @@ public class  Order implements Serializable {
     private MyEnum.VehicleType vehicleType;
     private MyEnum.OrderStatus orderStatus;
     private DriverInfos driverInfos;
-    private String datetime;
+    private Date timeStamp;
 
     //OrderNoDriverConstructor
 
@@ -42,7 +42,7 @@ public class  Order implements Serializable {
         this.driverInfos = driverInfos;
     }
 
-    public Order(String id, String pickupLocation_Latitude, String pickupLocation_Longtitude, String destination_Latitude, String destination_Longtidue, float price, String clientName, String clientNo, MyEnum.PaymentMethod paymentMethod, MyEnum.VehicleType vehicleType, MyEnum.OrderStatus orderStatus, DriverInfos driverInfos, String datetime) {
+    public Order(String id, String pickupLocation_Latitude, String pickupLocation_Longtitude, String destination_Latitude, String destination_Longtidue, float price, String clientName, String clientNo, MyEnum.PaymentMethod paymentMethod, MyEnum.VehicleType vehicleType, MyEnum.OrderStatus orderStatus, DriverInfos driverInfos, Date timeStamp) {
         this.id = id;
         this.pickupLocation_Latitude = pickupLocation_Latitude;
         this.pickupLocation_Longtitude = pickupLocation_Longtitude;
@@ -55,7 +55,7 @@ public class  Order implements Serializable {
         this.vehicleType = vehicleType;
         this.orderStatus = orderStatus;
         this.driverInfos = driverInfos;
-        this.datetime = datetime;
+        this.timeStamp = timeStamp;
     }
 
     public Order() {}
@@ -108,8 +108,8 @@ public class  Order implements Serializable {
         this.driverInfos = driverInfos;
     }
 
-    public void setDatetime(String datetime) {
-        this.datetime = datetime;
+    public void setDatetime(Date timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public String getId() {
@@ -160,8 +160,8 @@ public class  Order implements Serializable {
         return driverInfos;
     }
 
-    public String getDatetime() {
-        return datetime;
+    public Date getDatetime() {
+        return timeStamp;
     }
 
 }

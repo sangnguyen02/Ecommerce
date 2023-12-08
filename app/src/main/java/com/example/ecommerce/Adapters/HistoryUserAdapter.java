@@ -26,11 +26,13 @@ import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import com.example.ecommerce.Employee.Driver.ReverseGeocodingTask;
 
 public class HistoryUserAdapter extends RecyclerView.Adapter<HistoryUserAdapter.HistoryUserViewHolder> {
 
     private static List<Order> orderList;
     private Context context;
+    ReverseGeocodingTask reverseGeocodingTask_Destination;
 
 
 
@@ -49,8 +51,11 @@ public class HistoryUserAdapter extends RecyclerView.Adapter<HistoryUserAdapter.
     @Override
     public void onBindViewHolder(@NonNull HistoryUserViewHolder holder, int position) {
         Order order = orderList.get(position);
-        holder.tv_destination.setText(order.getDestination_Latitude());
-        holder.tv_price.setText(String.valueOf(order.getPrice()));
+        Double destLong = Double.parseDouble(order.getDestination_Longtidue());
+        Double destLa = Double.parseDouble(order.getDestination_Latitude());
+        reverseGeocodingTask_Destination = new ReverseGeocodingTask(holder.tv_destination);
+        holder.tv_destination.setText(reverseGeocodingTask_Destination.execute(destLa, destLong).toString());
+        holder.tv_price.setText(String.valueOf(order.getPrice()) + "VND");
     }
 
     @Override
@@ -60,11 +65,13 @@ public class HistoryUserAdapter extends RecyclerView.Adapter<HistoryUserAdapter.
 
     public static class HistoryUserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_destination, tv_price, tv_datetime;
+        ReverseGeocodingTask reverseGeocodingTask_Destination;
 
         public HistoryUserViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_destination = itemView.findViewById(R.id.tv_destination_history_user);
             tv_price = itemView.findViewById(R.id.tv_price_history_user);
+            reverseGeocodingTask_Destination = new ReverseGeocodingTask(tv_destination);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
