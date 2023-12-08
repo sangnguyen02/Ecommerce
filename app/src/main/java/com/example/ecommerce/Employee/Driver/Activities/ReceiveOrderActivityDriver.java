@@ -20,30 +20,35 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
 public class ReceiveOrderActivityDriver extends AppCompatActivity {
-    String key_driver;
-    String idOrder="5";
-    private Handler handler = new Handler();
-    // Set the delay in milliseconds (10 seconds in this case)
-    private long delayMillis = 10000;
-    // Notification channel ID
-    private static final String CHANNEL_ID = "ride_request_channel";
-
+    String key_driver,orderId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        key_driver = getIntent().getStringExtra("key_driver");
-        Intent intent = new Intent(ReceiveOrderActivityDriver.this, AcceptOrderActivityDriver.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("idOrder", idOrder);
-        intent.putExtras(bundle);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            key_driver = extras.getString("key_driver");
+            orderId = extras.getString("orderId");
+        }
+        else key_driver = "Null";
+        // Open the HomeFragmentDriver when this activity is launched
+        Intent intent = new Intent(this, MainActivityDriver.class);
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("key_driver", key_driver);
+        bundle1.putString("orderId", orderId);
+        Log.e("ReceiveOrder","halo");
+        Log.e("ReceiveOrder",key_driver);
+        intent.putExtras(bundle1);
         startActivity(intent);
-//      handler.post(searchTask);
+
+        // Finish this activity so that it doesn't stay in the back stack
+        finish();
 
     }
 
