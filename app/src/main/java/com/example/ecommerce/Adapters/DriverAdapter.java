@@ -1,6 +1,8 @@
 package com.example.ecommerce.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ecommerce.Employee.Admin.Activities.ManageDriverDetailActivityAdmin;
 import com.example.ecommerce.Employee.Admin.Fragments.ManageDriverFragmentAdmin;
 import com.example.ecommerce.Models.DriverInfos;
 import com.example.ecommerce.R;
@@ -20,7 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DriverAdapter extends RecyclerView.Adapter<DriverAdapter.DriverViewHolder> {
 
-    private List<DriverInfos> driverList;
+    private static List<DriverInfos> driverList;
     private Context context;
 
     public DriverAdapter(List<DriverInfos> driverList, Context context) {
@@ -42,7 +45,22 @@ public class DriverAdapter extends RecyclerView.Adapter<DriverAdapter.DriverView
         holder.textDriverStatus.setText(driver.getDriverStatus().toString());
         Picasso.get().load(driver.getPicture()).into(holder.driverImage);
         holder.textRating.setText(String.valueOf(driver.getAvgRating()));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    DriverInfos clickedDriver = driverList.get(position);
+                    // Start the new activity with the clicked driver
+                    Intent intent = new Intent(context, ManageDriverDetailActivityAdmin.class);
+                    intent.putExtra("clickedDriver", clickedDriver);
+                    context.startActivity(intent);
+                }
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {
@@ -59,6 +77,7 @@ public class DriverAdapter extends RecyclerView.Adapter<DriverAdapter.DriverView
             textRating = itemView.findViewById(R.id.tv_rating);
             textDriverStatus = itemView.findViewById(R.id.tv_status);
             driverImage = itemView.findViewById(R.id.img_driver);
+
         }
     }
 }

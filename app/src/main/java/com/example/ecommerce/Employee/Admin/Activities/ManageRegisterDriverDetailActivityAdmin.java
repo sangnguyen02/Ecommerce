@@ -124,6 +124,7 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
                     // Update the attribute of the object locally
                     if (currentDriver != null) {
                         currentDriver.setDriverStatus(MyEnum.DriverStatus.OFFLINE);
+                        currentDriver.setBalance(0);
                         // Set the updated object back to the Firebase reference
                         specificDriverRef.setValue(currentDriver);
                     }
@@ -149,6 +150,7 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
                 "Your password is your id" +
                 //"Your password is : " + driverID + "\n" +
                 "\n" +
+                "Make sure to deposit at least 25$ into your driver account to start your journey at Driver Hub" + "\n"+
                 "Best regards,";
 
         new SendMailTask(this, driverEmail, emailSubject, emailMessage).execute();

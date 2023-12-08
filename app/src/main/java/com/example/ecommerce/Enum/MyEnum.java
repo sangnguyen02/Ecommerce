@@ -8,9 +8,9 @@ public class MyEnum {
         PENDING,
         ACTIVE,
         BUSY,
-        OFFLINE,
         BANNED,
         DEBT,
+        OFFLINE,
     }
     public enum PaymentMethod{
         COD,
