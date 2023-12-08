@@ -63,7 +63,7 @@
             android:layout_below="@id/profileSection" >
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/editProfile_btn"
+                android:id="@+id/editProfile_btn_driver"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="15dp"
@@ -74,7 +74,7 @@
                 android:textSize="20sp"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/faq_btn"
+                android:id="@+id/faq_btn_driver"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
@@ -86,7 +86,7 @@
 
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/log_out_btn"
+                android:id="@+id/log_out_btn_driver"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"

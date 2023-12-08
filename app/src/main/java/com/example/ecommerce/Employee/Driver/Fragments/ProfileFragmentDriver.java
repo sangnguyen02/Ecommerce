@@ -16,8 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ecommerce.Employee.Driver.Activities.EditProfileActivityDriver;
+import com.example.ecommerce.Employee.Driver.Activities.FaqActivityDriver;
 import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
+import com.example.ecommerce.SplashActivity;
 import com.example.ecommerce.User.Activities.EditProfileActivityUser;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
@@ -30,7 +32,7 @@ import com.squareup.picasso.Picasso;
 
 public class ProfileFragmentDriver extends Fragment {
     String key_driver;
-    MaterialButton edit_btn;
+    MaterialButton edit_btn, faq_btn, log_out;
     TextView driverName;
     ImageView driverImage;
 
@@ -41,7 +43,9 @@ public class ProfileFragmentDriver extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile_driver, container, false);
         key_driver = getArguments().getString("key_driver");
         Log.e("ProfileFrag", key_driver);
-        edit_btn = rootView.findViewById(R.id.editProfile_btn);
+        edit_btn = rootView.findViewById(R.id.editProfile_btn_driver);
+        faq_btn = rootView.findViewById(R.id.faq_btn_driver);
+        log_out = rootView.findViewById(R.id.log_out_btn_driver);
         driverName = rootView.findViewById(R.id.tv_fullname);
         driverImage = rootView.findViewById(R.id.img_driver);
         edit_btn.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +55,23 @@ public class ProfileFragmentDriver extends Fragment {
                 intent.putExtra("key_driver", key_driver);
                 Log.e("ProfileFrag","Gui key driver: "+key_driver);
                 startActivity(intent);
+            }
+        });
+
+        faq_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(rootView.getContext(), FaqActivityDriver.class);
+                startActivity(intent);
+            }
+        });
+
+        log_out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(rootView.getContext(), SplashActivity.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 

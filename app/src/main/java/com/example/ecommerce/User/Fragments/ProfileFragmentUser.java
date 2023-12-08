@@ -119,6 +119,7 @@ public class ProfileFragmentUser extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(rootView.getContext(), SplashActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
