@@ -53,7 +53,7 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
     private SearchView urlocation, urdestination;
     private ImageView home, work;
     private MaterialButton confirm;
-    public  static final  String API_KEY="AIzaSyAgiRVzm2vQ9kGUQQxp7trXj5AIbwV5NU0";
+    public  static final  String API_KEY="AIzaSyA6mJ-VPk05xUayf1IdgE4YqhPsTNT24kY";
 
     private GoogleMap mMap_User;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
