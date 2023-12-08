@@ -119,8 +119,8 @@ public class ManageDriverDetailActivityAdmin extends AppCompatActivity {
         DatabaseReference specificDriverRef = driverInfoRef.child(driverId);
 
         // Update the driverStatus field to DriverStatus.BLOCK
-        specificDriverRef.child("driverStatus").setValue(MyEnum.DriverStatus.BLOCK);
-        activityStatusTextView.setText(MyEnum.DriverStatus.BLOCK.toString());
+        specificDriverRef.child("driverStatus").setValue(MyEnum.DriverStatus.BANNED);
+        activityStatusTextView.setText(MyEnum.DriverStatus.BANNED.toString());
 
         // Inform the user or handle the result as needed
         Toast.makeText(this, "Driver locked successfully", Toast.LENGTH_SHORT).show();
