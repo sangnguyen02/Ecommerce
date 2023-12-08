@@ -57,8 +57,7 @@ public class HistoryDriverDetailActivity extends AppCompatActivity {
                         String price = snapshot.child("price").getValue().toString();
                         String pMethod = snapshot.child("paymentMethod").getValue().toString();
                         String typeVehicle = snapshot.child("vehicleType").getValue().toString();
-                        String dateTime = snapshot.child("dateTime").getValue().toString();
-
+                        //String dateTime = snapshot.child("dateTime").getValue().toString();
                         String destination_Lat = snapshot.child("destination_Latitude").getValue().toString();
                         String destination_Long = snapshot.child("destination_Longtidue").getValue().toString();
                         String pickupLocation_Lat = snapshot.child("pickupLocation_Latitude").getValue().toString();
@@ -90,9 +89,10 @@ public class HistoryDriverDetailActivity extends AppCompatActivity {
                             tv_typeVehicle.setText(typeVehicle);
                         }
 
-                        if(!dateTime.isEmpty()) {
-                            tv_dateTime.setText("08/12/2002");
-                        }
+//                        if(!dateTime.isEmpty()) {
+//                            tv_dateTime.setText("08/12/2002");
+//                        }
+                        tv_dateTime.setText("08/12/2002");
 
                         if(!from.isEmpty()) {
                             tv_from.setText(from);
