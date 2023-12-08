@@ -23,6 +23,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.paypal.checkout.approve.Approval;
+import com.paypal.checkout.approve.OnApprove;
+import com.paypal.checkout.createorder.CreateOrder;
+import com.paypal.checkout.createorder.CreateOrderActions;
+import com.paypal.checkout.createorder.CurrencyCode;
+import com.paypal.checkout.createorder.OrderIntent;
+import com.paypal.checkout.createorder.UserAction;
+import com.paypal.checkout.order.Amount;
+import com.paypal.checkout.order.AppContext;
+import com.paypal.checkout.order.CaptureOrderResult;
+import com.paypal.checkout.order.OnCaptureComplete;
+import com.paypal.checkout.order.OrderRequest;
+import com.paypal.checkout.order.PurchaseUnit;
+import com.paypal.checkout.paymentbutton.PaymentButtonContainer;
 import com.rey.material.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RatingBar;
@@ -36,6 +50,8 @@ import com.example.ecommerce.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -43,9 +59,9 @@ import java.util.Locale;
 
 public class BookDriverActivityUser extends AppCompatActivity {
 
-    private CardView layoutBottomSheetBook, layoutBottomSheetWating, layoutBottomSheetDriverComing, layoutBottomSheetDriverArrived, layoutBottomSheetDriverEndTrip;
+    private CardView layoutBottomSheetBook, layoutBottomSheetWating, layoutBottomSheetDriverComing, layoutBottomSheetDriverArrived, layoutBottomSheetDriverEndTrip,layoutBottomSheetPaypal;
 
-    private BottomSheetBehavior bottomSheetBehaviorBook, bottomSheetBehaviorWaiting, bottomSheetBehaviorDriverComing, bottomSheetBehaviorDriverArrived, bottomSheetBehaviorDriverEndTrip;
+    private BottomSheetBehavior bottomSheetBehaviorBook, bottomSheetBehaviorWaiting, bottomSheetBehaviorDriverComing, bottomSheetBehaviorDriverArrived, bottomSheetBehaviorDriverEndTrip,bottomSheetBehaviorPaypal;
 
     private Spinner spinnerCategory;
     private CategoryAdapter categoryAdapter;
@@ -54,6 +70,8 @@ public class BookDriverActivityUser extends AppCompatActivity {
     private MaterialButton book, cancelWaiting, cancelComing, confirm_rating;
     private TextView motorPrice, carPrice;
     private CheckBox motorCheckBox, carCheckBox;
+    private String paymentMethod;
+    private PaymentButtonContainer paymentButtonContainer;
     private static final int BASE_PRICE_A2 = 20000; // Base price for Hạng A2
     private static final int BASE_PRICE_B2 = 30000; // Base price for Hạng B2
     private static final int PRICE_PER_KM_A2 = 11000; // Price per km for Hạng A2
@@ -65,7 +83,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
     private boolean type=false;
     private float motor_price=0;
     private float car_price=0;
-
+    private float currencyRate = 0.04f;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +105,8 @@ public class BookDriverActivityUser extends AppCompatActivity {
         ratingBar = findViewById(R.id.ratingBar);
         ratingScore = findViewById(R.id.tv_ratingScore);
 
+        //Paypal
+        paymentButtonContainer= findViewById(R.id.payment_button_container);
 
         // Init Category payment method
         spinnerCategory = findViewById(R.id.spn_category);
@@ -96,6 +116,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(BookDriverActivityUser.this, categoryAdapter.getItem(i).getName(), Toast.LENGTH_LONG);
+                paymentMethod=categoryAdapter.getItem(i).getName().toString();
             }
 
             @Override
@@ -110,13 +131,14 @@ public class BookDriverActivityUser extends AppCompatActivity {
         layoutBottomSheetDriverComing = findViewById(R.id.bottom_sheet_driver_coming);
         layoutBottomSheetDriverArrived = findViewById(R.id.bottom_sheet_driver_arrived);
         layoutBottomSheetDriverEndTrip = findViewById(R.id.bottom_sheet_driver_end_trip);
+        layoutBottomSheetPaypal = findViewById(R.id.bottom_sheet_paypal);
 
         bottomSheetBehaviorBook = BottomSheetBehavior.from(layoutBottomSheetBook);
         bottomSheetBehaviorWaiting = BottomSheetBehavior.from(layoutBottomSheetWating);
         bottomSheetBehaviorDriverComing = BottomSheetBehavior.from(layoutBottomSheetDriverComing);
         bottomSheetBehaviorDriverArrived = BottomSheetBehavior.from(layoutBottomSheetDriverArrived);
         bottomSheetBehaviorDriverEndTrip = BottomSheetBehavior.from(layoutBottomSheetDriverEndTrip);
-
+        bottomSheetBehaviorPaypal = BottomSheetBehavior.from(layoutBottomSheetPaypal);
         // xu li goi bottom sheet
         bottomSheetBehaviorBook.setState(BottomSheetBehavior.STATE_EXPANDED);
         setCheckBoxAuto();
@@ -154,14 +176,87 @@ public class BookDriverActivityUser extends AppCompatActivity {
                 }
                 order.setOrderStatus(MyEnum.OrderStatus.PENDING);
                 order.setDriverInfos(null);
-                order.setPaymentMethod(MyEnum.PaymentMethod.COD);
-                uploadOrderToFirebase(order);
-                bottomSheetBehaviorWaiting.setState(BottomSheetBehavior.STATE_EXPANDED);
-                CheckDriver();
+                if (paymentMethod=="Cash"){
+                    order.setPaymentMethod(MyEnum.PaymentMethod.COD);
+                }
+                if (paymentMethod =="Paypal"){
+                    order.setPaymentMethod(MyEnum.PaymentMethod.PAYPAL);
+                }
+                checkPaymentMethod(order);
+
             }
         });
     }
+    private void checkPaymentMethod(Order order){
+        if (order.getPaymentMethod()==MyEnum.PaymentMethod.PAYPAL){
+            bottomSheetBehaviorPaypal.setState(BottomSheetBehavior.STATE_EXPANDED);
+            Float priceVND=  order.getPrice();
+            priceVND = (float)Math.round(priceVND/1000);
+            if(priceVND!=null) {
+                Float price=convertVndToUsd(priceVND);
+                setupPayPal(price, order);
+            }
+        }
+        if (order.getPaymentMethod()==MyEnum.PaymentMethod.COD){
+            finishOrder(order);
+        }
+    }
 
+    private void finishOrder(Order order){
+        uploadOrderToFirebase(order);
+        bottomSheetBehaviorWaiting.setState(BottomSheetBehavior.STATE_EXPANDED);
+        CheckDriver();
+    }
+    private float convertVndToUsd(float priceVnd) {
+
+        return priceVnd * currencyRate;
+    }
+
+    private  void setupPayPal(Float price, Order order){
+        paymentButtonContainer.setup(
+
+                new CreateOrder() {
+
+                    @Override
+                    public void create(@NonNull CreateOrderActions createOrderActions) {
+                        Log.d("BookDriverActivity", "create: ");
+                        ArrayList<PurchaseUnit> purchaseUnits = new ArrayList<>();
+                        purchaseUnits.add(
+                                new PurchaseUnit.Builder()
+                                        .amount(
+                                                new Amount.Builder()
+                                                        .currencyCode(CurrencyCode.USD)
+                                                        .value(Float.toString(price))
+                                                        .build()
+                                        )
+                                        .build()
+                        );
+                        OrderRequest order = new OrderRequest(
+                                OrderIntent.CAPTURE,
+                                new AppContext.Builder()
+                                        .userAction(UserAction.PAY_NOW)
+                                        .build(),
+                                purchaseUnits
+                        );
+                        createOrderActions.create(order, (CreateOrderActions.OnOrderCreated) null);
+                    }
+                },
+                new OnApprove() {
+                    @Override
+                    public void onApprove(@NonNull Approval approval) {
+                        approval.getOrderActions().capture(new OnCaptureComplete() {
+                            @Override
+                            public void onCaptureComplete(@NotNull CaptureOrderResult result) {
+                                Log.d("BookDriverActivity", String.format("CaptureOrderResult: %s", result));
+                                bottomSheetBehaviorPaypal.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                                finishOrder(order);
+                            }
+                        });
+                    }
+                }
+        );
+
+    }
 
     private void uploadOrderToFirebase(Order order) {
         // Get a reference to the root of your Firebase Realtime Database
