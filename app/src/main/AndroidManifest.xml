@@ -66,14 +66,6 @@
             android:exported="false"
             android:screenOrientation="fullSensor" />
         <activity
-            android:name=".User.Activities.DetailHistoryActivityUser"
-            android:exported="false"
-            android:screenOrientation="fullSensor" />
-        <activity
-            android:name=".Employee.Driver.Activities.DetailHistoryActivityDriver"
-            android:exported="false"
-            android:screenOrientation="fullSensor" />
-        <activity
             android:name=".Employee.Admin.Activities.ManageRegisterDriverDetailActivityAdmin"
             android:exported="false"
             android:screenOrientation="fullSensor" />

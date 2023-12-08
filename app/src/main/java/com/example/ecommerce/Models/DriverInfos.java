@@ -56,6 +56,8 @@ public class DriverInfos implements Serializable {
         this.currentLocation = null;
     }
 
+
+
     public DriverInfos(){}
 
     public DriverInfos(String phoneNo) {
