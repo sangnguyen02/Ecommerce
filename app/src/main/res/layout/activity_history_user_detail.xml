@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".User.Activities.HistoryUserDetailActivity">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/title_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="Date"
+        android:textSize="26dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:layout_below="@id/title_date">
+
+        <RelativeLayout
+            android:id="@+id/bill_id_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/label_bill_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Bill ID:"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_bill_id_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/label_bill_id"
+                android:maxLines="3"
+                android:text="Some thing"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/price_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bill_id_section">
+
+            <TextView
+                android:id="@+id/label_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:text="Price:"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_price_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100000VND"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:maxLines="3"
+                android:layout_toEndOf="@id/label_price"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="20dp"
+                />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/pMethod_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/price_section">
+
+            <TextView
+                android:id="@+id/label_pMethod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:text="Payment method:"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_pMethod_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="COD"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_toEndOf="@id/label_pMethod"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/typeVehicle_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pMethod_section">
+
+            <TextView
+                android:id="@+id/label_typeVehicle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:text="Type of Vehicle:"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_typeVehicle_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Car"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_toEndOf="@id/label_typeVehicle"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="20dp"
+                />
+
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/from_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/typeVehicle_section">
+
+            <TextView
+                android:id="@+id/label_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:text="From:"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_from_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Somewhere"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_toEndOf="@id/label_from"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="20dp"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/to_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/from_section">
+
+            <TextView
+                android:id="@+id/label_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:text="To:"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_to_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Somewhere"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_toEndOf="@id/label_to"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/driver_name_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/to_section">
+
+            <TextView
+                android:id="@+id/label_driver_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:text="Driver name:"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_driver_name_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ông cố nội"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_toEndOf="@id/label_driver_name"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/feedBack_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/driver_name_section">
+
+            <TextView
+                android:id="@+id/label_feedback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:text="Feedback:"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_feedback_order_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Something"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_toEndOf="@id/label_feedback"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

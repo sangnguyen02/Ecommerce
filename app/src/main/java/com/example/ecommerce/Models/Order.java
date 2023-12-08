@@ -6,6 +6,9 @@ import android.location.Location;
 import com.example.ecommerce.Enum.MyEnum;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Date;
 
 public class  Order implements Serializable {
     private String id;
@@ -20,6 +23,7 @@ public class  Order implements Serializable {
     private MyEnum.VehicleType vehicleType;
     private MyEnum.OrderStatus orderStatus;
     private DriverInfos driverInfos;
+    private Date timeStamp;
 
     //OrderNoDriverConstructor
 
@@ -37,6 +41,23 @@ public class  Order implements Serializable {
         this.orderStatus = orderStatus;
         this.driverInfos = driverInfos;
     }
+
+    public Order(String id, String pickupLocation_Latitude, String pickupLocation_Longtitude, String destination_Latitude, String destination_Longtidue, float price, String clientName, String clientNo, MyEnum.PaymentMethod paymentMethod, MyEnum.VehicleType vehicleType, MyEnum.OrderStatus orderStatus, DriverInfos driverInfos, Date timeStamp) {
+        this.id = id;
+        this.pickupLocation_Latitude = pickupLocation_Latitude;
+        this.pickupLocation_Longtitude = pickupLocation_Longtitude;
+        this.destination_Latitude = destination_Latitude;
+        this.destination_Longtidue = destination_Longtidue;
+        this.price = price;
+        this.clientName = clientName;
+        this.clientNo = clientNo;
+        this.paymentMethod = paymentMethod;
+        this.vehicleType = vehicleType;
+        this.orderStatus = orderStatus;
+        this.driverInfos = driverInfos;
+        this.timeStamp = timeStamp;
+    }
+
     public Order() {}
 
     public void setId(String id) {
@@ -87,6 +108,10 @@ public class  Order implements Serializable {
         this.driverInfos = driverInfos;
     }
 
+    public void setDatetime(Date timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
     public String getId() {
         return id;
     }
@@ -134,4 +159,9 @@ public class  Order implements Serializable {
     public DriverInfos getDriverInfos() {
         return driverInfos;
     }
+
+    public Date getDatetime() {
+        return timeStamp;
+    }
+
 }

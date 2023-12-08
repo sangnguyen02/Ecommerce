@@ -55,6 +55,11 @@ public class DriverInfos implements Serializable {
     }
 
     public DriverInfos(){}
+
+    public DriverInfos(String phoneNo) {
+        this.phoneNo = phoneNo;
+    }
+
     public String getPhoneNo() {
         return phoneNo;
     }
