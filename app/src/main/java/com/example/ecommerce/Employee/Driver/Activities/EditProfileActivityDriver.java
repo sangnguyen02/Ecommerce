@@ -2,6 +2,9 @@ package com.example.ecommerce.Employee.Driver.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -20,19 +23,31 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.webkit.MimeTypeMap;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 public class EditProfileActivityDriver extends AppCompatActivity {
     EditText fullNameEditText,phoneNoEditText, mailEditText, idEditText,licenseEditText, bankNoEditText ;
     MaterialButton save_btn;
     ImageView imageDriver;
-    String key_driver;
+    String key_driver,imageUrl;
     View showSnackBarView;
+    private StorageReference storageRef;
+    private static final int PICK_IMAGE_REQUEST = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile_driver);
+        storageRef = FirebaseStorage.getInstance().getReference("DriverImage");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             key_driver = extras.getString("key_driver");
@@ -59,6 +74,9 @@ public class EditProfileActivityDriver extends AppCompatActivity {
             public void onClick(View view) {
                 uploadInfo();
             }
+        });
+        imageDriver.setOnClickListener(view -> {
+            selectImage();
         });
 
     }
@@ -104,7 +122,10 @@ public class EditProfileActivityDriver extends AppCompatActivity {
                     }
                     if (dataSnapshot.hasChild("picture")){
                         String picDriver = dataSnapshot.child("picture").getValue().toString();
-                        Picasso.get().load(picDriver).into(imageDriver);
+                        if (picDriver != null && !picDriver.isEmpty()) {
+                            Picasso.get().load(picDriver).into(imageDriver);
+                        }
+
                     }
 
                 }
@@ -163,6 +184,9 @@ public class EditProfileActivityDriver extends AppCompatActivity {
         if (!TextUtils.isEmpty(newBank)) {
             UsersRef.child("bankAccount").setValue(newBank);
         }
+        if (!TextUtils.isEmpty(imageUrl)) {
+            UsersRef.child("picture").setValue(imageUrl);
+        }
 
         UsersRef.updateChildren(new HashMap<String, Object>())
                 .addOnCompleteListener(task -> {
@@ -195,6 +219,55 @@ public class EditProfileActivityDriver extends AppCompatActivity {
         return email.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9.]+$");
     }
 
+    private void selectImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri imageUri = data.getData();
+            LoadImageToCircleImageView(imageUri);
+            uploadImage(imageUri);
+        }
+    }
+    private void LoadImageToCircleImageView(Uri selectedImageUri) {
+        try {
+            InputStream imageStream = getContentResolver().openInputStream(selectedImageUri);
+            Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+            imageDriver.setImageBitmap(selectedImage);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void uploadImage(Uri imageUri) {
+        if (imageUri != null) {
+            StorageReference fileRef = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+            UploadTask uploadTask = fileRef.putFile(imageUri);
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String imageUrl = uri.toString();
+
+                    this.imageUrl = imageUrl;
+
+                    uploadInfo();
+                });
+            }).addOnFailureListener(e -> {
+                Snackbar.make(showSnackBarView, "Failed to upload image", Snackbar.LENGTH_LONG).show();
+            });
+        }
+    }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
 
 
 }

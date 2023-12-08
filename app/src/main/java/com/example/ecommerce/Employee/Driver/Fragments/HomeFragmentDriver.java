@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.Image;
@@ -46,6 +47,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.example.ecommerce.Employee.Driver.ReverseGeocodingTask;
 
 public class HomeFragmentDriver extends Fragment {
+    private Context context;
     boolean valid_status=false;
     String key_driver,orderId;
     String errorMessage="Qualify";
@@ -59,7 +61,11 @@ public class HomeFragmentDriver extends Fragment {
 
     private DatabaseReference databaseReference;
     private NotificationManagerCompat notificationManager;
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,6 +101,7 @@ public class HomeFragmentDriver extends Fragment {
 
         ReverseGeocodingTask reverseGeocodingTask1 = new ReverseGeocodingTask(tvFrom);
         ReverseGeocodingTask reverseGeocodingTask2 = new ReverseGeocodingTask(tvTo);
+
 
         setStatus(status_driver);
 
@@ -288,15 +295,15 @@ public class HomeFragmentDriver extends Fragment {
                 if ("ACTIVE".equals(status)) {
                     errorMessage="Qualify";
                     // Set color to green for "ACTIVE" status
-                    color = ContextCompat.getColor(requireContext(), R.color.teal_200); // Change R.color.green to your color resource
+                    color = ContextCompat.getColor(context, R.color.teal_200); // Change R.color.green to your color resource
                 } else if ("OFFLINE".equals(status)||"DENY".equals(status)) {
                     errorMessage="Qualify";
                     // Set color to red for "BUSY" status
-                    color = ContextCompat.getColor(requireContext(), R.color.rectangle_1_color); // Change R.color.red to your color resource
+                    color = ContextCompat.getColor(context, R.color.rectangle_1_color); // Change R.color.red to your color resource
                 }
                 else {
                     // Default color (you can set it to another color or handle other cases)
-                    color = ContextCompat.getColor(requireContext(), R.color.background_snack_bar);
+                    color = ContextCompat.getColor(context, R.color.background_snack_bar);
                     if ("BANNED".equals(status)) errorMessage="You was banned";
                     else if ("DEBT".equals(status)) errorMessage="Your need to charge your balance";
                 }

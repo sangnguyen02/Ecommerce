@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,11 +26,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class ProfileFragmentDriver extends Fragment {
     String key_driver;
     MaterialButton edit_btn;
     TextView driverName;
+    ImageView driverImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +43,7 @@ public class ProfileFragmentDriver extends Fragment {
         Log.e("ProfileFrag", key_driver);
         edit_btn = rootView.findViewById(R.id.editProfile_btn);
         driverName = rootView.findViewById(R.id.tv_fullname);
+        driverImage = rootView.findViewById(R.id.img_driver);
         edit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,14 +55,14 @@ public class ProfileFragmentDriver extends Fragment {
         });
 
         if (key_driver!=null){
-            driverInfoDisplay(driverName);
+            driverInfoDisplay(driverName,driverImage);
         }
 
         return rootView;
     }
 
 
-    private void driverInfoDisplay(final TextView edt_driverName)
+    private void driverInfoDisplay(final TextView edt_driverName, final ImageView image_view)
     {
         DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
 
@@ -72,6 +76,11 @@ public class ProfileFragmentDriver extends Fragment {
                     if (dataSnapshot.hasChild("name")){
                         String nameDriver = dataSnapshot.child("name").getValue().toString();
                         edt_driverName.setText(nameDriver);
+                        String picDriver = dataSnapshot.child("picture").getValue().toString();
+                        if (picDriver != null && !picDriver.isEmpty()) {
+                            Picasso.get().load(picDriver).into(image_view);
+                        }
+
                     }
 
                 }
