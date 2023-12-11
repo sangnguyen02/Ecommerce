@@ -3,8 +3,11 @@ package com.example.ecommerce.User.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.ecommerce.Employee.LoginActivityEmployee;
+
+import android.Manifest;
 import com.example.ecommerce.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,6 +48,7 @@ public class LoginActivityUser extends AppCompatActivity {
     private static final String TAG = LoginActivityUser.class.getName();
     CountryCodePicker countryCodePicker;
     String phoneNumber, verificationCode;
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
     Long timeoutSeconds = 30L;
     PhoneAuthProvider.ForceResendingToken  resendingToken;
     EditText phoneInput, otpInput, input_username_bottom_sheet;
@@ -155,7 +161,6 @@ public class LoginActivityUser extends AppCompatActivity {
             PhoneAuthProvider.verifyPhoneNumber(builder.build());
         }
     }
-
     private void signIn(PhoneAuthCredential phoneAuthCredential) {
 
         mAuth.signInWithCredential(phoneAuthCredential)
@@ -180,12 +185,12 @@ public class LoginActivityUser extends AppCompatActivity {
                     }
                 });
     }
-
     private void goToMainActivity(String phoneNumber, String userName) {
         Intent intent = new Intent(LoginActivityUser.this, MainActivityUser.class);
         Bundle bundle = new Bundle();
         bundle.putString("phone_number", phoneNumber);
         bundle.putString("user_name", userName);
+        requestLocationPermission();
         intent.putExtras(bundle);
         startActivity(intent);
 
@@ -209,7 +214,6 @@ public class LoginActivityUser extends AppCompatActivity {
             }
         },0,1000);
     }
-
     private void createCredentialToFirebase(final String phone, final String idUser) {
         final DatabaseReference RootRef;
         RootRef = FirebaseDatabase.getInstance().getReference();
@@ -251,7 +255,6 @@ public class LoginActivityUser extends AppCompatActivity {
             }
         });
     }
-
     private void showNameUserForm(String phone) {
         bottomSheetBehaviorInputUsername.setState(BottomSheetBehavior.STATE_EXPANDED);
 
@@ -273,7 +276,6 @@ public class LoginActivityUser extends AppCompatActivity {
             }
         });
     }
-
     private void updateNameUserInFirebase(String phone, String nameUser) {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(phone);
         userRef.child("nameUser").setValue(nameUser)
@@ -290,6 +292,20 @@ public class LoginActivityUser extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    private void requestLocationPermission() {
+        // Check if the app has location permission
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            // If not, request the permission
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION);
+        }
+        // You may add an else block here if you want to handle the case when the permission is already granted
     }
 
 }

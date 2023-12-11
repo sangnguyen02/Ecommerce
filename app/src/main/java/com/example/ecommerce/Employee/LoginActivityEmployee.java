@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.ecommerce.Employee.Admin.Activities.MainActivityAdmin;
 import com.example.ecommerce.Employee.Driver.Activities.MainActivityDriver;
@@ -30,6 +31,7 @@ public class LoginActivityEmployee extends AppCompatActivity {
     MaterialButton loginBtn;
     TextView signInAsUser;
     String key_driver;
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +56,7 @@ public class LoginActivityEmployee extends AppCompatActivity {
             public void onClick(View view) {
                 String email = emailInput.getText().toString().trim();
                 String password = passwordInput.getText().toString().trim();
-
+                requestPermission();
                 //Validating Input
                 if (email.isEmpty() || password.isEmpty()) {
                     // Show an error message for empty fields
@@ -76,6 +78,12 @@ public class LoginActivityEmployee extends AppCompatActivity {
             }
         });
 
+    }
+    private void requestPermission()
+    {
+        ActivityCompat.requestPermissions(this,
+                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                REQUEST_LOCATION_PERMISSION);
     }
 
     private void SignInAsDriver(String email, String password)

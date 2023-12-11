@@ -88,7 +88,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         super.onAttach(context);
         this.context = context;
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -120,10 +119,7 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
 
         ReverseGeocodingTask reverseGeocodingTask1 = new ReverseGeocodingTask(tvFrom);
         ReverseGeocodingTask reverseGeocodingTask2 = new ReverseGeocodingTask(tvTo);
-
-
         setStatus(status_driver);
-
         if (orderId != null) {
             Log.e("Update after notify",orderId);
             updateBottomSheet(orderId,reverseGeocodingTask1,reverseGeocodingTask2);
@@ -198,7 +194,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
 
         return rootView;
     }
-
     private void setDriver_available() {
 
 
@@ -212,7 +207,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
             }
         });
     }
-
     private void setDriver_unavailable() {
 
 
@@ -250,7 +244,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         reverseGeocodingTask2.cancelTask();
 
     }
-
     private void cancelOrder() {
         DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
         DriverRef.child("driverStatus").setValue("DENY").addOnCompleteListener(task -> {
@@ -269,10 +262,8 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
 
 
     }
-
     private void setStatus(final TextView status_driver) {
         DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
-
         DriverRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -318,7 +309,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
             }
         });
     }
-
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
@@ -333,7 +323,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
             }
         }
     }
-
     public void sendNotification() {
         Log.e("Home", "Check send notify");
         NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), CHANNEL_ID)
@@ -362,7 +351,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         }
         notificationManager.notify(1, builder.build());
     }
-
     private void updateBottomSheet(String orderId, final ReverseGeocodingTask reverseGeocodingTask1,
                                    final ReverseGeocodingTask reverseGeocodingTask2) {
         // Extract relevant information from the Order object and update the TextViews
@@ -414,7 +402,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
 
         }
     }
-
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap_Driver = googleMap;
@@ -429,7 +416,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
             requestLocationPermission();
         }
     }
-
     protected synchronized void buildGoogleAPIClient() {
         mGoogleAPIClient= new GoogleApiClient.Builder(rootView.getContext())
                 .addConnectionCallbacks(this)
@@ -439,8 +425,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         mGoogleAPIClient.connect();
 
     }
-
-
     private void updateMap() {
         // Get the last known location
         FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
@@ -468,8 +452,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
             }
         });
     }
-
-
     private void requestLocationPermission() {
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -483,7 +465,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
             updateMap();
         }
     }
-
     private void startLocationUpdates() {
         locationCallback = new LocationCallback() {
             @Override
@@ -516,7 +497,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
-
     @Override
     public void onStop() {
         super.onStop();
@@ -525,25 +505,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         GeoFire geoFire= new GeoFire(ref);
         geoFire.removeLocation(Userid);
     }
-
-    private void stopLocationUpdates() {
-        if (locationCallback != null) {
-            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
-            fusedLocationClient.removeLocationUpdates(locationCallback);
-        }
-    }
-
-    private void updateLocationOnFirebase(double latitude, double longitude) {
-        // Assuming you have a "DriversInfo" node in your database
-        DatabaseReference driverLocationRef = FirebaseDatabase.getInstance().getReference().child("DriverLocation");
-
-        // Update the location fields in your "DriversInfo" node
-        driverLocationRef.child(key_driver).setValue(new GeoLocation(latitude, longitude));
-
-        // Update the location in GeoFire
-
-    }
-
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         mLocationRequest = new LocationRequest();
@@ -565,17 +526,12 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleAPIClient, mLocationRequest, this);
 
     }
-
     @Override
     public void onConnectionSuspended(int i) {
-
     }
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
-
     @Override
     public void onLocationChanged(@NonNull Location location) {
         mLastLocation=location;
@@ -600,5 +556,4 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
             }
         });
     }
-
 }
