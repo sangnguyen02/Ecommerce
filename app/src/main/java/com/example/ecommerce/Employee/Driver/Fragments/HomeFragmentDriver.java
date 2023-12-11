@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ecommerce.Employee.Driver.Activities.ReceiveOrderActivityDriver;
+import com.example.ecommerce.Models.DriverInfos;
 import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
 import com.firebase.geofire.GeoFire;
@@ -81,6 +82,7 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
     GoogleApiClient mGoogleAPIClient;
     Location mLastLocation;
     LocationRequest mLocationRequest;
+    private DriverInfos driverinfos=null;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -142,7 +144,7 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
                     Log.e("HomeFrag", "searchForDatabase");
                     // This method will be called whenever data at the specified location changes
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String driverNo = snapshot.child("driverNo").getValue(String.class);
+                        String driverNo = snapshot.child("driverInfos").getValue(String.class);
                         String orderStatus = snapshot.child("orderStatus").getValue(String.class);
                         Log.e("HomeFrag", key_driver);
                         if (driverNo.equals(key_driver) && orderStatus.equals("PENDING")) {
@@ -151,7 +153,6 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
                             orderId=snapshot.getKey();
                             Toast.makeText(rootView.getContext(), "New order", Toast.LENGTH_SHORT).show();
                             updateBottomSheet(orderId,reverseGeocodingTask1,reverseGeocodingTask2);
-
                             bottomSheetBehaviorRequestPopUp.setState(BottomSheetBehavior.STATE_EXPANDED);
                             createNotificationChannel();
                             sendNotification();
@@ -276,11 +277,11 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    driverinfos = dataSnapshot.getValue(DriverInfos.class);
                     Log.e("Profile Frag Color", "da tim thay ");
                     if (dataSnapshot.hasChild("driverStatus")) {
                         String statusDriver = dataSnapshot.child("driverStatus").getValue().toString();
                         status_driver.setText(statusDriver);
-
                         // Change text color based on the driver status
                         int textColor = checkDriverStatus(statusDriver);
                         status_driver.setTextColor(textColor);
@@ -310,14 +311,12 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
                 }
                 return color;
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Handle errors
                 Log.e("Profile Driver Fragment", "Error database");
             }
         });
-
     }
 
     private void createNotificationChannel() {
@@ -522,10 +521,9 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
     public void onStop() {
         super.onStop();
         String Userid=key_driver;
-        DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversInfo");
+        DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriverLocation");
         GeoFire geoFire= new GeoFire(ref);
-
-        geoFire.removeLocation("currentLocation");
+        geoFire.removeLocation(Userid);
     }
 
     private void stopLocationUpdates() {
@@ -537,10 +535,10 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
 
     private void updateLocationOnFirebase(double latitude, double longitude) {
         // Assuming you have a "DriversInfo" node in your database
-        DatabaseReference driverLocationRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
+        DatabaseReference driverLocationRef = FirebaseDatabase.getInstance().getReference().child("DriverLocation");
 
         // Update the location fields in your "DriversInfo" node
-        driverLocationRef.child("currentLocation").setValue(new GeoLocation(latitude, longitude));
+        driverLocationRef.child(key_driver).setValue(new GeoLocation(latitude, longitude));
 
         // Update the location in GeoFire
 
@@ -586,7 +584,7 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         mMap_Driver.animateCamera(CameraUpdateFactory.zoomTo(15));
         String Userid=key_driver;
        // DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversInfo").child(Userid);
-        DatabaseReference driverRef = FirebaseDatabase.getInstance().getReference("DriversInfo").child(Userid);
+        DatabaseReference driverRef = FirebaseDatabase.getInstance().getReference("DriverLocation");
 
 // Get the current location (replace these with actual latitude and longitude values)
         double latitude = location.getLatitude();
@@ -594,7 +592,7 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
 
 // Update GeoFire location
         GeoFire geoFire = new GeoFire(driverRef);
-        geoFire.setLocation("currentLocation", new GeoLocation(latitude, longitude), (key, error) -> {
+        geoFire.setLocation(Userid, new GeoLocation(latitude, longitude), (key, error) -> {
             if (error == null) {
                 Log.d("GeoFire", "Location updated successfully");
             } else {
