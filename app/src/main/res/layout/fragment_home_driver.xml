@@ -71,6 +71,10 @@
 
 
         <include layout="@layout/layout_bottom_sheet_order_pop_up"/>
+        <include layout="@layout/layout_bottom_sheet_driver_driverstart"/>
+        <include layout="@layout/layout_bottom_sheet_driver_drivercoming"/>
+        <include layout="@layout/layout_bottom_sheet_driver_driverend"/>
+        <include layout="@layout/layout_bottom_sheet_driver_tripfare"/>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
