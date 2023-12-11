@@ -22,7 +22,7 @@ public class DriverInfos implements Serializable {
     private String bankName;
     private List<Bill> bills;
     private MyEnum.DriverStatus driverStatus;
-    private GeoLocation currentLocation;
+
 
     public String getBankName() {
         return bankName;
@@ -32,13 +32,7 @@ public class DriverInfos implements Serializable {
         this.bankName = bankName;
     }
 
-    public GeoLocation getCurrentLocation() {
-        return currentLocation;
-    }
 
-    public void setCurrentLocation(GeoLocation currentLocation) {
-        this.currentLocation = currentLocation;
-    }
 
     //Driver Information Without Bill
     public DriverInfos(String phoneNo, String name, String mail, String id, String license, float avgRating, int balance, String picture, String bankName,String bankAccount, MyEnum.DriverStatus driverStatus) {
@@ -53,7 +47,6 @@ public class DriverInfos implements Serializable {
         this.bankName = bankName;
         this.bankAccount = bankAccount;
         this.driverStatus = driverStatus;
-        this.currentLocation = null;
     }
 
     public DriverInfos(){}

@@ -14,7 +14,12 @@ import android.widget.AdapterView;
 import android.widget.Button;
 
 import com.example.ecommerce.Enum.MyEnum;
+import com.example.ecommerce.Models.DriverInfos;
 import com.example.ecommerce.Models.Order;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -60,9 +65,7 @@ import java.util.Locale;
 public class BookDriverActivityUser extends AppCompatActivity {
 
     private CardView layoutBottomSheetBook, layoutBottomSheetWating, layoutBottomSheetDriverComing, layoutBottomSheetDriverArrived, layoutBottomSheetDriverEndTrip,layoutBottomSheetPaypal;
-
     private BottomSheetBehavior bottomSheetBehaviorBook, bottomSheetBehaviorWaiting, bottomSheetBehaviorDriverComing, bottomSheetBehaviorDriverArrived, bottomSheetBehaviorDriverEndTrip,bottomSheetBehaviorPaypal;
-
     private Spinner spinnerCategory;
     private CategoryAdapter categoryAdapter;
     private TextView ratingScore;
@@ -75,21 +78,23 @@ public class BookDriverActivityUser extends AppCompatActivity {
     private static final int BASE_PRICE_A2 = 20000; // Base price for Hạng A2
     private static final int BASE_PRICE_B2 = 30000; // Base price for Hạng B2
     private static final int PRICE_PER_KM_A2 = 11000; // Price per km for Hạng A2
-    private static final int PRICE_PER_KM_B2 = 15000; // Price per km for Hạng B2
     private static final int NIGHT_FEE_21_23 = 6000; // Night fee from 21h to 23h
     private static final int NIGHT_FEE_23_1 = 10000; // Night fee from 23h to 1h
     private static final int NIGHT_FEE_1_4 = 15000; // Night fee from 1h to 4h
-
     private boolean type=false;
     private float motor_price=0;
     private float car_price=0;
     private float currencyRate = 0.04f;
+    private int radius=1;
+    private static  int MAX_RADIUS=3;
+    private boolean driverFound=false;
+    private String driverID;
+    private  DriverInfos driverInfos=null;
+    Order order= new Order();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_driver_user);
-
-
         // init Button
         book = findViewById(R.id.book_btn);
         cancelWaiting = findViewById(R.id.cancelWaiting_btn);
@@ -99,15 +104,11 @@ public class BookDriverActivityUser extends AppCompatActivity {
         carPrice = findViewById(R.id.car_price);
         motorCheckBox = findViewById(R.id.motor_checkbox);
         carCheckBox = findViewById(R.id.car_checkbox);
-
-
         // Init rating bar
         ratingBar = findViewById(R.id.ratingBar);
         ratingScore = findViewById(R.id.tv_ratingScore);
-
         //Paypal
         paymentButtonContainer= findViewById(R.id.payment_button_container);
-
         // Init Category payment method
         spinnerCategory = findViewById(R.id.spn_category);
         categoryAdapter = new CategoryAdapter(this, R.layout.item_selected, getListCategory());
@@ -118,10 +119,8 @@ public class BookDriverActivityUser extends AppCompatActivity {
                 Toast.makeText(BookDriverActivityUser.this, categoryAdapter.getItem(i).getName(), Toast.LENGTH_LONG);
                 paymentMethod=categoryAdapter.getItem(i).getName().toString();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 
@@ -157,7 +156,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
                 String user_destination_latitude=preferences.getString("user_destination_latitude","");
                 String user_destination_longtitude=preferences.getString("user_destination_longitude","");
 
-                Order order= new Order();
+
                 order.setClientNo(phoneNumber);
                 order.setClientName(userName);
                 order.setPickupLocation_Latitude(user_location_latitude);
@@ -184,6 +183,8 @@ public class BookDriverActivityUser extends AppCompatActivity {
                 }
                 checkPaymentMethod(order);
 
+
+
             }
         });
     }
@@ -201,17 +202,14 @@ public class BookDriverActivityUser extends AppCompatActivity {
             finishOrder(order);
         }
     }
-
     private void finishOrder(Order order){
-        uploadOrderToFirebase(order);
+        getClosetDriver();
         bottomSheetBehaviorWaiting.setState(BottomSheetBehavior.STATE_EXPANDED);
-        CheckDriver();
     }
     private float convertVndToUsd(float priceVnd) {
 
         return priceVnd * currencyRate;
     }
-
     private  void setupPayPal(Float price, Order order){
         paymentButtonContainer.setup(
 
@@ -257,20 +255,15 @@ public class BookDriverActivityUser extends AppCompatActivity {
         );
 
     }
-
     private void uploadOrderToFirebase(Order order) {
         // Get a reference to the root of your Firebase Realtime Database
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
         // Get a reference to the "orders" node (adjust the path as needed)
         DatabaseReference ordersReference = databaseReference.child("Order");
-
         // Push the Order object to the database to generate a unique ID
         DatabaseReference newOrderRef = ordersReference.push();
-
         // Set the unique ID as the order's ID
         order.setId(newOrderRef.getKey());
-
         // Set the value of the Order object at the generated ID
         newOrderRef.setValue(order)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -284,9 +277,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Network Error!", Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
-
     private void updateRatingScore(int rating) {
         String ratingText;
         switch (rating) {
@@ -313,8 +304,6 @@ public class BookDriverActivityUser extends AppCompatActivity {
         // Update the TextView with the calculated rating text
         ratingScore.setText(ratingText);
     }
-
-
     private void setCheckBoxAuto() {
         motorCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -338,7 +327,6 @@ public class BookDriverActivityUser extends AppCompatActivity {
             }
         });
     }
-
     private void SetMotorPrice()
     {
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
@@ -359,8 +347,8 @@ public class BookDriverActivityUser extends AppCompatActivity {
         }
         // Calculate the total price
         float totalPrice = BASE_PRICE_A2 + distancePrice + nightFee;
-        motor_price=totalPrice;
-        motorPrice.setText(totalPrice+ " VND");
+        motor_price=roundToNearest500(totalPrice);
+        motorPrice.setText(motor_price+ " VND");
 
     }
     private void SetCarPrice()
@@ -383,21 +371,104 @@ public class BookDriverActivityUser extends AppCompatActivity {
         }
         // Calculate the total price
         float totalPrice = BASE_PRICE_B2 + distancePrice + nightFee;
-        car_price=totalPrice;
-        carPrice.setText(totalPrice+ " VND");
-
+        car_price=roundToNearest500(totalPrice);
+        carPrice.setText(car_price+ " VND");
     }
-
-
-        private List<CategoryPaymentMethod> getListCategory () {
+    private float roundToNearest500(float value) {
+        // Kiểm tra xem giá trị là trên hay dưới 500
+        float remainder = value % 500;
+        if (remainder > 0 && remainder < 500) {
+            // Làm tròn lên 500 nếu giá trị dưới 500 đồng
+            return (float) Math.ceil(value / 500) * 500;
+        } else {
+            // Làm tròn lên hàng nghìn nếu giá trị trên 500 đồng
+            return (float) Math.ceil(value / 1000) * 1000;
+        }
+    }
+    private List<CategoryPaymentMethod> getListCategory () {
             List<CategoryPaymentMethod> list = new ArrayList<>();
             list.add(new CategoryPaymentMethod("Cash", "cash"));
             list.add(new CategoryPaymentMethod("ZaloPay", "zalopay"));
             list.add(new CategoryPaymentMethod("Paypal", "paypal"));
             return list;
         }
-    private void CheckDriver(){
+    private void getClosetDriver()
+    {
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String user_location_latitude=preferences.getString("user_location_latitude","");
+        String user_location_longtitude=preferences.getString("user_location_longtitude","");
+        DatabaseReference driverLocation=FirebaseDatabase.getInstance().getReference().child("DriverLocation");
+        GeoFire geoFire= new GeoFire(driverLocation);
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(Double.parseDouble(user_location_latitude), Double.parseDouble(user_location_longtitude)), radius);
+        geoQuery.removeAllListeners();
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                if(!driverFound)
+                {
+                    driverFound=true;
+                    driverID=key;
+                    fetchDriverInfo(driverID);
+                }
+            }
+            @Override
+            public void onKeyExited(String key) {
+            }
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+            }
 
+            @Override
+            public void onGeoQueryReady() {
+                if (!driverFound) {
+                    // Increase the radius, but set a maximum limit to avoid infinite recursion
+                    if (radius <= MAX_RADIUS) {
+                        radius++;
+                        getClosetDriver();
+                    } else {
+                        Log.d("No Driver Found", "Maximum radius reached");
+                        // Handle the case when no driver is found within the maximum radius
+                    }
+                }
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+
+            }
+        });
+    }
+    private void fetchDriverInfo(String driverID) {
+        DatabaseReference driverInfoRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(driverID);
+        driverInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Create a new DriverInfos object using the data from the dataSnapshot
+                    driverInfos = dataSnapshot.getValue(DriverInfos.class);
+                    if(driverInfos.getDriverStatus().equals(MyEnum.DriverStatus.ACTIVE))
+                    {
+                        Log.d("Driver Info", driverInfos.getPhoneNo());
+                        Log.d("Driver Info", driverInfos.getName());
+                        order.setDriverInfos(driverInfos);
+                        Log.d("Order setDriver",order.getDriverInfos().getPhoneNo());
+                        Log.d("Order setDriver",order.getDriverInfos().getName());
+                        uploadOrderToFirebase( order);
+
+                    }
+                    else
+                    {
+                        driverFound = false;
+                        getClosetDriver();
+                    }
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle errors that occur during the data retrieval process
+            }
+        });
     }
 }
 
