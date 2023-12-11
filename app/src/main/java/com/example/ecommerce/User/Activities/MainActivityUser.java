@@ -2,7 +2,6 @@ package com.example.ecommerce.User.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -13,7 +12,6 @@ import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
 import com.example.ecommerce.User.Fragments.HistoryFragmentUser;
 import com.example.ecommerce.User.Fragments.HomeFragmentUser;
-import com.example.ecommerce.User.Fragments.PaymentFragmentUser;
 import com.example.ecommerce.User.Fragments.ProfileFragmentUser;
 import com.example.ecommerce.databinding.ActivityMainBinding;
 
@@ -58,13 +56,9 @@ public class MainActivityUser extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.home:
                     replaceFragment(homeFragmentUser);
-
                     break;
                 case R.id.history:
                     replaceFragment(new HistoryFragmentUser());
-                    break;
-                case R.id.payment:
-                    replaceFragment(new PaymentFragmentUser());
                     break;
                 case R.id.profile:
                     ProfileFragmentUser profileFragmentUser = new ProfileFragmentUser();

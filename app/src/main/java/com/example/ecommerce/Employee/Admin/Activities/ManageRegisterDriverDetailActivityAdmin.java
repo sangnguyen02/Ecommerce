@@ -124,7 +124,7 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
                     // Update the attribute of the object locally
                     if (currentDriver != null) {
                         currentDriver.setDriverStatus(MyEnum.DriverStatus.OFFLINE);
-                        currentDriver.setBalance(0);
+                        currentDriver.setBalance(50000);
                         // Set the updated object back to the Firebase reference
                         specificDriverRef.setValue(currentDriver);
                     }
