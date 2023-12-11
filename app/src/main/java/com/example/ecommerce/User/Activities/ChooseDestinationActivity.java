@@ -54,35 +54,24 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
     private ImageView home, work;
     private MaterialButton confirm;
     public  static final  String API_KEY="AIzaSyA6mJ-VPk05xUayf1IdgE4YqhPsTNT24kY";
-
     private GoogleMap mMap_User;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
-
     public  double distanceInKm=0;
     private FusedLocationProviderClient fusedLocationClient;
-
     private Marker searchMarkerLocation;
-    //    private Marker searchMarkerDestination;
-    //use for directions api
     private Location userLocationLatLng;
     //use for directions api
     private Location userDestinationLatLng;
-
-
     private List<Polyline> polylines=null;
-
     ArrayList<Marker> markerList = new ArrayList<>();
     private Button RouteBTN,PriceBTN;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_destination);
-
+        requestPermission();
         urlocation = findViewById(R.id.searchView_yourLocation);
         urdestination = findViewById(R.id.searchView_yourDest);
-//        home = findViewById(R.id.img_home_Location);
-//        work = findViewById(R.id.img_work_Location);
         confirm = findViewById(R.id.confirmChoosen_btn);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mMapUser);
@@ -91,12 +80,10 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         onSearchLocation();
         onSearchDestination();
-
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-
                 preferences.edit().putString("user_location_latitude", String.valueOf(userLocationLatLng.getLatitude())).apply();
                 preferences.edit().putString("user_location_longtitude", String.valueOf(userLocationLatLng.getLongitude())).apply();
                 preferences.edit().putString("user_destination_latitude", String.valueOf(userDestinationLatLng.getLatitude())).apply();
@@ -105,7 +92,6 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
                 startActivity(intent);
             }
         });
-
     }
     private void onSearchLocation( ) {
         urlocation.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -206,6 +192,9 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap_User = googleMap;
+        ActivityCompat.requestPermissions(this,
+                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                REQUEST_LOCATION_PERMISSION);
         // Check for location permissions
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
@@ -225,6 +214,12 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
                     REQUEST_LOCATION_PERMISSION);
         }
     }
+    private void requestPermission()
+    {
+        ActivityCompat.requestPermissions(this,
+                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                REQUEST_LOCATION_PERMISSION);
+    }
     public void getCurrentLocation(Location location){
         if (location != null) {
             // userLocationLatLng = new LatLng(location.getLatitude(), location.getLongitude());
@@ -232,14 +227,11 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(
                     new LatLng(userLocationLatLng.getLatitude(), userLocationLatLng.getLongitude()), 18);
             mMap_User.moveCamera(cameraUpdate);
-
             // Add a marker for the user's location
             mMap_User.addMarker(new MarkerOptions()
                     .position(new LatLng(userLocationLatLng.getLatitude(), userLocationLatLng.getLongitude()))
                     .title("Your Location")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-
-
             // Reverse geocode the location to get the address
             Geocoder geocoder = new Geocoder(ChooseDestinationActivity.this, Locale.getDefault());
             try {
@@ -247,9 +239,7 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
                 if (addresses != null && !addresses.isEmpty()) {
                     Address address = addresses.get(0);
                     String currentLocationText = address.getAddressLine(0);
-
                     // Assuming mapLocation is the ID of your SearchView
-
                     urlocation.setQuery(currentLocationText, false);
                 } else {
                     Toast.makeText(ChooseDestinationActivity.this, "Address not available", Toast.LENGTH_SHORT).show();
@@ -262,26 +252,19 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
             Toast.makeText(ChooseDestinationActivity.this, "Location not available",  Toast.LENGTH_SHORT).show();
         }
     }
-
     @Override
     public void onRoutingFailure(RouteException e) {
         View parentLayout = findViewById(android.R.id.content);
         Snackbar snackbar= Snackbar.make(parentLayout, e.toString(), Snackbar.LENGTH_LONG);
         snackbar.show();
-
     }
-
     @Override
     public void onRoutingStart() {
         Toast.makeText(ChooseDestinationActivity.this,"Finding Route...",Toast.LENGTH_LONG).show();
-
     }
-
     @Override
     public void onRoutingSuccess(ArrayList<Route> arrayList, int shortestRouteIndex) {
-
         CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(userLocationLatLng.getLatitude(), userLocationLatLng.getLongitude()));
-
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
         if(polylines!=null) {
             polylines.clear();
@@ -289,12 +272,9 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
         PolylineOptions polyOptions = new PolylineOptions();
         LatLng polylineStartLatLng=null;
         LatLng polylineEndLatLng=null;
-
-
         polylines = new ArrayList<>();
         //add route(s) to the map using polyline
         for (int i = 0; i <arrayList.size(); i++) {
-
             if(i==shortestRouteIndex)
             {
                 polyOptions.color(getResources().getColor(com.google.android.libraries.places.R.color.quantum_grey));
@@ -310,25 +290,10 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
 
             }
         }
-
-        //Add Marker on route starting position
-        MarkerOptions startMarker = new MarkerOptions();
-        startMarker.position(polylineStartLatLng);
-        startMarker.title("My Location");
-        mMap_User.addMarker(startMarker);
-
-        //Add Marker on route ending position
-        MarkerOptions endMarker = new MarkerOptions();
-        endMarker.position(polylineEndLatLng);
-        endMarker.title("Destination");
-        mMap_User.addMarker(endMarker);
-
         // Get the shortest route
         Route shortestRoute = arrayList.get(shortestRouteIndex);
-
         // Access the distance of the route
         double distance = shortestRoute.getDistanceValue(); // distance in meters
-
         // You can convert the distance to other units if needed
         distanceInKm = distance / 1000.0;
 //        double distanceInMiles = distance / 1609.34;
@@ -338,20 +303,7 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
         preferences.edit().putString("distance", String.valueOf(distanceInKm)).apply();
         // Display the distance on the map
         String distanceText = String.format("Distance: %.2f km", distanceInKm);
-
         Toast.makeText(ChooseDestinationActivity.this, distanceText, Toast.LENGTH_LONG).show();
-
-//        Intent intent=new Intent(MapActivityUser.this,CaculateMoneyActivity.class);
-//        intent.putExtra("Distance",distanceInKm);
-//        startActivity(intent);
-//        PriceBTN.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent=new Intent(ChooseDestinationActivity.this,CaculateMoneyActivity.class);
-//                intent.putExtra("Distance",distanceInKm);
-//                startActivity(intent);
-//            }
-//        });
     }
 
     @Override
@@ -376,7 +328,6 @@ public class ChooseDestinationActivity extends AppCompatActivity  implements OnM
             routing.execute();
         }
     }
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Findroutes(userLocationLatLng,userDestinationLatLng);

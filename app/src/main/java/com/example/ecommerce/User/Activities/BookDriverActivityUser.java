@@ -59,6 +59,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -182,9 +183,6 @@ public class BookDriverActivityUser extends AppCompatActivity {
                     order.setPaymentMethod(MyEnum.PaymentMethod.PAYPAL);
                 }
                 checkPaymentMethod(order);
-
-
-
             }
         });
     }
@@ -212,9 +210,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
     }
     private  void setupPayPal(Float price, Order order){
         paymentButtonContainer.setup(
-
                 new CreateOrder() {
-
                     @Override
                     public void create(@NonNull CreateOrderActions createOrderActions) {
                         Log.d("BookDriverActivity", "create: ");
@@ -253,7 +249,6 @@ public class BookDriverActivityUser extends AppCompatActivity {
                     }
                 }
         );
-
     }
     private void uploadOrderToFirebase(Order order) {
         // Get a reference to the root of your Firebase Realtime Database
@@ -300,7 +295,6 @@ public class BookDriverActivityUser extends AppCompatActivity {
                 ratingText = ""; // Handle other cases if needed
                 break;
         }
-
         // Update the TextView with the calculated rating text
         ratingScore.setText(ratingText);
     }
@@ -349,7 +343,6 @@ public class BookDriverActivityUser extends AppCompatActivity {
         float totalPrice = BASE_PRICE_A2 + distancePrice + nightFee;
         motor_price=roundToNearest500(totalPrice);
         motorPrice.setText(motor_price+ " VND");
-
     }
     private void SetCarPrice()
     {
@@ -417,7 +410,6 @@ public class BookDriverActivityUser extends AppCompatActivity {
             @Override
             public void onKeyMoved(String key, GeoLocation location) {
             }
-
             @Override
             public void onGeoQueryReady() {
                 if (!driverFound) {
@@ -431,10 +423,8 @@ public class BookDriverActivityUser extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
             public void onGeoQueryError(DatabaseError error) {
-
             }
         });
     }
@@ -453,15 +443,19 @@ public class BookDriverActivityUser extends AppCompatActivity {
                         order.setDriverInfos(driverInfos);
                         Log.d("Order setDriver",order.getDriverInfos().getPhoneNo());
                         Log.d("Order setDriver",order.getDriverInfos().getName());
-                        uploadOrderToFirebase( order);
+                        // Get the current timestamp
+                        long currentTimeMillis = System.currentTimeMillis();
 
+                        // Create a Date object using the timestamp
+                        Date currentDate = new Date(currentTimeMillis);
+                        order.setDatetime(currentDate);
+                        uploadOrderToFirebase(order);
                     }
                     else
                     {
                         driverFound = false;
                         getClosetDriver();
                     }
-
                 }
             }
             @Override
