@@ -14,11 +14,16 @@ public class PasswordHasher {
     private static final int ITERATIONS = 10000;
     private static final int KEY_LENGTH = 256;
 
-    public static final String Salt ="JustSalt";
+    public static String generateRandomSalt() {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        return Base64.getEncoder().encodeToString(salt);
+    }
 
-    public static String hashPassword(String password) {
+    public static String hashPassword(String password, String salt) {
         char[] passwordChars = password.toCharArray();
-        byte[] saltBytes = Base64.getDecoder().decode(Salt);
+        byte[] saltBytes = Base64.getDecoder().decode(salt);
 
         try {
             PBEKeySpec spec = new PBEKeySpec(passwordChars, saltBytes, ITERATIONS, KEY_LENGTH);
