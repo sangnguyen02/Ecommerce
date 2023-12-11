@@ -49,6 +49,8 @@ public class DriverInfos implements Serializable {
         this.driverStatus = driverStatus;
     }
 
+
+
     public DriverInfos(){}
 
     public DriverInfos(String phoneNo) {

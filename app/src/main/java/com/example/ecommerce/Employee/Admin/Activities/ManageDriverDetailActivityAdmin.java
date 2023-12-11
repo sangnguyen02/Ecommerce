@@ -32,6 +32,7 @@ public class ManageDriverDetailActivityAdmin extends AppCompatActivity {
     DatabaseReference DriverRef;
     RecyclerView rcvManageDriver;
     MaterialButton manageRegisterButton;
+    String driver_clicked_number;
 
     private TextView  driverIdTextView, fullnameTextView, phoneTextView, emailTextView,
             balanceTextView, licenseTextView, bankAccountTextView, activityStatusTextView;
@@ -62,6 +63,7 @@ public class ManageDriverDetailActivityAdmin extends AppCompatActivity {
         driverIdTextView.setText(clickedDriver.getId());
         fullnameTextView.setText(clickedDriver.getName());
         phoneTextView.setText(clickedDriver.getPhoneNo());
+        driver_clicked_number = clickedDriver.getPhoneNo();
         emailTextView.setText(clickedDriver.getMail());
         if(clickedDriver.getBalance() != 0){
             balanceTextView.setText(String.valueOf(clickedDriver.getBalance()));
@@ -80,8 +82,11 @@ public class ManageDriverDetailActivityAdmin extends AppCompatActivity {
         viewHistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(Activity.RESULT_OK);
-                finish();
+                Intent intent = new Intent(getApplicationContext(), ViewDriverHistoryActivity.class);
+                intent.putExtra("driver_clicked_number", driver_clicked_number);
+                startActivity(intent);
+
+
             }
         });
 

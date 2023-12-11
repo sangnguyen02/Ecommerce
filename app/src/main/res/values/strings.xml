@@ -11,20 +11,59 @@
     <string name="fragment_title_manageDriver">Manage Driver</string>
     <string name="fragment_title_statistic">Statistic Revenue</string>
 
-    <string name="user_faq_question1"> </string>
-    <string name="user_faq_answer1"> </string>
+    <!-- User -->
 
-    <string name="user_faq_question2"> </string>
-    <string name="user_faq_answer2"> </string>
+    <string name="user_faq_question1">1. Làm thế nào để tôi đặt một cuốc đi qua ứng dụng?</string>
+    <string name="user_faq_answer1">Để đặt một cuốc đi, bạn cần mở ứng dụng, chọn địa điểm đón và địa điểm đến trên bản đồ hoặc bằng cách nhập địa chỉ cụ thể. Sau đó, chọn loại dịch vụ(ví dụ: xe hơi, xe máy) và xem dự đoán giá, chọn phương thức thanh toán.Cuối cùng, nhấn nút "Đặt" hoặc tương tự để xác nhận cuốc đi.</string>
 
-    <string name="user_faq_question3"> </string>
-    <string name="user_faq_answer3"> </string>
+    <string name="user_faq_question2">2. Làm thế nào để tôi xác định giá tiền cho cuốc đi trước khi đặt?</string>
+    <string name="user_faq_answer2">Trước khi đặt cuốc đi, bạn có thể xem dự đoán giá tiền trong ứng dụng. Giá sẽ phụ thuộc vào khoảng cách giữa điểm đón và điểm đến, loại dịch vụ bạn chọn và tình trạng lưu lượng giao thông. </string>
 
-    <string name="user_faq_question4"> </string>
-    <string name="user_faq_answer4"> </string>
+    <string name="user_faq_question3">3. Làm thế nào để tôi biết thông tin về tài xế và xe trước khi lên xe?</string>
+    <string name="user_faq_answer3">Trước khi lên xe, bạn có thể xem thông tin về tài xế bao gồm tên, hình ảnh, và đánh giá của họ. Bạn cũng sẽ thấy thông tin về xe bao gồm hãng, màu sắc, và biển số.</string>
 
-    <string name="user_faq_question5"> </string>
-    <string name="user_faq_answer5"> </string>
+    <string name="user_faq_question4">4. Làm thế nào để tôi theo dõi tài xế khi đang trong cuốc đi?</string>
+    <string name="user_faq_answer4">Bạn có thể theo dõi tài xế trong cuốc đi thông qua ứng dụng. Trong màn hình cuốc đi, sẽ có một bản đồ hiển thị vị trí di chuyển của tài xế.</string>
+
+    <string name="user_faq_question5">5. Làm thế nào để tôi thanh toán cho cuốc đi, và phương thức thanh toán nào có sẵn?</string>
+    <string name="user_faq_answer5">Bạn có thể thanh toán cuốc đi thông qua ứng dụng bằng cách sử dụng phương thức thanh toán đã liên kết với tài khoản của bạn như ví điện tử và tiền mặt.</string>
+
+    <string name="user_faq_question6">6. Tôi nên làm gì nếu tôi quên một món đồ trong xe sau cuốc đi?</string>
+    <string name="user_faq_answer6">Nếu bạn quên món đồ trong xe sau cuốc đi, hãy liên hệ với bộ phận hỗ trợ của ứng dụng ngay lập tức. Họ sẽ hướng dẫn bạn cách liên hệ với tài xế để lấy lại món đồ của bạn.</string>
+
+    <string name="user_faq_question7">7. Làm thế nào để tôi nắm bắt thông tin về lịch sử các cuốc đi của tôi trong ứng dụng?</string>
+    <string name="user_faq_answer7">Trong ứng dụng, bạn có thể truy cập mục "Lịch sử cuốc đi" để xem thông tin về các cuốc đi trước đó, bao gồm vị trí điểm đón, điểm đến, giá tiền, và tài xế phục vụ.</string>
+
+    <string name="user_faq_question8">8. Tôi phải đợi tài xế bao lâu sau khi đã đặt cuốc đi?</string>
+    <string name="user_faq_answer8">Thời gian chờ tài xế có thể thay đổi tùy theo vị trí và thời điểm đặt cuốc đi. Thông thường, ứng dụng sẽ cung cấp thông báo khi tài xế đã đến điểm đón.</string>
+
+    <!-- Driver -->
+    <string name="driver_faq_question1">1. Làm thế nào để tôi chấp nhận các cuốc đi mới và làm thế nào để tôi biết địa chỉ đón?</string>
+    <string name="driver_faq_answer1">Để chấp nhận các cuốc đi mới, bạn chỉ cần mở ứng dụng và kiểm tra màn hình điều hướng tài xế. Khi có cuốc đi mới, bạn sẽ nhận được thông báo và bạn có thể chấp nhận hoặc từ chối cuốc đi đó. Địa chỉ đón của hành khách sẽ được hiển thị trên màn hình, cùng với thông tin khách hàng và điểm đến.</string>
+
+    <string name="driver_faq_question2">2. Tôi có thể nhận thanh toán qua ứng dụng không, và làm thế nào để tôi rút tiền từ tài khoản của mình?</string>
+    <string name="driver_faq_answer2">Có, bạn có thể nhận thanh toán qua ứng dụng. Tiền sẽ được tự động ghi nhận vào tài khoản của bạn thông qua ứng dụng. Để rút tiền từ tài khoản của mình, bạn cần tuân theo hướng dẫn của ứng dụng để thực hiện việc này, thường là thông qua tài khoản ngân hàng hoặc ví điện tử liên kết với ứng dụng.</string>
+
+    <string name="driver_faq_question3">3. Tôi sẽ được trả lương như thế nào và bao gồm những khoản phí nào?</string>
+    <string name="driver_faq_answer3">Cách bạn được trả lương và danh sách các khoản phí sẽ được mô tả chi tiết trong hợp đồng hoặc thỏa thuận làm việc với ứng dụng. Thông thường, bạn sẽ nhận được một phần tiền từ mức giá cuốc đi và có thể nhận thêm tiền từ các khoản tip hoặc các khách hàng khác trả qua ứng dụng.</string>
+
+    <string name="driver_faq_question4">4. Tôi phải tuân theo những quy tắc an toàn nào khi đón và trả khách?</string>
+    <string name="driver_faq_answer4">Bạn nên luôn tuân theo luật giao thông và quy tắc an toàn khi lái xe. Điều này bao gồm việc đảm bảo rằng bạn và hành khách đều tham gia cuốc đi một cách an toàn và tuân thủ các quy định về an toàn giao thông.</string>
+
+    <string name="driver_faq_question5">5. Làm thế nào để tôi nắm bắt thông tin về lịch sử lái xe của mình trong ứng dụng?</string>
+    <string name="driver_faq_answer5">Thông tin về lịch sử lái xe của bạn thường có sẵn trong ứng dụng. Bạn có thể truy cập mục "Lịch sử lái xe" hoặc "Danh sách cuốc đi" để xem chi tiết về các cuốc đi đã thực hiện, số tiền đã kiếm được, và đánh giá từ khách hàng.</string>
+
+    <string name="driver_faq_question6">6. Tôi phải làm gì nếu tôi không thể tìm thấy địa chỉ đón của hành khách?</string>
+    <string name="driver_faq_answer6">Nếu bạn không thể tìm thấy địa chỉ đón, bạn nên thử liên hệ với hành khách qua ứng dụng hoặc số điện thoại liên hệ để yêu cầu họ cung cấp thông tin cụ thể hoặc chỉ dẫn. Trong trường hợp khẩn cấp, bạn nên luôn liên hệ với bộ phận hỗ trợ của ứng dụng.</string>
+
+    <string name="driver_faq_question7">7. Làm thế nào để tôi cập nhật thông tin về địa chỉ của tôi trong ứng dụng?</string>
+    <string name="driver_faq_answer7">Để cập nhật thông tin địa chỉ của bạn, bạn nên truy cập phần "Thông tin cá nhân" hoặc "Hồ sơ của tài xế" trong ứng dụng và cập nhật thông tin liên hệ và địa chỉ hiện tại của bạn.</string>
+
+    <string name="driver_faq_question8">8. Tôi nên liên hệ với hành khách nếu có bất kỳ vấn đề nào về địa chỉ không?</string>
+    <string name="driver_faq_answer8">Nếu bạn gặp bất kỳ vấn đề hoặc không chắc chắn về địa chỉ đón, bạn nên liên hệ với hành khách qua ứng dụng hoặc số điện thoại liên hệ để yêu cầu thông tin hoặc chỉ dẫn thêm.</string>
+
+    <string name="driver_faq_question9">9. Làm thế nào để tôi xác định khoảng cách và thời gian đến địa chỉ đón?</string>
+    <string name="driver_faq_answer9">Ứng dụng thường cung cấp thông tin về khoảng cách và thời gian đến địa chỉ đón dựa trên dữ liệu bản đồ và lưu lượng giao thông thời gian thực. Bạn có thể xem thông tin này trên màn hình điều hướng tài xế của ứng dụng.</string>
 
 
     <string name="map_api_key">AIzaSyA6mJ-VPk05xUayf1IdgE4YqhPsTNT24kY</string>

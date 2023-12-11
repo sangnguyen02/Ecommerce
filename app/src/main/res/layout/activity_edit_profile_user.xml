@@ -31,7 +31,6 @@
         android:src="@drawable/usericon"
         android:layout_centerHorizontal="true"/>
 
-
     <LinearLayout
         android:id="@+id/editSection"
         android:layout_width="match_parent"

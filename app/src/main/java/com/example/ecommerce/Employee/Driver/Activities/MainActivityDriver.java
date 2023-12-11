@@ -1,5 +1,6 @@
 package com.example.ecommerce.Employee.Driver.Activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -29,6 +30,8 @@ public class MainActivityDriver extends AppCompatActivity {
         if (extras != null) {
             key_driver = extras.getString("key_driver");
             orderId = extras.getString("orderId");
+            SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+            preferences.edit().putString("driver_number",key_driver).apply();
         }
         Log.e("Home",key_driver);
         setContentView(binding.getRoot());

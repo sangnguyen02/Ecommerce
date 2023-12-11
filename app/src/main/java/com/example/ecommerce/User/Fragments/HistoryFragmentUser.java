@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class HistoryFragmentUser extends Fragment {
     View rootView;
     DatabaseReference historyRef;
     RecyclerView rcv_history_user;
-
+    String phoneNumber;
     HistoryUserAdapter adapter;
     List<Order> orderList;
 
@@ -41,7 +42,7 @@ public class HistoryFragmentUser extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_history, container, false);
         SharedPreferences preferences = getContext().getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        String phoneNumber = preferences.getString("phone_number","" );
+        phoneNumber = preferences.getString("phone_number","" );
 
 //        DatabaseReference billID = FirebaseDatabase.getInstance().getReference().child("Order").child("bId");
 //        billID.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -78,9 +79,6 @@ public class HistoryFragmentUser extends Fragment {
         rcv_history_user.setAdapter(adapter);
 
 
-        //loadHistoryOrderUser();
-
-
         return rootView;
     }
 
@@ -92,8 +90,12 @@ public class HistoryFragmentUser extends Fragment {
 
                 for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
                     Order order = orderSnapshot.getValue(Order.class);
-                    if (order != null) {
-                        orderList.add(order);
+                    String phoneUser = order.getClientNo();
+                    Log.d("phone", phoneUser);
+                    if(phoneUser.equals(phoneNumber)) {
+                        if (order != null) {
+                            orderList.add(order);
+                        }
                     }
                 }
                 adapter.notifyDataSetChanged();

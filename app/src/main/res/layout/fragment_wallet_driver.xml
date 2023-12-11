@@ -4,11 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Employee.Driver.Fragments.WalletFragmentDriver">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/label_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Balance:"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/label_balance">
+
+            <TextView
+                android:id="@+id/tv_wallet_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100000"
+                android:textSize="36sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="VND"
+                android:textSize="36sp"
+                />
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
 
 </FrameLayout>

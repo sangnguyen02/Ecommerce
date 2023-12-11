@@ -12,39 +12,202 @@
         android:layout_height="match_parent" />
 
     <TextView
+        android:id="@+id/title_FAQ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:text="FAQ"
-        android:textSize="26dp"
+        android:textSize="26sp"
         android:textStyle="bold"
         android:textColor="@color/black"/>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/titleQuestion1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:text="Question 1: "
-            android:textSize="26dp"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
-        <TextView
-            android:id="@+id/answerQuesntion1"
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_FAQ"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="Answer: "
-            android:textSize="26dp"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleQuestion1_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_question1"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/answerQuesntion1_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_answer1"
+                android:layout_gravity="center"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/titleQuestion2_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_question2"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/answerQuesntion2_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_answer2"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/titleQuestion3_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_question3"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/answerQuesntion3_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_answer3"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/titleQuestion4_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_question4"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/answerQuesntion4_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_answer4"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/titleQuestion5_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_question5"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/answerQuesntion5_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_answer5"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/titleQuestion6_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_question6"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/answerQuesntion6_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_answer6"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/titleQuestion7_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_question7"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/answerQuesntion7_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_answer7"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/titleQuestion8_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_question8"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/answerQuesntion8_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_answer8"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/titleQuestion9_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_question9"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/answerQuesntion9_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/driver_faq_answer9"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>
