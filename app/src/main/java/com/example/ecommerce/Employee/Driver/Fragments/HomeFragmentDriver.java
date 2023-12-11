@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ecommerce.Employee.Driver.Activities.ReceiveOrderActivityDriver;
+import com.example.ecommerce.Enum.MyEnum;
 import com.example.ecommerce.Models.DriverInfos;
 import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
@@ -64,13 +65,21 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
     boolean valid_status=false;
     String errorMessage="Qualify";
     String key_driver, orderId;
-    CardView layoutBottomSheetRequestPopUp;
-    BottomSheetBehavior bottomSheetBehaviorRequestPopUp;
+    Float orderPrice;
+    CardView layoutBottomSheetRequestPopUp,layoutBottomSheetDriverComing,
+            layoutBottomSheetDriverStart,
+            layoutBottomSheetDriverEnd,layoutBottomSheetDriverTripFare;
+    BottomSheetBehavior bottomSheetBehaviorRequestPopUp, bottomSheetBehaviorDriverComing,
+            bottomSheetBehaviorDriverStart,
+            bottomSheetBehaviorDriverEnd, bottomSheetBehaviorDriverTripFare;
     View showSnackBarView;
     private boolean isMapReady = false;
     ImageView setAvailable, setUnavailable;
-    TextView tvFrom, tvTo, tvPrice, tvMethod, tvUPhone, tvTypeVehicle, status_driver;
-    MaterialButton acceptBook_btn, cancelBook_btn;
+    TextView tvFrom, tvTo, tvPrice, tvMethod, tvUPhone,
+            tvTypeVehicle, status_driver, tvUserPhone, tvUserName,tv_earned,tv_wallet,
+            tvUserPhone1, tvUserName1,tvUserPhone2, tvUserName2;
+
+    MaterialButton acceptBook_btn, cancelBook_btn,arrived_btn,start_btn,end_btn,collect_btn;
     public static final String CHANNEL_ID = "notification_driver";
     private DatabaseReference databaseReference;
     private NotificationManagerCompat notificationManager;
@@ -100,8 +109,7 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         bottomSheetBehaviorRequestPopUp = BottomSheetBehavior.from(layoutBottomSheetRequestPopUp);
         setAvailable = rootView.findViewById(R.id.img_connect);
         setUnavailable = rootView.findViewById(R.id.img_disconnect);
-        bottomSheetBehaviorRequestPopUp.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        showSnackBarView = rootView.findViewById(android.R.id.content);
+
         // Find the TextViews in your bottom sheet layout
         tvFrom = rootView.findViewById(R.id.tv_From);
         tvTo = rootView.findViewById(R.id.tv_To);
@@ -119,7 +127,43 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
 
         ReverseGeocodingTask reverseGeocodingTask1 = new ReverseGeocodingTask(tvFrom);
         ReverseGeocodingTask reverseGeocodingTask2 = new ReverseGeocodingTask(tvTo);
+
+        //EditText user name and user phone for other bottom layout sheets
+
+
+
+
+
+        tv_earned=rootView.findViewById(R.id.tv_earned);
+        tv_wallet=rootView.findViewById(R.id.tv_wallet);
+        arrived_btn= rootView.findViewById(R.id.arrived_btn);
+        start_btn= rootView.findViewById(R.id.start_btn);
+        end_btn=rootView.findViewById(R.id.end_btn);
+        collect_btn=rootView.findViewById(R.id.collect_btn);
+        //Layout bottom
+
+        layoutBottomSheetRequestPopUp = rootView.findViewById(R.id.bottom_sheet_order_pop_up);
+        layoutBottomSheetDriverComing = rootView.findViewById(R.id.bottom_sheet_driver_drivercoming);
+        layoutBottomSheetDriverEnd =  rootView.findViewById(R.id.bottom_sheet_driver_driverend);
+        layoutBottomSheetDriverStart = rootView.findViewById(R.id.bottom_sheet_driver_driverstart);
+        layoutBottomSheetDriverTripFare = rootView.findViewById(R.id.bottom_sheet_driver_trip_fare);
+
+        tvUserPhone = layoutBottomSheetDriverComing.findViewById(R.id.tv_userPhone);
+        tvUserName = layoutBottomSheetDriverComing.findViewById(R.id.tv_userName);
+        tvUserPhone1 = layoutBottomSheetDriverStart.findViewById(R.id.tv_userPhone);
+        tvUserName1 = layoutBottomSheetDriverStart.findViewById(R.id.tv_userName);
+        tvUserPhone2 = layoutBottomSheetDriverEnd.findViewById(R.id.tv_userPhone);
+        tvUserName2 = layoutBottomSheetDriverEnd.findViewById(R.id.tv_userName);
+
+        bottomSheetBehaviorRequestPopUp = BottomSheetBehavior.from(layoutBottomSheetRequestPopUp);
+        bottomSheetBehaviorDriverComing = BottomSheetBehavior.from(layoutBottomSheetDriverComing);
+        bottomSheetBehaviorDriverEnd = BottomSheetBehavior.from(layoutBottomSheetDriverEnd);
+        bottomSheetBehaviorDriverStart = BottomSheetBehavior.from(layoutBottomSheetDriverStart);
+        bottomSheetBehaviorDriverTripFare = BottomSheetBehavior.from(layoutBottomSheetDriverTripFare);
+
         setStatus(status_driver);
+
+
         if (orderId != null) {
             Log.e("Update after notify",orderId);
             updateBottomSheet(orderId,reverseGeocodingTask1,reverseGeocodingTask2);
@@ -140,13 +184,20 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
                     Log.e("HomeFrag", "searchForDatabase");
                     // This method will be called whenever data at the specified location changes
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String driverNo = snapshot.child("driverInfos").getValue(String.class);
+                        DriverInfos driver = snapshot.child("driverInfos").getValue(DriverInfos.class);
                         String orderStatus = snapshot.child("orderStatus").getValue(String.class);
                         Log.e("HomeFrag", key_driver);
-                        if (driverNo.equals(key_driver) && orderStatus.equals("PENDING")) {
+                        if (driver.getPhoneNo().equals(key_driver) && orderStatus.equals("PENDING")) {
                             // Authentication successful
                             Order dataObject = snapshot.getValue(Order.class);
-                            orderId=snapshot.getKey();
+                            orderId=dataObject.getId();
+                            orderPrice=dataObject.getPrice();
+                            if(dataObject.getPaymentMethod()==MyEnum.PaymentMethod.COD){
+                                orderPrice = orderPrice * (-0.3f);
+                            }
+                            else orderPrice = orderPrice * (0.7f);
+                            tv_earned.setText(orderPrice.toString());
+
                             Toast.makeText(rootView.getContext(), "New order", Toast.LENGTH_SHORT).show();
                             updateBottomSheet(orderId,reverseGeocodingTask1,reverseGeocodingTask2);
                             bottomSheetBehaviorRequestPopUp.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -192,6 +243,47 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
             }
         });
 
+
+        arrived_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateStatusOrder(MyEnum.OrderStatus.PICKEDUP);
+                bottomSheetBehaviorDriverComing.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                bottomSheetBehaviorDriverStart.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+            }
+        });
+        start_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                bottomSheetBehaviorDriverStart.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                bottomSheetBehaviorDriverEnd.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+            }
+        });
+        end_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateStatusOrder(MyEnum.OrderStatus.SUCCEED);
+                bottomSheetBehaviorDriverEnd.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                bottomSheetBehaviorDriverTripFare.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+            }
+        });
+        collect_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setDriver_available();
+                int currentBalance = driverinfos.getBalance();
+                currentBalance += Math.round(orderPrice);
+                updateDriverBalance(currentBalance);
+                bottomSheetBehaviorDriverTripFare.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+
+
+            }
+        });
         return rootView;
     }
     private void setDriver_available() {
@@ -225,6 +317,8 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
         if (orderId!=null){
             DatabaseReference OrdersRef = FirebaseDatabase.getInstance().getReference().child("Order").child(orderId);
             OrdersRef.child("orderStatus").setValue("ACCEPT");
+            bottomSheetBehaviorRequestPopUp.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            bottomSheetBehaviorDriverComing.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
 
         DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
@@ -262,6 +356,20 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
 
 
     }
+
+    private void updateStatusOrder(MyEnum.OrderStatus status){
+        if (orderId != null) {
+            DatabaseReference OrdersRef = FirebaseDatabase.getInstance().getReference().child("Order").child(orderId);
+            OrdersRef.child("orderStatus").setValue(status);
+        }
+    }
+    private void updateDriverBalance(int balance){
+        if (key_driver != null) {
+            DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
+            DriverRef.child("balance").setValue(balance);
+        }
+    }
+
     private void setStatus(final TextView status_driver) {
         DatabaseReference DriverRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(key_driver);
         DriverRef.addValueEventListener(new ValueEventListener() {
@@ -269,7 +377,9 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     driverinfos = dataSnapshot.getValue(DriverInfos.class);
-                    Log.e("Profile Frag Color", "da tim thay ");
+                    tv_wallet.setText(String.valueOf(driverinfos.getBalance()));
+                    String wallet = String.valueOf(driverinfos.getBalance());
+                    Log.e("Profile Frag Color", wallet);
                     if (dataSnapshot.hasChild("driverStatus")) {
                         String statusDriver = dataSnapshot.child("driverStatus").getValue().toString();
                         status_driver.setText(statusDriver);
@@ -385,6 +495,12 @@ public class HomeFragmentDriver extends Fragment implements OnMapReadyCallback, 
                             tvMethod.setText(String.valueOf(dataObject.getPaymentMethod()));
                             tvUPhone.setText(dataObject.getClientNo());
                             tvTypeVehicle.setText(String.valueOf(dataObject.getVehicleType()));
+                            tvUserPhone.setText(dataObject.getClientNo());
+                            tvUserName.setText(dataObject.getClientName());
+                            tvUserPhone1.setText(dataObject.getClientNo());
+                            tvUserName1.setText(dataObject.getClientName());
+                            tvUserPhone2.setText(dataObject.getClientNo());
+                            tvUserName2.setText(dataObject.getClientName());
                             break;
                         }
 
