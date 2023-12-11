@@ -2,6 +2,7 @@ package com.example.ecommerce.Employee;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ecommerce.Employee.Admin.Activities.MainActivityAdmin;
 import com.example.ecommerce.Employee.Driver.Activities.MainActivityDriver;
+import com.example.ecommerce.Models.DriverAccount;
 import com.example.ecommerce.R;
 import com.example.ecommerce.User.Activities.LoginActivityUser;
 import com.google.android.material.button.MaterialButton;
@@ -29,7 +31,9 @@ public class LoginActivityEmployee extends AppCompatActivity {
     EditText emailInput, passwordInput;
     MaterialButton loginBtn;
     TextView signInAsUser;
-    String key_driver;
+    DriverAccount _currentDriver = null;
+    boolean _isFind;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,13 +67,10 @@ public class LoginActivityEmployee extends AppCompatActivity {
                 }
 
                 //Validating Sign In Method
-                if (email.contains("admin")){
+                if (email.contains("admin")) {
                     SignInAsAdmin(email, password);
-                }else{
-                    String hashedPassword = PasswordHasher.hashPassword(password);
-                    Log.e("LoginActivity",hashedPassword);
-                    SignInAsDriver(email, hashedPassword);
-
+                } else {
+                    FindCurrentDriver(email, password);
                 }
 
 
@@ -78,36 +79,42 @@ public class LoginActivityEmployee extends AppCompatActivity {
 
     }
 
-    private void SignInAsDriver(String email, String password)
-    {
+    private void FindCurrentDriver(String email, String password) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("DriversAccount");
+        _isFind = false;
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //Find account
-                boolean isAuthenticated = false;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String dbUsername = snapshot.child("username").getValue(String.class);
-                    String dbPassword = snapshot.child("password").getValue(String.class);
 
-                    if (dbUsername.equals(email) && dbPassword.equals(password)) {
-                        // Authentication successful
-                        isAuthenticated = true;
-                        key_driver=snapshot.getKey();
-                        Toast.makeText(LoginActivityEmployee.this, "Authentication Successfully.",
-                                Toast.LENGTH_SHORT).show();
+                    if (dbUsername.equals(email)) {
+                        _currentDriver = snapshot.getValue(DriverAccount.class);
+                        Toast.makeText(LoginActivityEmployee.this, "CurrentDriver: " + _currentDriver.getUsername(), Toast.LENGTH_SHORT).show();
+                        _isFind = true;
                         break;
                     }
                 }
-                //Authenticating
-                if (isAuthenticated) {
-                    // Proceed to the next activity or show a success message
-                    Intent intent = new Intent(LoginActivityEmployee.this, MainActivityDriver.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("key_driver", key_driver);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                    finish(); // Optional: Finish the current activity to prevent going back on pressing back button
+
+                if (_isFind) {
+                    //Toast.makeText(LoginActivityEmployee.this, "User Found!", Toast.LENGTH_SHORT).show();
+                    String salt = _currentDriver.getSalt();
+                    String hashedPassword = PasswordHasher.hashPassword(password, salt);
+                    String firebaseHashedPassword = _currentDriver.getPassword();
+                    if (hashedPassword.equals(firebaseHashedPassword)) {
+/*                        Log.d("Salt: ", salt);
+                        Log.d("hashePassword: ", hashedPassword);
+                        Log.d("FireBaseHased: ", firebaseHashedPassword);*/
+                        Intent intent = new Intent(LoginActivityEmployee.this, MainActivityDriver.class);
+                        Bundle bundle = new Bundle();
+                        String key_driver = _currentDriver.getDriverID();
+                        bundle.putString("key_driver", key_driver);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        finish(); // Optional: Finish the current activity to prevent going back on pressing back button
+                    } else {
+                        Toast.makeText(LoginActivityEmployee.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(LoginActivityEmployee.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
                 }
@@ -120,8 +127,8 @@ public class LoginActivityEmployee extends AppCompatActivity {
         });
     }
 
-    private void SignInAsAdmin(String email, String password)
-    {
+
+    private void SignInAsAdmin(String email, String password) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Admin");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
