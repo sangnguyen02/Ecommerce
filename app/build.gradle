@@ -90,6 +90,9 @@ dependencies {
     implementation('com.paypal.checkout:android-sdk:1.1.0')
     implementation 'com.paypal.sdk:paypal-android-sdk:2.16.0'
 
+    //Biometrics
+    implementation 'androidx.biometric:biometric:1.0.1'
+
     //VN
     //implementation fileTree(dir: 'D:\\nam4\\EC', include: ['*.aar', '*.jar'], exclude: [])
     //implementation 'com.google.code.gson:gson:2.8.5'

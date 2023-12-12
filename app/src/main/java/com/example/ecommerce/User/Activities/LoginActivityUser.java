@@ -2,6 +2,8 @@ package com.example.ecommerce.User.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -12,11 +14,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ecommerce.Employee.LoginActivityEmployee;
 
 import android.Manifest;
+import android.widget.Toast;
+
 import com.example.ecommerce.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,6 +46,7 @@ import com.hbb20.CountryCodePicker;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 public class LoginActivityUser extends AppCompatActivity {
@@ -58,6 +64,11 @@ public class LoginActivityUser extends AppCompatActivity {
     CardView layoutBottomSheetInputUsername;
     BottomSheetBehavior bottomSheetBehaviorInputUsername;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    BiometricPrompt biometricPrompt;
+    BiometricPrompt.PromptInfo promptInfo;
+    ImageView fingerprintBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +90,8 @@ public class LoginActivityUser extends AppCompatActivity {
         input_username_bottom_sheet = findViewById(R.id.inputText_fullname);
         submitBtn = findViewById(R.id.submitName_btn);
 
+        fingerprintBtn = findViewById(R.id.fingerprint_btn_user);
+        InitBiometricLogin();
 
         sendOTPBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +138,50 @@ public class LoginActivityUser extends AppCompatActivity {
             }
         });
 
+        fingerprintBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle("Biometric Authenticate")
+                        .setDescription("Use FingerPrint To Login").setDeviceCredentialAllowed(true).build();
+                biometricPrompt.authenticate(promptInfo);
+            }
+        });
     }
+
+    private void InitBiometricLogin() {
+        BiometricManager biometricManager = BiometricManager.from(getApplicationContext());
+        switch (biometricManager.canAuthenticate()) {
+            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                Toast.makeText(getApplicationContext(), "Device doesn't have fingerprint", Toast.LENGTH_SHORT).show();
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                Toast.makeText(getApplicationContext(), "Not working", Toast.LENGTH_SHORT).show();
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                Toast.makeText(getApplicationContext(), "No fingerprint assigned", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        Executor executor = ContextCompat.getMainExecutor(getApplicationContext());
+        biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(getApplicationContext(), "FingerPrint Error", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(getApplicationContext(), "FingerPrint Accepted", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getApplicationContext(), "FingerPrint Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void sendOtp(String phoneNumber, boolean isResend){
         startResendTimer();
         PhoneAuthOptions.Builder builder =

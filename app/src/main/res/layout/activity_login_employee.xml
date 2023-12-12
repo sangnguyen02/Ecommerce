@@ -131,4 +131,18 @@
         app:layout_constraintTop_toBottomOf="@+id/linear_layout_1"
         app:layout_constraintVertical_bias="0.268" />
 
+    <ImageView
+        android:id="@+id/fingerprint_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/baseline_fingerprint_24"
+    android:background="?android:attr/selectableItemBackground"
+    app:layout_constraintTop_toBottomOf="@+id/login_btn"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="5dp"
+    />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
