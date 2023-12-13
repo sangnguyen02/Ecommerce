@@ -3,49 +3,113 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Employee.Driver.Fragments.WalletFragmentDriver">
-    <RelativeLayout
+
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/label_balance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Balance:"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            android:layout_centerHorizontal="true"
-            />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="30dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/label_balance">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        android:backgroundTint="#D9D9D9"
+        app:contentPadding="16dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tv_wallet_balance"
+                android:id="@+id/label_your_wallet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100000"
-                android:textSize="36sp"/>
+                android:layout_centerHorizontal="true"
+                android:text="Your wallet"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/label_driver_Name_wallet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="VND"
-                android:textSize="36sp"
+                android:layout_below="@id/label_your_wallet"
+                android:layout_marginTop="20dp"
+                android:text="Driver:"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_driver_name_wallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@id/label_driver_Name_wallet"
+                android:layout_below="@id/label_your_wallet"
+                android:layout_marginStart="30dp"
+                android:text="Sang"
+                android:textSize="24sp"/>
+
+            <TextView
+                android:id="@+id/label_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/label_driver_Name_wallet"
+                android:text="Balance:"
+                android:textSize="24sp"
+                android:textStyle="bold"
                 />
-        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_toEndOf="@id/label_balance"
+                android:layout_below="@id/label_driver_Name_wallet">
+
+                <TextView
+                    android:id="@+id/tv_wallet_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100000"
+                    android:textSize="24sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="VND"
+                    android:textSize="24sp"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_bank_name_wallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/label_balance"
+                android:text="Card No"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_card_no_wallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@id/tv_bank_name_wallet"
+                android:layout_below="@id/label_balance"
+                android:layout_marginStart="10dp"
+                android:text="Card No"
+                android:textSize="24sp"/>
+
+        </RelativeLayout>
 
 
+    </androidx.cardview.widget.CardView>
 
-    </RelativeLayout>
 
 
 
