@@ -5,10 +5,26 @@
     android:layout_height="match_parent"
     tools:context=".Employee.Admin.Fragments.StatisticRevenueFragmentAdmin">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="460dp"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/upload_firebase_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/barChart"
+            android:text="Upload"
+            android:textSize="20sp"/>
+
+
+
+    </RelativeLayout>
 
 </FrameLayout>

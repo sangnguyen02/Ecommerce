@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 public class WalletFragmentDriver extends Fragment {
 
     View rootView;
-    TextView tv_wallet_balance;
+    TextView tv_wallet_balance, tv_driver_name, tv_card_no, tv_bank_name;
     DatabaseReference walletRef;
     String key_driver;
 
@@ -37,6 +37,9 @@ public class WalletFragmentDriver extends Fragment {
         SharedPreferences preferences = getActivity().getSharedPreferences("MyPrefs", MODE_PRIVATE);
         key_driver = preferences.getString("driver_number", "");
         tv_wallet_balance = rootView.findViewById(R.id.tv_wallet_balance);
+        tv_driver_name = rootView.findViewById(R.id.tv_driver_name_wallet);
+        tv_card_no = rootView.findViewById(R.id.tv_card_no_wallet);
+        tv_bank_name = rootView.findViewById(R.id.tv_bank_name_wallet);
         loadWalletBalance();
 
 
@@ -50,7 +53,13 @@ public class WalletFragmentDriver extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
                     String driverBalance = snapshot.child("balance").getValue().toString();
+                    String driverName = snapshot.child("name").getValue().toString();
+                    String driverCardNo = snapshot.child("bankAccount").getValue().toString();
+                    String driverBankName = snapshot.child("bankName").getValue().toString();
                     tv_wallet_balance.setText(driverBalance);
+                    tv_bank_name.setText(driverBankName);
+                    tv_card_no.setText(driverCardNo);
+                    tv_driver_name.setText(driverName);
                 }
             }
 

@@ -147,7 +147,6 @@ public class ManageRegisterDriverDetailActivityAdmin extends AppCompatActivity {
                 "Your password is your id" +
                 //"Your password is : " + driverID + "\n" +
                 "\n" +
-                "Make sure to deposit at least 25$ into your driver account to start your journey at Driver Hub" + "\n"+
                 "Best regards,";
 
         new SendMailTask(this, driverEmail, emailSubject, emailMessage).execute();
