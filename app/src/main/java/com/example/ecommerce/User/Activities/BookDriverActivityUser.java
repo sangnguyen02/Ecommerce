@@ -14,7 +14,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 
 import com.example.ecommerce.Enum.MyEnum;
+import com.example.ecommerce.Models.Bill;
 import com.example.ecommerce.Models.DriverInfos;
+import com.example.ecommerce.Models.Feedback;
 import com.example.ecommerce.Models.Order;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
@@ -91,10 +93,15 @@ public class BookDriverActivityUser extends AppCompatActivity {
     private float car_price=0;
     private float currencyRate = 0.04f;
     private int radius=1;
+    int roundedRating = 0;
     private static  int MAX_RADIUS=3;
     private String driverID;
     private  DriverInfos driverInfos=null;
     Order order= new Order();
+    Bill bill = new Bill();
+    Feedback feedback = new Feedback();
+
+    String bID;
     private List<String> driverkeys;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +207,52 @@ public class BookDriverActivityUser extends AppCompatActivity {
                 checkPaymentMethod(order);
             }
         });
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                roundedRating = Math.round(v); // Round the float rating to an integer
+                updateRatingScore(roundedRating);
+            }
+        });
+
+        confirm_rating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference feedbackRef = FirebaseDatabase.getInstance().getReference("Bill").child(bID);
+                feedbackRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // Create a new DatabaseReference to push the updated feedback back to the database
+                        DatabaseReference updatedFeedbackRef = FirebaseDatabase.getInstance().getReference("Bill").child(bID).child("feedback");
+                        feedback.setRating(roundedRating);
+                        feedback.setComment(ratingScore.getText().toString().trim());
+                        // Set the new value for the feedback in the database
+                        updatedFeedbackRef.setValue(feedback)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            // Successfully updated the feedback in the database
+                                            Toast.makeText(getApplicationContext(), "Feedback Updated!", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            // Handle the case when the update fails
+                                            Toast.makeText(getApplicationContext(), "Failed to Update Feedback", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle errors that occur during the data retrieval process
+                    }
+                });
+            }
+        });
+
     }
+
     private void checkPaymentMethod(Order order){
         if (order.getPaymentMethod()==MyEnum.PaymentMethod.PAYPAL){
             bottomSheetBehaviorPaypal.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -329,6 +381,30 @@ public class BookDriverActivityUser extends AppCompatActivity {
                     }
                 });
     }
+
+    private void uploadBillToFirebase(Bill bill) {
+        // Get a reference to the root of your Firebase Realtime Database
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        // Get a reference to the "orders" node (adjust the path as needed)
+        DatabaseReference billReference = databaseReference.child("Bill");
+        // Push the Order object to the database to generate a unique ID
+        DatabaseReference newBillRef = billReference.push();
+        // Set the unique ID as the order's ID
+        bill.setbId(newBillRef.getKey());
+        // Set the value of the Order object at the generated ID
+        newBillRef.setValue(bill)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getApplicationContext(), "Bill Created!", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+                        Toast.makeText(getApplicationContext(), "Network Error!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
     private void updateRatingScore(int rating) {
         String ratingText;
         switch (rating) {
@@ -351,6 +427,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
                 ratingText = ""; // Handle other cases if needed
                 break;
         }
+
         // Update the TextView with the calculated rating text
         ratingScore.setText(ratingText);
     }
@@ -516,7 +593,18 @@ public class BookDriverActivityUser extends AppCompatActivity {
                             // Create a Date object using the timestamp
                             Date currentDate = new Date(currentTimeMillis);
                             order.setDatetime(currentDate);
+                            bill.setOrder(order);
+                            bill.setPromotion((order.getPrice() * 30)/100);
+                            if (feedback != null) {
+                                bill.setFeedback(feedback);
+                            }
+                            bill.setTimeStamp(currentDate);
                             uploadOrderToFirebase(order);
+                            uploadBillToFirebase(bill);
+                            bID = bill.getbId();
+                            if (!bID.isEmpty()) {
+                                Log.d("BID", bID);
+                            }
                             checkDriver(order);
                             shouldContinue = false;
                             isUpload=true;

@@ -1,9 +1,7 @@
 package com.example.ecommerce.Models;
 
 public class Feedback {
-
     private int id;
-
     private int rating;
     private String comment;
 
