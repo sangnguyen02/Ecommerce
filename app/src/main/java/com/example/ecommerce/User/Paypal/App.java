@@ -8,6 +8,8 @@ import com.paypal.checkout.config.Environment;
 import com.paypal.checkout.createorder.CurrencyCode;
 import com.paypal.checkout.createorder.UserAction;
 
+import utils.LocalDataManager;
+
 public class App extends Application {
 
     @Override
@@ -21,5 +23,7 @@ public class App extends Application {
                 UserAction.PAY_NOW,
                 "com.example.ecommerce://paypalpay"
         ));
+
+        LocalDataManager.init(getApplicationContext());
     }
 }

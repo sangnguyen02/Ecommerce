@@ -22,6 +22,7 @@ import com.example.ecommerce.Employee.LoginActivityEmployee;
 import android.Manifest;
 import android.widget.Toast;
 
+import com.example.ecommerce.Models.User;
 import com.example.ecommerce.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -48,6 +49,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
+
+import utils.LocalDataManager;
 
 public class LoginActivityUser extends AppCompatActivity {
 
@@ -91,7 +94,15 @@ public class LoginActivityUser extends AppCompatActivity {
         submitBtn = findViewById(R.id.submitName_btn);
 
         fingerprintBtn = findViewById(R.id.fingerprint_btn_user);
-        InitBiometricLogin();
+
+        if(!LocalDataManager.getFirstTimeLoginUser()){
+            //Toast.makeText(this,"First Time Login User", Toast.LENGTH_SHORT).show();
+            fingerprintBtn.setVisibility(View.INVISIBLE);
+            //LocalDataManager.setFirstTimeLoginUser(true);
+        }else {
+            InitBiometricLogin();
+        }
+
 
         sendOTPBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,7 +183,9 @@ public class LoginActivityUser extends AppCompatActivity {
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                Toast.makeText(getApplicationContext(), "FingerPrint Accepted", Toast.LENGTH_SHORT).show();
+                User user = LocalDataManager.getUserLoginInfoForBiometric();
+                goToMainActivity(user.getUserPhone(), user.getUsername());
+                Toast.makeText(getApplicationContext(), "FingerPrint Accepted: " + user.getUsername() + " " + user.getUserPhone(), Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onAuthenticationFailed() {
@@ -246,10 +259,12 @@ public class LoginActivityUser extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("phone_number", phoneNumber);
         bundle.putString("user_name", userName);
+        LocalDataManager.setFirstTimeLoginUser(true);
+        User user = new User(userName, phoneNumber);
+        LocalDataManager.setUserLoginInfoForBiometric(user);
         requestLocationPermission();
         intent.putExtras(bundle);
         startActivity(intent);
-
     }
     private void startResendTimer() {
         resendOtpTextView.setEnabled(false);
@@ -290,7 +305,6 @@ public class LoginActivityUser extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     showNameUserForm(phone);
                                 }
-
                             });
                 }
                 else
@@ -302,6 +316,7 @@ public class LoginActivityUser extends AppCompatActivity {
                     } else {
                         // NameUser is not empty, proceed to the main activity
                         goToMainActivity(phone, nameUser);
+
                     }
                 }
             }

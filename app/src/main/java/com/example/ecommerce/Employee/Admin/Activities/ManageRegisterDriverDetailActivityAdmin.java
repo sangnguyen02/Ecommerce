@@ -6,16 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ecommerce.Enum.MyEnum;
 import com.example.ecommerce.Models.DriverAccount;
 import com.example.ecommerce.Models.DriverInfos;
-import com.example.ecommerce.Models.User;
 import com.example.ecommerce.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
