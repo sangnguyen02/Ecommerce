@@ -16,6 +16,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class HistoryDriverDetailActivity extends AppCompatActivity {
 
     DatabaseReference orderDetailRef;
@@ -57,7 +61,16 @@ public class HistoryDriverDetailActivity extends AppCompatActivity {
                         String price = snapshot.child("price").getValue().toString();
                         String pMethod = snapshot.child("paymentMethod").getValue().toString();
                         String typeVehicle = snapshot.child("vehicleType").getValue().toString();
-                        //String dateTime = snapshot.child("dateTime").getValue().toString();
+                        String timestampObject = snapshot.child("datetime").getValue().toString();
+                        long timestamp = Long.parseLong(timestampObject.split(",")[7].split("=")[1]);
+
+                        // Convert timestamp to Date object
+                        Date date = new Date(timestamp);
+
+                        // Format Date object to a human-readable format
+                        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        String formattedDate = dateFormat.format(date);
+
                         String destination_Lat = snapshot.child("destination_Latitude").getValue().toString();
                         String destination_Long = snapshot.child("destination_Longtidue").getValue().toString();
                         String pickupLocation_Lat = snapshot.child("pickupLocation_Latitude").getValue().toString();
@@ -89,10 +102,9 @@ public class HistoryDriverDetailActivity extends AppCompatActivity {
                             tv_typeVehicle.setText(typeVehicle);
                         }
 
-//                        if(!dateTime.isEmpty()) {
-//                            tv_dateTime.setText("08/12/2002");
-//                        }
-                        tv_dateTime.setText("08/12/2002");
+                        if(!formattedDate.isEmpty()) {
+                            tv_dateTime.setText(formattedDate);
+                        }
 
                         if(!from.isEmpty()) {
                             tv_from.setText(from);

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.example.ecommerce.Adapters.HistoryDriverAdapter;
 import com.example.ecommerce.Adapters.HistoryUserAdapter;
+import com.example.ecommerce.Models.DriverInfos;
 import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
 import com.google.firebase.database.DataSnapshot;
@@ -69,7 +70,8 @@ public class HistoryFragmentDriver extends Fragment {
 
                 for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
                     Order order = orderSnapshot.getValue(Order.class);
-                    String phoneDriver = order.getDriverNo();
+                    DriverInfos driverInfos = orderSnapshot.child("driverInfos").getValue(DriverInfos.class);
+                    String phoneDriver = driverInfos.getPhoneNo();
                     Log.d("phone", phoneDriver);
                     if(phoneDriver.equals(key_driver)) {
                         if (order != null) {

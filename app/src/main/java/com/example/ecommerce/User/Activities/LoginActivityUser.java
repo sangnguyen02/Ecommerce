@@ -48,6 +48,7 @@ public class LoginActivityUser extends AppCompatActivity {
     private static final String TAG = LoginActivityUser.class.getName();
     CountryCodePicker countryCodePicker;
     String phoneNumber, verificationCode;
+    Boolean sent = false;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     Long timeoutSeconds = 30L;
     PhoneAuthProvider.ForceResendingToken  resendingToken;
@@ -84,11 +85,13 @@ public class LoginActivityUser extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 phoneNumber = countryCodePicker.getFullNumberWithPlus();
-                if(!countryCodePicker.isValidFullNumber()) {
+                String phone = phoneInput.getText().toString().trim();
+                if(!countryCodePicker.isValidFullNumber() || phone.isEmpty()) {
                     phoneInput.setError("Phone number not valid");
                 }
                 else {
                     sendOtp(phoneNumber, false);
+                    sent = true;
                     //sendOTPBtn.setEnabled(false);
                 }
 
@@ -106,14 +109,22 @@ public class LoginActivityUser extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String enteredOtp  = otpInput.getText().toString().trim();
-                if (!verificationCode.isEmpty() && !enteredOtp.isEmpty()) {
-                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationCode, enteredOtp);
-                    signIn(credential);
-                } else {
-                    Snackbar snackbar = Snackbar.make(showSnackBarView, "Verification code is invalid", Snackbar.LENGTH_LONG);
+                if(sent.equals(false)) {
+                    Snackbar snackbar = Snackbar.make(showSnackBarView, "Please enter a valid phone number", Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }
+                else {
+                    String enteredOtp  = otpInput.getText().toString().trim();
+
+                    if (!verificationCode.isEmpty() && !enteredOtp.isEmpty()) {
+                        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationCode, enteredOtp);
+                        signIn(credential);
+                    } else {
+                        Snackbar snackbar = Snackbar.make(showSnackBarView, "Verification code is invalid", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
+                }
+
             }
         });
 
