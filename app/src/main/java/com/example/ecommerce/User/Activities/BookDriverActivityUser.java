@@ -44,6 +44,7 @@ import com.paypal.checkout.order.PurchaseUnit;
 import com.paypal.checkout.paymentbutton.PaymentButtonContainer;
 import com.rey.material.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -54,6 +55,7 @@ import com.example.ecommerce.Models.CategoryPaymentMethod;
 import com.example.ecommerce.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -69,7 +71,8 @@ public class BookDriverActivityUser extends AppCompatActivity {
     private BottomSheetBehavior bottomSheetBehaviorBook, bottomSheetBehaviorWaiting, bottomSheetBehaviorDriverComing, bottomSheetBehaviorDriverArrived, bottomSheetBehaviorDriverEndTrip,bottomSheetBehaviorPaypal;
     private Spinner spinnerCategory;
     private CategoryAdapter categoryAdapter;
-    private TextView ratingScore;
+    private TextView ratingScore,tv_driverName,tv_driverRating,tv_driverName1,tv_driverRating1;
+    private ImageView img_driverAvatar,img_driverAvatar1;
     private RatingBar ratingBar;
     private MaterialButton book, cancelWaiting, cancelComing, confirm_rating;
     private TextView motorPrice, carPrice;
@@ -134,6 +137,14 @@ public class BookDriverActivityUser extends AppCompatActivity {
         layoutBottomSheetDriverArrived = findViewById(R.id.bottom_sheet_driver_arrived);
         layoutBottomSheetDriverEndTrip = findViewById(R.id.bottom_sheet_driver_end_trip);
         layoutBottomSheetPaypal = findViewById(R.id.bottom_sheet_paypal);
+
+        tv_driverName = layoutBottomSheetDriverComing.findViewById(R.id.tv_driverName);
+        tv_driverRating = layoutBottomSheetDriverComing.findViewById(R.id.tv_driverRating);
+        img_driverAvatar= layoutBottomSheetDriverComing.findViewById(R.id.img_driverAvatar);
+
+        tv_driverName1 = layoutBottomSheetDriverArrived.findViewById(R.id.tv_driverName);
+        tv_driverRating1 = layoutBottomSheetDriverArrived.findViewById(R.id.tv_driverRating_arrived);
+        img_driverAvatar1 = layoutBottomSheetDriverArrived.findViewById(R.id.img_driverAvatar);
 
         bottomSheetBehaviorBook = BottomSheetBehavior.from(layoutBottomSheetBook);
         bottomSheetBehaviorWaiting = BottomSheetBehavior.from(layoutBottomSheetWating);
@@ -208,8 +219,51 @@ public class BookDriverActivityUser extends AppCompatActivity {
         getClosetDriver();
         //fetchDriverInfo();
         bottomSheetBehaviorWaiting.setState(BottomSheetBehavior.STATE_EXPANDED);
+        checkDriver(order);
     }
-    private float convertVndToUsd(float priceVnd) {
+    private void checkDriver(Order order) {
+        DatabaseReference OderRef = FirebaseDatabase.getInstance().getReference().child("Order").child(order.getId());
+        OderRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Order orderNew = dataSnapshot.getValue(Order.class);
+                    if (orderNew.getOrderStatus() == MyEnum.OrderStatus.ACCEPT) {
+                        DriverInfos driverInfo = order.getDriverInfos();
+                        tv_driverName.setText(driverInfo.getName());
+                        tv_driverRating.setText((int) driverInfo.getAvgRating());
+                        tv_driverName1.setText(driverInfo.getName());
+                        tv_driverRating1.setText((int) driverInfo.getAvgRating());
+                        String imageDriver = driverInfo.getPicture();
+                        if (imageDriver != null && !imageDriver.isEmpty()) {
+                            Picasso.get().load(imageDriver).into(img_driverAvatar);
+                            Picasso.get().load(imageDriver).into(img_driverAvatar1);
+                        }
+                        bottomSheetBehaviorWaiting.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        bottomSheetBehaviorDriverComing.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                    else if (orderNew.getOrderStatus() == MyEnum.OrderStatus.PICKEDUP) {
+                        bottomSheetBehaviorDriverComing.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        bottomSheetBehaviorDriverArrived.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                    else if (orderNew.getOrderStatus() == MyEnum.OrderStatus.SUCCEED) {
+                        bottomSheetBehaviorDriverArrived.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        bottomSheetBehaviorDriverEndTrip.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle errors
+                Log.e("Profile Driver Fragment", "Error database");
+            }
+        });
+    }
+
+
+
+
+        private float convertVndToUsd(float priceVnd) {
 
         return priceVnd * currencyRate;
     }
