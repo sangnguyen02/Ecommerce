@@ -235,6 +235,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             // Successfully updated the feedback in the database
                                             Toast.makeText(getApplicationContext(), "Feedback Updated!", Toast.LENGTH_SHORT).show();
+                                            finish();
                                         } else {
                                             // Handle the case when the update fails
                                             Toast.makeText(getApplicationContext(), "Failed to Update Feedback", Toast.LENGTH_SHORT).show();
