@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ecommerce.Adapters.HistoryUserAdapter;
+import com.example.ecommerce.Enum.MyEnum;
 import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
 import com.google.firebase.database.DataSnapshot;
@@ -90,11 +91,13 @@ public class HistoryFragmentUser extends Fragment {
 
                 for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
                     Order order = orderSnapshot.getValue(Order.class);
-                    String phoneUser = order.getClientNo();
-                    Log.d("phone", phoneUser);
-                    if(phoneUser.equals(phoneNumber)) {
-                        if (order != null) {
-                            orderList.add(order);
+                    if(order.getOrderStatus().equals(MyEnum.OrderStatus.SUCCEED)) {
+                        String phoneUser = order.getClientNo();
+                        Log.d("phone", phoneUser);
+                        if(phoneUser.equals(phoneNumber)) {
+                            if (order != null) {
+                                orderList.add(order);
+                            }
                         }
                     }
                 }

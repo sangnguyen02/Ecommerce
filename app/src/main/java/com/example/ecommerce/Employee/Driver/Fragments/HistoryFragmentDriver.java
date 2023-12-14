@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.example.ecommerce.Adapters.HistoryDriverAdapter;
 import com.example.ecommerce.Adapters.HistoryUserAdapter;
+import com.example.ecommerce.Enum.MyEnum;
 import com.example.ecommerce.Models.DriverInfos;
 import com.example.ecommerce.Models.Order;
 import com.example.ecommerce.R;
@@ -66,16 +67,18 @@ public class HistoryFragmentDriver extends Fragment {
         historyRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                orderList.clear(); // Clear the list to avoid duplicates
+                orderList.clear();
 
                 for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
                     Order order = orderSnapshot.getValue(Order.class);
-                    DriverInfos driverInfos = orderSnapshot.child("driverInfos").getValue(DriverInfos.class);
-                    String phoneDriver = driverInfos.getPhoneNo();
-                    Log.d("phone", phoneDriver);
-                    if(phoneDriver.equals(key_driver)) {
-                        if (order != null) {
-                            orderList.add(order);
+                    if(order.getOrderStatus().equals(MyEnum.OrderStatus.SUCCEED)) {
+                        DriverInfos driverInfos = orderSnapshot.child("driverInfos").getValue(DriverInfos.class);
+                        String phoneDriver = driverInfos.getPhoneNo();
+                        Log.d("phone", phoneDriver);
+                        if(phoneDriver.equals(key_driver)) {
+                            if (order != null) {
+                                orderList.add(order);
+                            }
                         }
                     }
                 }
