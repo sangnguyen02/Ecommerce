@@ -219,7 +219,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
         getClosetDriver();
         //fetchDriverInfo();
         bottomSheetBehaviorWaiting.setState(BottomSheetBehavior.STATE_EXPANDED);
-        checkDriver(order);
+
     }
     private void checkDriver(Order order) {
         DatabaseReference OderRef = FirebaseDatabase.getInstance().getReference().child("Order").child(order.getId());
@@ -231,9 +231,10 @@ public class BookDriverActivityUser extends AppCompatActivity {
                     if (orderNew.getOrderStatus() == MyEnum.OrderStatus.ACCEPT) {
                         DriverInfos driverInfo = order.getDriverInfos();
                         tv_driverName.setText(driverInfo.getName());
-                        tv_driverRating.setText((int) driverInfo.getAvgRating());
+                        String avg= String.valueOf(driverInfo.getAvgRating());
+                        tv_driverRating.setText(avg);
                         tv_driverName1.setText(driverInfo.getName());
-                        tv_driverRating1.setText((int) driverInfo.getAvgRating());
+                        tv_driverRating1.setText(avg);
                         String imageDriver = driverInfo.getPicture();
                         if (imageDriver != null && !imageDriver.isEmpty()) {
                             Picasso.get().load(imageDriver).into(img_driverAvatar);
@@ -259,11 +260,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-        private float convertVndToUsd(float priceVnd) {
+    private float convertVndToUsd(float priceVnd) {
 
         return priceVnd * currencyRate;
     }
@@ -460,7 +457,6 @@ public class BookDriverActivityUser extends AppCompatActivity {
                     Log.d("Driver key", key);
                     driverkeys.add(key);
                     fetchDriverInfo();
-
                 }
             }
             @Override
@@ -521,6 +517,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
                             Date currentDate = new Date(currentTimeMillis);
                             order.setDatetime(currentDate);
                             uploadOrderToFirebase(order);
+                            checkDriver(order);
                             shouldContinue = false;
                             isUpload=true;
                         }
