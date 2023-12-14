@@ -83,15 +83,16 @@ public class BookDriverActivityUser extends AppCompatActivity {
     private static final int NIGHT_FEE_23_1 = 10000; // Night fee from 23h to 1h
     private static final int NIGHT_FEE_1_4 = 15000; // Night fee from 1h to 4h
     private boolean type=false;
+    private String lincse="";
     private float motor_price=0;
     private float car_price=0;
     private float currencyRate = 0.04f;
     private int radius=1;
     private static  int MAX_RADIUS=3;
-    private boolean driverFound=false;
     private String driverID;
     private  DriverInfos driverInfos=null;
     Order order= new Order();
+    private List<String> driverkeys;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +115,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
         spinnerCategory = findViewById(R.id.spn_category);
         categoryAdapter = new CategoryAdapter(this, R.layout.item_selected, getListCategory());
         spinnerCategory.setAdapter(categoryAdapter);
+        driverkeys= new ArrayList<>();
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -167,11 +169,13 @@ public class BookDriverActivityUser extends AppCompatActivity {
                 if(type)
                 {
                     order.setVehicleType(MyEnum.VehicleType.CAR);
+                    lincse="b1";
                     order.setPrice(car_price);
                 }
                 else
                 {
                     order.setVehicleType(MyEnum.VehicleType.MOTORBIKE);
+                    lincse="a1";
                     order.setPrice(motor_price);
                 }
                 order.setOrderStatus(MyEnum.OrderStatus.PENDING);
@@ -202,6 +206,7 @@ public class BookDriverActivityUser extends AppCompatActivity {
     }
     private void finishOrder(Order order){
         getClosetDriver();
+        //fetchDriverInfo();
         bottomSheetBehaviorWaiting.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
     private float convertVndToUsd(float priceVnd) {
@@ -393,34 +398,37 @@ public class BookDriverActivityUser extends AppCompatActivity {
         DatabaseReference driverLocation=FirebaseDatabase.getInstance().getReference().child("DriverLocation");
         GeoFire geoFire= new GeoFire(driverLocation);
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(Double.parseDouble(user_location_latitude), Double.parseDouble(user_location_longtitude)), radius);
-        geoQuery.removeAllListeners();
+//        geoQuery.removeAllListeners();
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                if(!driverFound)
-                {
-                    driverFound=true;
-                    driverID=key;
-                    fetchDriverInfo(driverID);
+                if (!driverkeys.contains(key)&&key!=null) {
+                    Log.d("Driver key", key);
+                    driverkeys.add(key);
+                    fetchDriverInfo();
+
                 }
             }
             @Override
             public void onKeyExited(String key) {
+                Log.d("Driver key exited", key);
             }
             @Override
             public void onKeyMoved(String key, GeoLocation location) {
+                Log.d("Driver key moved", key);
             }
             @Override
             public void onGeoQueryReady() {
-                if (!driverFound) {
+
                     // Increase the radius, but set a maximum limit to avoid infinite recursion
                     if (radius <= MAX_RADIUS) {
                         radius++;
+                        driverkeys.clear();
                         getClosetDriver();
                     } else {
                         Log.d("No Driver Found", "Maximum radius reached");
                         // Handle the case when no driver is found within the maximum radius
-                    }
+
                 }
             }
             @Override
@@ -428,41 +436,49 @@ public class BookDriverActivityUser extends AppCompatActivity {
             }
         });
     }
-    private void fetchDriverInfo(String driverID) {
-        DatabaseReference driverInfoRef = FirebaseDatabase.getInstance().getReference().child("DriversInfo").child(driverID);
-        driverInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // Create a new DriverInfos object using the data from the dataSnapshot
-                    driverInfos = dataSnapshot.getValue(DriverInfos.class);
-                    if(driverInfos.getDriverStatus().equals(MyEnum.DriverStatus.ACTIVE))
-                    {
-                        Log.d("Driver Info", driverInfos.getPhoneNo());
-                        Log.d("Driver Info", driverInfos.getName());
-                        order.setDriverInfos(driverInfos);
-                        Log.d("Order setDriver",order.getDriverInfos().getPhoneNo());
-                        Log.d("Order setDriver",order.getDriverInfos().getName());
-                        // Get the current timestamp
-                        long currentTimeMillis = System.currentTimeMillis();
+    boolean shouldContinue = true;
+    boolean isUpload=false;
+    private void fetchDriverInfo() {
 
-                        // Create a Date object using the timestamp
-                        Date currentDate = new Date(currentTimeMillis);
-                        order.setDatetime(currentDate);
-                        uploadOrderToFirebase(order);
-                    }
-                    else
-                    {
-                        driverFound = false;
-                        getClosetDriver();
+        for (String key : driverkeys)
+        {
+            Log.d("DRiver key fetch", key);
+            if (!shouldContinue) {
+                break;}
+            DatabaseReference driverInfoRef = FirebaseDatabase.getInstance().getReference("DriversInfo").child(key);
+            driverInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Create a new DriverInfos object using the data from the dataSnapshot
+                        driverInfos = dataSnapshot.getValue(DriverInfos.class);
+
+                        if(!isUpload&& driverInfos!=null && driverInfos.getDriverStatus().equals(MyEnum.DriverStatus.ACTIVE)&&driverInfos.getLicense().equals(lincse))
+                        {
+                            Log.d("Driver Info", driverInfos.getPhoneNo());
+                            Log.d("Driver Info", driverInfos.getName());
+                            order.setDriverInfos(driverInfos);
+                            Log.d("Order setDriver",order.getDriverInfos().getPhoneNo());
+                            Log.d("Order setDriver",order.getDriverInfos().getName());
+                            // Get the current timestamp
+                            long currentTimeMillis = System.currentTimeMillis();
+
+                            // Create a Date object using the timestamp
+                            Date currentDate = new Date(currentTimeMillis);
+                            order.setDatetime(currentDate);
+                            uploadOrderToFirebase(order);
+                            shouldContinue = false;
+                            isUpload=true;
+                        }
                     }
                 }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle errors that occur during the data retrieval process
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Handle errors that occur during the data retrieval process
+                }
+            });
+        }
     }
+
 }
 
