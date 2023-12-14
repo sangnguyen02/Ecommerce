@@ -2,12 +2,16 @@ package utils;
 
 import android.content.Context;
 
+import com.example.ecommerce.Models.DriverAccount;
 import com.example.ecommerce.Models.User;
 
 public class LocalDataManager {
     private static final String PREF_FIRST_LOGIN_USER = "PREF_FIRST_LOGIN_USER";
     private static final String PREF_FIRST_LOGIN_USERPHONE = "PREF_FIRST_LOGIN_USERPHONE";
     private static final String PREF_FIRST_LOGIN_USERNAME = "PREF_FIRST_LOGIN_USERNAME";
+    private static final String PREF_FIRST_LOGIN_DRIVER = "PREF_FIRST_LOGIN_DRIVER";
+
+    private static final String PREF_FIRST_LOGIN_DRIVERKEY = "PREF_FIRST_LOGIN_DRIVERKEY";
     private static LocalDataManager instance;
     private MySharedPreferences mySharedPreferences;
 
@@ -21,6 +25,14 @@ public class LocalDataManager {
             instance = new LocalDataManager();
         }
         return instance;
+    }
+
+    public static void setFirstTimeLoginDriver(boolean isFirst){
+        LocalDataManager.getInstance().mySharedPreferences.putBooleanValue(PREF_FIRST_LOGIN_DRIVER,isFirst);
+    }
+
+    public static boolean getFirstTimeLoginDriver(){
+        return LocalDataManager.getInstance().mySharedPreferences.getBooleanValue(PREF_FIRST_LOGIN_DRIVER);
     }
 
     public static void setFirstTimeLoginUser(boolean isFirst){
@@ -41,5 +53,12 @@ public class LocalDataManager {
         user.setUserPhone(LocalDataManager.getInstance().mySharedPreferences.getStringValue(PREF_FIRST_LOGIN_USERPHONE));
         user.setUsername(LocalDataManager.getInstance().mySharedPreferences.getStringValue(PREF_FIRST_LOGIN_USERNAME));
         return user;
+    }
+    public static void setDriverLoginInfoForBiometric(String driverKey){
+        LocalDataManager.getInstance().mySharedPreferences.putStringValue(PREF_FIRST_LOGIN_DRIVERKEY,driverKey);
+    }
+
+    public static String getDriverLoginInfoForBiometric(){
+        return LocalDataManager.getInstance().mySharedPreferences.getStringValue(PREF_FIRST_LOGIN_DRIVERKEY);
     }
 }

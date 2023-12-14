@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.example.ecommerce.Employee.Admin.Activities.MainActivityAdmin;
 import com.example.ecommerce.Employee.Driver.Activities.MainActivityDriver;
 import com.example.ecommerce.Models.DriverAccount;
+import com.example.ecommerce.Models.User;
 import com.example.ecommerce.R;
 import com.example.ecommerce.User.Activities.LoginActivityUser;
 import com.google.android.material.button.MaterialButton;
@@ -33,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.Executor;
 
+import utils.LocalDataManager;
 import utils.PasswordHasher;
 
 public class LoginActivityEmployee extends AppCompatActivity {
@@ -58,7 +60,11 @@ public class LoginActivityEmployee extends AppCompatActivity {
         loginBtn = findViewById(R.id.login_btn);
         signInAsUser = findViewById(R.id.signInUser);
         fingerprintBtn = findViewById(R.id.fingerprint_btn);
-        InitBiometricLogin();
+        if(!LocalDataManager.getFirstTimeLoginDriver()){
+            fingerprintBtn.setVisibility(View.INVISIBLE);
+        }else {
+            InitBiometricLogin();
+        }
         fingerprintBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +129,14 @@ public class LoginActivityEmployee extends AppCompatActivity {
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                Toast.makeText(getApplicationContext(), "FingerPrint Accepted", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivityEmployee.this, MainActivityDriver.class);
+                Bundle bundle = new Bundle();
+                String key_driver = LocalDataManager.getDriverLoginInfoForBiometric();
+                bundle.putString("key_driver", key_driver);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish(); // Optional: Finish the current activity to prevent going back on pressing back button
+                //Toast.makeText(getApplicationContext(), "FingerPrint Accepted Driver: " + key_driver, Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onAuthenticationFailed() {
@@ -170,6 +183,8 @@ public class LoginActivityEmployee extends AppCompatActivity {
                         String key_driver = _currentDriver.getDriverID();
                         bundle.putString("key_driver", key_driver);
                         intent.putExtras(bundle);
+                        LocalDataManager.setFirstTimeLoginDriver(true);
+                        LocalDataManager.setDriverLoginInfoForBiometric(key_driver);
                         startActivity(intent);
                         finish(); // Optional: Finish the current activity to prevent going back on pressing back button
                     } else {
